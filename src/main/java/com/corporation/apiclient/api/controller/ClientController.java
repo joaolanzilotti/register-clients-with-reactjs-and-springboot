@@ -2,6 +2,7 @@ package com.corporation.apiclient.api.controller;
 
 import com.corporation.apiclient.domain.model.Client;
 import com.corporation.apiclient.services.ClientService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,7 +40,7 @@ public class ClientController {
     }
 
     @PostMapping
-    public ResponseEntity<Client> addClient(@RequestBody Client client) {
+    public ResponseEntity<Client> addClient(@Valid @RequestBody Client client) {
         Client cliente = clientService.addCliente(client);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(cliente.getId()).toUri();
         return ResponseEntity.created(uri).build();
@@ -47,7 +48,7 @@ public class ClientController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Client> updateClient(@PathVariable Long id, @RequestBody Client client){
+    public ResponseEntity<Client> updateClient(@PathVariable Long id,@Valid @RequestBody Client client){
 
         if(!clientService.existByClientId(id)){
             return ResponseEntity.notFound().build();
