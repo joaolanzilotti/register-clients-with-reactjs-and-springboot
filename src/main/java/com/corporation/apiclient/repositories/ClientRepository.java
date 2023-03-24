@@ -1,6 +1,6 @@
 package com.corporation.apiclient.repositories;
 
-import com.corporation.apiclient.domain.model.Client;
+import com.corporation.apiclient.entities.Client;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

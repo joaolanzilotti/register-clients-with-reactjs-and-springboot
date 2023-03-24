@@ -1,4 +1,4 @@
-package com.corporation.apiclient.domain.model;
+package com.corporation.apiclient.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;

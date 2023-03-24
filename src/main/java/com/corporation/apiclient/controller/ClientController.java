@@ -1,8 +1,7 @@
-package com.corporation.apiclient.api.controller;
+package com.corporation.apiclient.controller;
 
-import com.corporation.apiclient.domain.model.Client;
+import com.corporation.apiclient.entities.Client;
 import com.corporation.apiclient.dto.ClientDTO;
-import com.corporation.apiclient.exceptions.ObjectNotFoundException;
 import com.corporation.apiclient.services.ClientService;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -13,7 +12,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequestMapping("/clients")

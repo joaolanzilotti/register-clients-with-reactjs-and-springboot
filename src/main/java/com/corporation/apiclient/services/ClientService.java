@@ -1,6 +1,6 @@
 package com.corporation.apiclient.services;
 
-import com.corporation.apiclient.domain.model.Client;
+import com.corporation.apiclient.entities.Client;
 import com.corporation.apiclient.dto.ClientDTO;
 import com.corporation.apiclient.exceptions.DataIntegratyViolationException;
 import com.corporation.apiclient.exceptions.ObjectNotFoundException;
@@ -8,7 +8,6 @@ import com.corporation.apiclient.repositories.ClientRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.io.Serializable;
 import java.util.List;
