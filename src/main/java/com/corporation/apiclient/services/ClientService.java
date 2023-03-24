@@ -1,6 +1,8 @@
 package com.corporation.apiclient.services;
 
 import com.corporation.apiclient.domain.model.Client;
+import com.corporation.apiclient.exceptions.DataIntegratyViolationException;
+import com.corporation.apiclient.exceptions.ObjectNotFoundException;
 import com.corporation.apiclient.repositories.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,31 +16,41 @@ import java.util.Optional;
 public class ClientService implements Serializable {
 
     @Autowired
-    private ClientRepository repository;
+    private ClientRepository clientRepository;
 
     public List<Client> listClient(){
-        return repository.findAll();
+        return clientRepository.findAll();
     }
 
-    public Optional<Client> findClientById(Long id){
-        Optional<Client> cliente = repository.findById(id);
-        return cliente;
+    public Client findClientById(Long id){
+        Optional<Client> client = clientRepository.findById(id);
+        return client.orElseThrow(() -> new ObjectNotFoundException("Client Not Found"));
     }
 
     public Client addCliente(Client client){
-    return repository.save(client);
+        return clientRepository.save(client);
     }
 
-    public Client updateclient(Client client){
-        return repository.save(client);
+    public Client updateClient(Client client){
+            return clientRepository.save(client);
     }
 
     public void deleteClient(Long id){
-        repository.deleteById(id);
+        if(!existByClientId(id)){
+            throw new ObjectNotFoundException("Cliente Não Encontrado!");
+        }
+        clientRepository.deleteById(id);
+    }
+
+    private void findByEmail(Client client){
+        Optional<Client> clientOptional = clientRepository.findByEmail(client.getEmail()) ;
+        if(clientOptional.isPresent()){
+            throw new DataIntegratyViolationException("E-mail Já Cadastrado no Sistema");
+        }
     }
 
     public Boolean existByClientId(Long id){
-        return repository.existsById(id);
+        return clientRepository.existsById(id);
     }
 
 }
