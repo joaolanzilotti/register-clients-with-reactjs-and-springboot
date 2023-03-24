@@ -1,9 +1,11 @@
 package com.corporation.apiclient.services;
 
 import com.corporation.apiclient.domain.model.Client;
+import com.corporation.apiclient.dto.ClientDTO;
 import com.corporation.apiclient.exceptions.DataIntegratyViolationException;
 import com.corporation.apiclient.exceptions.ObjectNotFoundException;
 import com.corporation.apiclient.repositories.ClientRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,8 +20,13 @@ public class ClientService implements Serializable {
     @Autowired
     private ClientRepository clientRepository;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     public List<Client> listClient(){
+
         return clientRepository.findAll();
+
     }
 
     public Client findClientById(Long id){
@@ -27,25 +34,25 @@ public class ClientService implements Serializable {
         return client.orElseThrow(() -> new ObjectNotFoundException("Client Not Found"));
     }
 
-    public Client addCliente(Client client){
-        return clientRepository.save(client);
+    public Client addCliente(ClientDTO clientDTO){
+        findByEmail(clientDTO);
+        return clientRepository.save(modelMapper.map(clientDTO, Client.class));
     }
 
-    public Client updateClient(Client client){
-            return clientRepository.save(client);
+    public Client updateClient(ClientDTO clientDTO){
+            findByEmail(clientDTO);
+            return clientRepository.save(modelMapper.map(clientDTO, Client.class));
     }
 
     public void deleteClient(Long id){
-        if(!existByClientId(id)){
-            throw new ObjectNotFoundException("Cliente Não Encontrado!");
-        }
+        findClientById(id);
         clientRepository.deleteById(id);
     }
 
-    private void findByEmail(Client client){
-        Optional<Client> clientOptional = clientRepository.findByEmail(client.getEmail()) ;
-        if(clientOptional.isPresent()){
-            throw new DataIntegratyViolationException("E-mail Já Cadastrado no Sistema");
+    private void findByEmail(ClientDTO clientDTO){
+        Optional<Client> client = clientRepository.findByEmail(clientDTO.getEmail());
+        if(client.isPresent() && !client.get().getId().equals(clientDTO.getId())){
+            throw new DataIntegratyViolationException("this E-mail already exists");
         }
     }
 
