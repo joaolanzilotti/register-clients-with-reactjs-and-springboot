@@ -1,5 +1,6 @@
 package com.corporation.apiclient.controller;
 
+import com.corporation.apiclient.entities.Adress;
 import com.corporation.apiclient.entities.Client;
 import com.corporation.apiclient.dto.ClientDTO;
 import com.corporation.apiclient.services.ClientService;
@@ -39,8 +40,13 @@ public class ClientController {
 
     @PostMapping
     public ResponseEntity<ClientDTO> addClient(@Valid @RequestBody ClientDTO clientDTO) {
-        Client cliente = clientService.addCliente(clientDTO);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(cliente.getId()).toUri();
+        Client client = modelMapper.map(clientDTO, Client.class);
+
+
+        Adress adress = modelMapper.map(clientDTO.getAdressDTO(), Adress.class);
+
+        clientService.salvarClienteComEndereco(client, adress);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(client.getId()).toUri();
         return ResponseEntity.created(uri).build();
 
     }

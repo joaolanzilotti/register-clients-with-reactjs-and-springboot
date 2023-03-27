@@ -1,9 +1,12 @@
 package com.corporation.apiclient.services;
 
+import com.corporation.apiclient.dto.AdressDTO;
+import com.corporation.apiclient.entities.Adress;
 import com.corporation.apiclient.entities.Client;
 import com.corporation.apiclient.dto.ClientDTO;
 import com.corporation.apiclient.exceptions.DataIntegratyViolationException;
 import com.corporation.apiclient.exceptions.ObjectNotFoundException;
+import com.corporation.apiclient.repositories.AdressRepository;
 import com.corporation.apiclient.repositories.ClientRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,8 @@ public class ClientService implements Serializable {
 
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private AdressRepository adressRepository;
 
     public List<Client> listClient(){
 
@@ -33,9 +38,11 @@ public class ClientService implements Serializable {
         return client.orElseThrow(() -> new ObjectNotFoundException("Client Not Found"));
     }
 
-    public Client addCliente(ClientDTO clientDTO){
-        findByEmail(clientDTO);
-        return clientRepository.save(modelMapper.map(clientDTO, Client.class));
+    public void salvarClienteComEndereco(Client client, Adress adress) {
+        findByEmail(modelMapper.map(client, ClientDTO.class));
+        Adress adressSaved = adressRepository.save(adress);
+        client.setAdress(adressSaved);
+        clientRepository.save(client);
     }
 
     public Client updateClient(ClientDTO clientDTO){

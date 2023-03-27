@@ -25,8 +25,7 @@ public class ClientDTO {
     private String cpf;
     private Date birthDay;
     private String cellphone;
-
-    private Adress adress;
+    private Adress adressDTO;
     
 
 }
