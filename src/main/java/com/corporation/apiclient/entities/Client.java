@@ -5,8 +5,10 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.hibernate.validator.constraints.br.CPF;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Getter
@@ -21,12 +23,26 @@ public class Client implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotBlank(message = "Nome Nulo!")
+    @NotBlank(message = "Name is Null!")
     private String name;
-    @NotBlank(message = "Email Nulo!")
+    @NotBlank(message = "Email is Null!")
     @Email
     private String email;
-    @NotBlank(message = "Telefone Nulo!")
-    private String telephone;
+
+    private String password;
+
+    private String rg;
+
+    @CPF
+    private String cpf;
+
+    private Date birthDay;
+
+    @NotBlank(message = "Cellphone is Null!")
+    private String cellphone;
+
+    @ManyToOne
+    @JoinColumn(name = "adress_id")
+    private Adress adress;
 
 }
