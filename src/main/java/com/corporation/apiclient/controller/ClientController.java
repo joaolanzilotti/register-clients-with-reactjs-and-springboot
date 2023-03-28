@@ -42,10 +42,9 @@ public class ClientController {
     public ResponseEntity<ClientDTO> addClient(@Valid @RequestBody ClientDTO clientDTO) {
         Client client = modelMapper.map(clientDTO, Client.class);
 
-
         Adress adress = modelMapper.map(clientDTO.getAdressDTO(), Adress.class);
 
-        clientService.salvarClienteComEndereco(client, adress);
+        clientService.addClientWithAdress(client, adress);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(client.getId()).toUri();
         return ResponseEntity.created(uri).build();
 

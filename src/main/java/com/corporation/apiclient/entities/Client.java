@@ -33,9 +33,8 @@ public class Client implements Serializable {
 
     private String rg;
 
-    @CPF
+    @CPF(message = "Invalid CPF")
     private String cpf;
-
     private Date birthDay;
 
     @NotBlank(message = "Cellphone is Null!")
