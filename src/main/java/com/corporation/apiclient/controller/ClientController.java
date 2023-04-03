@@ -53,7 +53,10 @@ public class ClientController {
     @PutMapping(value = "/{id}")
     public ResponseEntity<ClientDTO> updateClient(@PathVariable Long id,@Valid @RequestBody ClientDTO clientDTO){
 
+        Client clientWithAdress = clientService.findClientById(id);
+        clientDTO.setAdressDTO(clientWithAdress.getAdress());
         clientDTO.setId(id);
+
         Client client = clientService.updateClient(clientDTO);
         return ResponseEntity.ok().body(modelMapper.map(client, ClientDTO.class));
     }

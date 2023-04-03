@@ -35,6 +35,8 @@ public class Client implements Serializable {
 
     @CPF(message = "Invalid CPF")
     private String cpf;
+
+    @Temporal(TemporalType.DATE)
     private Date birthDay;
 
     @NotBlank(message = "Cellphone is Null!")
