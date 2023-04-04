@@ -23,8 +23,6 @@ public class ClientService implements Serializable {
 
     @Autowired
     private ModelMapper modelMapper;
-    @Autowired
-    private AdressRepository adressRepository;
 
     public List<Client> listClient(){
 
