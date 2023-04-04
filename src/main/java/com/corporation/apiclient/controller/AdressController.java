@@ -1,6 +1,7 @@
 package com.corporation.apiclient.controller;
 
 import com.corporation.apiclient.dto.AdressDTO;
+import com.corporation.apiclient.dto.ClientDTO;
 import com.corporation.apiclient.entities.Adress;
 import com.corporation.apiclient.entities.Client;
 import com.corporation.apiclient.repositories.ClientRepository;
@@ -30,6 +31,14 @@ public class AdressController {
 
     @Autowired
     private ClientRepository clientRepository;
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<AdressDTO> updateAdress(@PathVariable Long id,@RequestBody AdressDTO adressDTO){
+        adressDTO.setId(id);
+        Adress adress = adressService.updateAdress(adressDTO);
+        return ResponseEntity.ok().body(adressDTO);
+
+    }
 
     @PostMapping(value = "/{id}")
     public ResponseEntity<AdressDTO> addAdress(@PathVariable Long id, @Valid @RequestBody AdressDTO adressDTO){
