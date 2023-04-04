@@ -37,12 +37,11 @@ public class ClientService implements Serializable {
         return client.orElseThrow(() -> new ObjectNotFoundException("Client Not Found"));
     }
 
-    public void addClientWithAdress(Client client, Adress adress) {
+    public void addClient(ClientDTO clientDTO) {
+        Client client = modelMapper.map(clientDTO, Client.class);
         alreadyExistsByRg(modelMapper.map(client, ClientDTO.class));
         alreadyExistsByEmail(modelMapper.map(client, ClientDTO.class));
         alreadyExistsByCpf(modelMapper.map(client, ClientDTO.class));
-        Adress adressSaved = adressRepository.save(adress);
-        client.setAdress(adressSaved);
         clientRepository.save(client);
 
     }

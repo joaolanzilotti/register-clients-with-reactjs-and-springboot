@@ -28,7 +28,7 @@ public class ClientDTO {
     @Temporal(TemporalType.DATE)
     private Date birthDay;
     private String cellphone;
-    private Adress adressDTO;
+    private Adress adress;
     
 
 }

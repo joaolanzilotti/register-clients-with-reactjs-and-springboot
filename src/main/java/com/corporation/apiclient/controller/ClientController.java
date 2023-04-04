@@ -40,12 +40,10 @@ public class ClientController {
 
     @PostMapping
     public ResponseEntity<ClientDTO> addClient(@Valid @RequestBody ClientDTO clientDTO) {
-        Client client = modelMapper.map(clientDTO, Client.class);
 
-        Adress adress = modelMapper.map(clientDTO.getAdressDTO(), Adress.class);
 
-        clientService.addClientWithAdress(client, adress);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(client.getId()).toUri();
+        clientService.addClient(clientDTO);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(clientDTO.getId()).toUri();
         return ResponseEntity.created(uri).build();
 
     }
@@ -53,8 +51,8 @@ public class ClientController {
     @PutMapping(value = "/{id}")
     public ResponseEntity<ClientDTO> updateClient(@PathVariable Long id,@Valid @RequestBody ClientDTO clientDTO){
 
-        Client clientWithAdress = clientService.findClientById(id);
-        clientDTO.setAdressDTO(clientWithAdress.getAdress());
+        Client clientById = clientService.findClientById(id);
+        clientDTO.setAdress(clientById.getAdress());
         clientDTO.setId(id);
 
         Client client = clientService.updateClient(clientDTO);
