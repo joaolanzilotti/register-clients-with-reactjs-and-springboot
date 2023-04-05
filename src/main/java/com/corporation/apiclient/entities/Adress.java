@@ -1,5 +1,6 @@
 package com.corporation.apiclient.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,6 +26,7 @@ public class Adress implements Serializable {
     private String city;
     private String state;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "adress")
     private List<Client> clientes;
 

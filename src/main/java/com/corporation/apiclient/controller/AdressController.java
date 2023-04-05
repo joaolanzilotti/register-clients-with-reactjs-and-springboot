@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RequestMapping(value = "/adress")
 @RestController
@@ -31,6 +32,12 @@ public class AdressController {
 
     @Autowired
     private ClientRepository clientRepository;
+
+    @GetMapping
+    public ResponseEntity<List<Adress>> findAllAdress(){
+        List<Adress> listAllAdress = adressService.findAllAdress();
+        return ResponseEntity.ok().body(listAllAdress);
+    }
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<AdressDTO> updateAdress(@PathVariable Long id,@RequestBody AdressDTO adressDTO){

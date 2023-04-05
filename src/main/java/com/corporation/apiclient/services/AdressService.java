@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,6 +26,11 @@ public class AdressService implements Serializable {
     public Adress addAdress(AdressDTO adressDTO){
         Adress adress = modelMapper.map(adressDTO, Adress.class);
         return adressRepository.save(adress);
+    }
+
+    public List<Adress> findAllAdress(){
+        List<Adress> listAdress = adressRepository.findAll();
+        return listAdress;
     }
 
     public Adress findAdressById(Long id){
