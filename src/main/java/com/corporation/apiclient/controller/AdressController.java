@@ -39,6 +39,12 @@ public class AdressController {
         return ResponseEntity.ok().body(listAllAdress);
     }
 
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<Adress> adressById(@PathVariable Long id){
+        Adress adress = adressService.findAdressById(id);
+        return ResponseEntity.ok().body(adress);
+    }
+
     @PutMapping(value = "/{id}")
     public ResponseEntity<AdressDTO> updateAdress(@PathVariable Long id,@RequestBody AdressDTO adressDTO){
         adressDTO.setId(id);
