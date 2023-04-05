@@ -42,4 +42,9 @@ public class AdressService implements Serializable {
         return adressRepository.save(modelMapper.map(adressDTO, Adress.class));
     }
 
+    public void deleteAdress(Long id){
+        findAdressById(id);
+        adressRepository.deleteById(id);
+    }
+
 }

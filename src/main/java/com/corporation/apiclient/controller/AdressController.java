@@ -63,4 +63,10 @@ public class AdressController {
         return ResponseEntity.created(uri).build();
     }
 
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Adress> deleteAdress(@PathVariable Long id){
+        adressService.deleteAdress(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }
