@@ -1,6 +1,7 @@
 package com.corporation.apiclient.dto;
 
 import com.corporation.apiclient.entities.Adress;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.Email;
@@ -17,6 +18,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonPropertyOrder({"id", "name", "email", "password", "cellphone", "rg", "cpf", "birthDay", "adress"})
 public class ClientDTO {
 
     private Long id;
