@@ -4,10 +4,10 @@ import com.corporation.apiclient.entities.Adress;
 import com.corporation.apiclient.entities.Client;
 import com.corporation.apiclient.dto.ClientDTO;
 import com.corporation.apiclient.services.ClientService;
+import com.corporation.apiclient.utils.MediaType;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -26,21 +26,21 @@ public class ClientController {
     @Autowired
     private ModelMapper modelMapper;
 
-    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    @GetMapping(produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
     public ResponseEntity<List<ClientDTO>> listClients() {
         List<ClientDTO> listClientDTO = clientService.listClient().stream().map(x -> modelMapper.map(x, ClientDTO.class)).collect(Collectors.toList());
         return ResponseEntity.ok().body(listClientDTO);
     }
 
-    @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
     public ResponseEntity<ClientDTO> findClientById(@PathVariable Long id) {
             Client clientById = clientService.findClientById(id);
             return ResponseEntity.ok().body(modelMapper.map(clientService.findClientById(id),ClientDTO.class));
 
         }
 
-    @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
-                 consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    @PostMapping(produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML},
+                 consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
     public ResponseEntity<ClientDTO> addClient(@Valid @RequestBody ClientDTO clientDTO) {
 
 
@@ -51,8 +51,8 @@ public class ClientController {
     }
 
     @PutMapping(value = "/{id}",
-            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
-            consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+            produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML},
+            consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
     public ResponseEntity<ClientDTO> updateClient(@PathVariable Long id,@Valid @RequestBody ClientDTO clientDTO){
 
         Client clientById = clientService.findClientById(id);
