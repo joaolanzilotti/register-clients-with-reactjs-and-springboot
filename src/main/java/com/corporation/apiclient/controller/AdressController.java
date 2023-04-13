@@ -34,16 +34,14 @@ public class AdressController {
     @Autowired
     private ClientRepository clientRepository;
 
-    @GetMapping(produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML},
-            consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
+    @GetMapping(produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
     public ResponseEntity<List<Adress>> findAllAdress(){
         List<Adress> listAllAdress = adressService.findAllAdress();
         return ResponseEntity.ok().body(listAllAdress);
     }
 
     @GetMapping(value = "/{id}",
-            produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML},
-            consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
+            produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
     public ResponseEntity<Adress> adressById(@PathVariable Long id){
         Adress adress = adressService.findAdressById(id);
         return ResponseEntity.ok().body(adress);
