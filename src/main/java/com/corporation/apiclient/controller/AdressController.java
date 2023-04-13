@@ -57,7 +57,7 @@ public class AdressController {
 
     @PostMapping(value = "/{id}")
     public ResponseEntity<AdressDTO> addAdress(@PathVariable Long id, @Valid @RequestBody AdressDTO adressDTO){
-        Client client = clientService.findClientById(id);
+        Client client = modelMapper.map(clientService.findClientById(id),Client.class);
         Adress adress = adressService.addAdress(adressDTO);
         client.setAdress(adress);
         clientRepository.save(client);

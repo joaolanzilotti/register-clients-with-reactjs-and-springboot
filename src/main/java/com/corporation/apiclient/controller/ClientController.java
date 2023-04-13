@@ -36,10 +36,7 @@ public class ClientController {
 
     @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
     public ResponseEntity<ClientDTO> findClientById(@PathVariable Long id) {
-            Client clientById = clientService.findClientById(id);
-            ClientDTO clientDTO = modelMapper.map(clientById, ClientDTO.class);
-        clientDTO.add(linkTo(methodOn(ClientController.class).findClientById(id)).withSelfRel());
-        clientDTO.add(linkTo(methodOn(AdressController.class).adressById(clientById.getAdress().getId())).withSelfRel());
+            ClientDTO clientDTO = clientService.findClientById(id);
             return ResponseEntity.ok().body(clientDTO);
 
         }
@@ -47,11 +44,9 @@ public class ClientController {
     @PostMapping(produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML},
                  consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
     public ResponseEntity<ClientDTO> addClient(@Valid @RequestBody ClientDTO clientDTO) {
-
-
-        clientService.addClient(clientDTO);
+        ClientDTO DTO = clientService.addClient(clientDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(clientDTO.getId()).toUri();
-        return ResponseEntity.created(uri).build();
+        return ResponseEntity.created(uri).body(DTO);
 
     }
 
@@ -60,7 +55,7 @@ public class ClientController {
             consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
     public ResponseEntity<ClientDTO> updateClient(@PathVariable Long id,@Valid @RequestBody ClientDTO clientDTO){
 
-        Client clientById = clientService.findClientById(id);
+        Client clientById = modelMapper.map(clientService.findClientById(id), Client.class);
         clientDTO.setAdress(clientById.getAdress());
         clientDTO.setId(id);
 
