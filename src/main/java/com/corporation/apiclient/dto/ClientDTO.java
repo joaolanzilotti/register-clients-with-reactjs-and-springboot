@@ -11,7 +11,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.br.CPF;
+import org.springframework.hateoas.RepresentationModel;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Getter
@@ -19,7 +21,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonPropertyOrder({"id", "name", "email", "password", "cellphone", "rg", "cpf", "birthDay", "adress"})
-public class ClientDTO {
+public class ClientDTO extends RepresentationModel<ClientDTO> implements Serializable {
 
     private Long id;
     private String name;

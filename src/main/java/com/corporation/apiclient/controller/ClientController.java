@@ -9,6 +9,8 @@ import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -35,7 +37,10 @@ public class ClientController {
     @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
     public ResponseEntity<ClientDTO> findClientById(@PathVariable Long id) {
             Client clientById = clientService.findClientById(id);
-            return ResponseEntity.ok().body(modelMapper.map(clientService.findClientById(id),ClientDTO.class));
+            ClientDTO clientDTO = modelMapper.map(clientById, ClientDTO.class);
+        clientDTO.add(linkTo(methodOn(ClientController.class).findClientById(id)).withSelfRel());
+        clientDTO.add(linkTo(methodOn(AdressController.class).adressById(clientById.getAdress().getId())).withSelfRel());
+            return ResponseEntity.ok().body(clientDTO);
 
         }
 
@@ -58,6 +63,7 @@ public class ClientController {
         Client clientById = clientService.findClientById(id);
         clientDTO.setAdress(clientById.getAdress());
         clientDTO.setId(id);
+
 
         Client client = clientService.updateClient(clientDTO);
         return ResponseEntity.ok().body(modelMapper.map(client, ClientDTO.class));

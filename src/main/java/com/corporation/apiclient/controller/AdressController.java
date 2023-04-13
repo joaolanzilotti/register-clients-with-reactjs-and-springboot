@@ -47,9 +47,7 @@ public class AdressController {
         return ResponseEntity.ok().body(adress);
     }
 
-    @PutMapping(value = "/{id}",
-            produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML},
-            consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
+    @PutMapping(value = "/{id}")
     public ResponseEntity<AdressDTO> updateAdress(@PathVariable Long id,@RequestBody AdressDTO adressDTO){
         adressDTO.setId(id);
         Adress adress = adressService.updateAdress(adressDTO);
@@ -57,9 +55,7 @@ public class AdressController {
 
     }
 
-    @PostMapping(value = "/{id}",
-            produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML},
-            consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
+    @PostMapping(value = "/{id}")
     public ResponseEntity<AdressDTO> addAdress(@PathVariable Long id, @Valid @RequestBody AdressDTO adressDTO){
         Client client = clientService.findClientById(id);
         Adress adress = adressService.addAdress(adressDTO);

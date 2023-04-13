@@ -45,9 +45,6 @@ public class ClientService implements Serializable {
     }
 
     public Client updateClient(ClientDTO clientDTO){
-        alreadyExistsByRg(clientDTO);
-        alreadyExistsByCpf(clientDTO);
-        alreadyExistsByEmail(clientDTO);
         return clientRepository.save(modelMapper.map(clientDTO, Client.class));
     }
 
