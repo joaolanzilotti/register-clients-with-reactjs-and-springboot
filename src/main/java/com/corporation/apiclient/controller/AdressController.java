@@ -7,6 +7,7 @@ import com.corporation.apiclient.entities.Client;
 import com.corporation.apiclient.repositories.ClientRepository;
 import com.corporation.apiclient.services.AdressService;
 import com.corporation.apiclient.services.ClientService;
+import com.corporation.apiclient.utils.MediaType;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,19 +34,24 @@ public class AdressController {
     @Autowired
     private ClientRepository clientRepository;
 
-    @GetMapping
+    @GetMapping(produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML},
+            consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
     public ResponseEntity<List<Adress>> findAllAdress(){
         List<Adress> listAllAdress = adressService.findAllAdress();
         return ResponseEntity.ok().body(listAllAdress);
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/{id}",
+            produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML},
+            consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
     public ResponseEntity<Adress> adressById(@PathVariable Long id){
         Adress adress = adressService.findAdressById(id);
         return ResponseEntity.ok().body(adress);
     }
 
-    @PutMapping(value = "/{id}")
+    @PutMapping(value = "/{id}",
+            produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML},
+            consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
     public ResponseEntity<AdressDTO> updateAdress(@PathVariable Long id,@RequestBody AdressDTO adressDTO){
         adressDTO.setId(id);
         Adress adress = adressService.updateAdress(adressDTO);
@@ -53,7 +59,9 @@ public class AdressController {
 
     }
 
-    @PostMapping(value = "/{id}")
+    @PostMapping(value = "/{id}",
+            produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML},
+            consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
     public ResponseEntity<AdressDTO> addAdress(@PathVariable Long id, @Valid @RequestBody AdressDTO adressDTO){
         Client client = clientService.findClientById(id);
         Adress adress = adressService.addAdress(adressDTO);
