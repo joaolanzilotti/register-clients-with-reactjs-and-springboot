@@ -35,9 +35,9 @@ public class AdressController {
     private ClientRepository clientRepository;
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
-    public ResponseEntity<List<Adress>> findAllAdress() {
-        List<Adress> listAllAdress = adressService.findAllAdress();
-        return ResponseEntity.ok().body(listAllAdress);
+    public ResponseEntity<List<AdressDTO>> findAllAdress() {
+        List<AdressDTO> listAllAdressDTO = adressService.findAllAdress();
+        return ResponseEntity.ok().body(listAllAdressDTO);
     }
 
     @GetMapping(value = "/{id}",
@@ -57,12 +57,9 @@ public class AdressController {
 
     @PostMapping(value = "/{id}")
     public ResponseEntity<AdressDTO> addAdress(@PathVariable Long id, @Valid @RequestBody AdressDTO adressDTO) {
-        Client client = modelMapper.map(clientService.findClientById(id), Client.class);
-        Adress adress = adressService.addAdress(adressDTO);
-        client.setAdress(adress);
-        clientRepository.save(client);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(adressDTO.getId()).toUri();
-        return ResponseEntity.created(uri).build();
+        AdressDTO DTO = adressService.addAdress(adressDTO, id);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(DTO.getId()).toUri();
+        return ResponseEntity.created(uri).body(DTO);
     }
 
     @DeleteMapping(value = "/{id}")
