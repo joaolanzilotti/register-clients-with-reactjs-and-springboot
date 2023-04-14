@@ -32,7 +32,7 @@ public class ClientService implements Serializable {
     @Autowired
     private ModelMapper modelMapper;
 
-    public List<ClientDTO> listClient(){
+    public List<ClientDTO> findAll(){
         Type listType = new TypeToken<List<ClientDTO>>() {}.getType();
         List<ClientDTO> listClientDTO = modelMapper.map(clientRepository.findAll(), listType);
         listClientDTO.stream().forEach(c -> c.add(linkTo(methodOn(ClientController.class).findClientById(c.getId())).withSelfRel()));

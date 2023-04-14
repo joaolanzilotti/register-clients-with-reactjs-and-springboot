@@ -26,9 +26,9 @@ public class ClientController {
     private ModelMapper modelMapper;
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
-    public ResponseEntity<List<ClientDTO>> listClients() {
+    public ResponseEntity<List<ClientDTO>> findAll() {
         //List<ClientDTO> listClientDTO = clientService.listClient().stream().map(x -> modelMapper.map(x, ClientDTO.class)).collect(Collectors.toList());
-        List<ClientDTO> listClientDTO = clientService.listClient();
+        List<ClientDTO> listClientDTO = clientService.findAll();
         return ResponseEntity.ok().body(listClientDTO);
     }
 
