@@ -1,5 +1,6 @@
 package com.corporation.apiclient.services;
 
+import com.corporation.apiclient.controller.AdressController;
 import com.corporation.apiclient.dto.AdressDTO;
 import com.corporation.apiclient.dto.ClientDTO;
 import com.corporation.apiclient.entities.Adress;
@@ -13,6 +14,9 @@ import org.springframework.stereotype.Service;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Service
 public class AdressService implements Serializable {
@@ -33,9 +37,12 @@ public class AdressService implements Serializable {
         return listAdress;
     }
 
-    public Adress findAdressById(Long id){
-        Optional<Adress> adress = adressRepository.findById(id);
-        return adress.orElseThrow(() -> new ObjectNotFoundException("Adress Not Found"));
+    public AdressDTO findAdressById(Long id){
+
+        Adress adress = adressRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Adress Not Found"));
+        AdressDTO adressDTO = modelMapper.map(adress, AdressDTO.class);
+        adressDTO.add(linkTo(methodOn(AdressController.class).adressById(adress.getId())).withSelfRel());
+        return adressDTO;
     }
 
     public Adress updateAdress(AdressDTO adressDTO){

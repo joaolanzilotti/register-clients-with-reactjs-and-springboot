@@ -35,20 +35,20 @@ public class AdressController {
     private ClientRepository clientRepository;
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
-    public ResponseEntity<List<Adress>> findAllAdress(){
+    public ResponseEntity<List<Adress>> findAllAdress() {
         List<Adress> listAllAdress = adressService.findAllAdress();
         return ResponseEntity.ok().body(listAllAdress);
     }
 
     @GetMapping(value = "/{id}",
             produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
-    public ResponseEntity<Adress> adressById(@PathVariable Long id){
-        Adress adress = adressService.findAdressById(id);
-        return ResponseEntity.ok().body(adress);
+    public ResponseEntity<AdressDTO> adressById(@PathVariable Long id) {
+        AdressDTO adressDTO = adressService.findAdressById(id);
+        return ResponseEntity.ok().body(adressDTO);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<AdressDTO> updateAdress(@PathVariable Long id,@RequestBody AdressDTO adressDTO){
+    public ResponseEntity<AdressDTO> updateAdress(@PathVariable Long id, @RequestBody AdressDTO adressDTO) {
         adressDTO.setId(id);
         Adress adress = adressService.updateAdress(adressDTO);
         return ResponseEntity.ok().body(adressDTO);
@@ -56,8 +56,8 @@ public class AdressController {
     }
 
     @PostMapping(value = "/{id}")
-    public ResponseEntity<AdressDTO> addAdress(@PathVariable Long id, @Valid @RequestBody AdressDTO adressDTO){
-        Client client = modelMapper.map(clientService.findClientById(id),Client.class);
+    public ResponseEntity<AdressDTO> addAdress(@PathVariable Long id, @Valid @RequestBody AdressDTO adressDTO) {
+        Client client = modelMapper.map(clientService.findClientById(id), Client.class);
         Adress adress = adressService.addAdress(adressDTO);
         client.setAdress(adress);
         clientRepository.save(client);
@@ -66,7 +66,7 @@ public class AdressController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Adress> deleteAdress(@PathVariable Long id){
+    public ResponseEntity<Adress> deleteAdress(@PathVariable Long id) {
         adressService.deleteAdress(id);
         return ResponseEntity.noContent().build();
     }
