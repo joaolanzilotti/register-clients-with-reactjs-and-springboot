@@ -12,8 +12,11 @@ import com.corporation.apiclient.repositories.ClientRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.Serializable;
+import java.lang.reflect.Type;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,9 +32,12 @@ public class ClientService implements Serializable {
     @Autowired
     private ModelMapper modelMapper;
 
-    public List<Client> listClient(){
+    public List<ClientDTO> listClient(){
+        Type listType = new TypeToken<List<ClientDTO>>() {}.getType();
+        List<ClientDTO> listClientDTO = modelMapper.map(clientRepository.findAll(), listType);
+        listClientDTO.stream().forEach(c -> c.add(linkTo(methodOn(ClientController.class).findClientById(c.getId())).withSelfRel()));
 
-        return clientRepository.findAll();
+        return listClientDTO;
 
     }
 
@@ -44,7 +50,6 @@ public class ClientService implements Serializable {
     }
 
     public ClientDTO addClient(ClientDTO clientDTO) {
-
         Client client = modelMapper.map(clientDTO, Client.class);
         alreadyExistsByRg(clientDTO);
         alreadyExistsByEmail(clientDTO);
@@ -55,8 +60,11 @@ public class ClientService implements Serializable {
 
     }
 
-    public Client updateClient(ClientDTO clientDTO){
-        return clientRepository.save(modelMapper.map(clientDTO, Client.class));
+    public ClientDTO updateClient(ClientDTO clientDTO){
+        Client client = modelMapper.map(clientDTO, Client.class);
+        ClientDTO DTO = modelMapper.map(clientRepository.save(client), ClientDTO.class);
+        DTO.add(linkTo(methodOn(ClientController.class).findClientById(DTO.getId())).withSelfRel());
+        return DTO;
     }
 
     public void deleteClient(Long id){
