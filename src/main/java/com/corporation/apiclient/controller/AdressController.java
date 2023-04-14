@@ -50,8 +50,8 @@ public class AdressController {
     @PutMapping(value = "/{id}")
     public ResponseEntity<AdressDTO> updateAdress(@PathVariable Long id, @RequestBody AdressDTO adressDTO) {
         adressDTO.setId(id);
-        Adress adress = adressService.updateAdress(adressDTO);
-        return ResponseEntity.ok().body(adressDTO);
+        AdressDTO DTO = adressService.updateAdress(adressDTO);
+        return ResponseEntity.ok().body(DTO);
 
     }
 

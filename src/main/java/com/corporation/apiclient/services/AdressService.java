@@ -63,8 +63,11 @@ public class AdressService implements Serializable {
         return adressDTO;
     }
 
-    public Adress updateAdress(AdressDTO adressDTO){
-        return adressRepository.save(modelMapper.map(adressDTO, Adress.class));
+    public AdressDTO updateAdress(AdressDTO adressDTO){
+        Adress adress = modelMapper.map(adressDTO, Adress.class);
+        AdressDTO DTO = modelMapper.map(adressRepository.save(adress),AdressDTO.class);
+        DTO.add(linkTo(methodOn(AdressController.class).adressById(DTO.getId())).withSelfRel());
+        return DTO;
     }
 
     public void deleteAdress(Long id){
