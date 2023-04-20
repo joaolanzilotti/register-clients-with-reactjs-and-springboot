@@ -4,6 +4,7 @@ import com.corporation.apiclient.dto.ClientDTO;
 import com.corporation.apiclient.entities.Client;
 import com.corporation.apiclient.services.ClientService;
 import com.corporation.apiclient.utils.MediaType;
+import com.google.gson.reflect.TypeToken;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +12,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.lang.reflect.Type;
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RequestMapping("/clients")
 @RestController
@@ -27,14 +32,18 @@ public class ClientController {
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
     public ResponseEntity<List<ClientDTO>> findAll() {
-        //List<ClientDTO> listClientDTO = clientService.listClient().stream().map(x -> modelMapper.map(x, ClientDTO.class)).collect(Collectors.toList());
-        List<ClientDTO> listClientDTO = clientService.findAll();
+        Type listType = new TypeToken<List<ClientDTO>>() {}.getType();
+        List<ClientDTO> listClientDTO = modelMapper.map(clientService.findAll(), listType);
+        listClientDTO.stream().forEach(c -> c.add(linkTo(methodOn(ClientController.class).findClientById(c.getId())).withSelfRel().withSelfRel()));
+        //listClientDTO.stream().forEach(c -> c.add(linkTo(methodOn(AdressController.class).adressById(c.getAdress().getId())).withSelfRel().withSelfRel()));
         return ResponseEntity.ok().body(listClientDTO);
     }
 
     @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
     public ResponseEntity<ClientDTO> findClientById(@PathVariable Long id) {
-        ClientDTO clientDTO = clientService.findClientById(id);
+        ClientDTO clientDTO = modelMapper.map(clientService.findClientById(id), ClientDTO.class);
+        clientDTO.add(linkTo(methodOn(ClientController.class).findClientById(id)).withSelfRel());
+        clientDTO.add(linkTo(methodOn(AdressController.class).adressById(clientDTO.getAdress().getId())).withSelfRel());
         return ResponseEntity.ok().body(clientDTO);
 
     }
@@ -43,6 +52,7 @@ public class ClientController {
             consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
     public ResponseEntity<ClientDTO> addClient(@Valid @RequestBody ClientDTO clientDTO) {
         ClientDTO DTO = clientService.addClient(clientDTO);
+        DTO.add(linkTo(methodOn(ClientController.class).findClientById(DTO.getId())).withSelfRel());
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(clientDTO.getId()).toUri();
         return ResponseEntity.created(uri).body(DTO);
 
@@ -56,6 +66,7 @@ public class ClientController {
         clientDTO.setAdress(clientById.getAdress());
         clientDTO.setId(id);
         ClientDTO DTO = clientService.updateClient(clientDTO);
+        DTO.add(linkTo(methodOn(ClientController.class).findClientById(id)).withSelfRel());
         return ResponseEntity.ok().body(DTO);
     }
 

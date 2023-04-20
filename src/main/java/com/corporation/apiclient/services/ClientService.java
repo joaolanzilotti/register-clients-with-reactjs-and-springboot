@@ -32,21 +32,22 @@ public class ClientService implements Serializable {
     @Autowired
     private ModelMapper modelMapper;
 
-    public List<ClientDTO> findAll(){
-        Type listType = new TypeToken<List<ClientDTO>>() {}.getType();
-        List<ClientDTO> listClientDTO = modelMapper.map(clientRepository.findAll(), listType);
-        listClientDTO.stream().forEach(c -> c.add(linkTo(methodOn(ClientController.class).findClientById(c.getId())).withSelfRel()));
+    public List<Client> findAll(){
+        List<Client> listClient = clientRepository.findAll();
+//        Type listType = new TypeToken<List<ClientDTO>>() {}.getType();
+//        List<ClientDTO> listClientDTO = modelMapper.map(clientRepository.findAll(), listType);
+//        listClientDTO.stream().forEach(c -> c.add(linkTo(methodOn(ClientController.class).findClientById(c.getId())).withSelfRel()));
 
-        return listClientDTO;
+        return listClient;
 
     }
 
-    public ClientDTO findClientById(Long id){
+    public Client findClientById(Long id){
         Client client = clientRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Client Not Found"));
-        ClientDTO clientDTO = modelMapper.map(client, ClientDTO.class);
-        clientDTO.add(linkTo(methodOn(ClientController.class).findClientById(id)).withSelfRel());
-        clientDTO.add(linkTo(methodOn(AdressController.class).adressById(client.getAdress().getId())).withSelfRel());
-        return clientDTO;
+       // ClientDTO clientDTO = modelMapper.map(client, ClientDTO.class);
+        //clientDTO.add(linkTo(methodOn(ClientController.class).findClientById(id)).withSelfRel());
+        //clientDTO.add(linkTo(methodOn(AdressController.class).adressById(client.getAdress().getId())).withSelfRel());
+        return client;
     }
 
     public ClientDTO addClient(ClientDTO clientDTO) {
@@ -55,7 +56,7 @@ public class ClientService implements Serializable {
         alreadyExistsByEmail(clientDTO);
         alreadyExistsByCpf(clientDTO);
         ClientDTO DTO = modelMapper.map(clientRepository.save(client), ClientDTO.class);
-        DTO.add(linkTo(methodOn(ClientController.class).findClientById(DTO.getId())).withSelfRel());
+        //DTO.add(linkTo(methodOn(ClientController.class).findClientById(DTO.getId())).withSelfRel());
         return DTO;
 
     }
