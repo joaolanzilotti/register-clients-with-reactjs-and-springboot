@@ -23,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -51,6 +52,32 @@ class ClientServiceTest {
         MockitoAnnotations.openMocks(this);
         startClientAndAdress();
 
+    }
+
+    @Test
+    void whenFindALlThenReturnListOfClients(){
+        Mockito.when(clientRepository.findAll()).thenReturn(List.of(client));
+        List<Client> response = clientService.findAll();
+
+        Assertions.assertNotNull(response);
+        Assertions.assertNotNull(response.get(0).getId());
+        Assertions.assertNotNull(response.get(0).getEmail());
+        Assertions.assertNotNull(response.get(0).getCpf());
+        Assertions.assertNotNull(response.get(0).getName());
+        Assertions.assertNotNull(response.get(0).getBirthDay());
+        Assertions.assertNotNull(response.get(0).getPassword());
+        Assertions.assertNotNull(response.get(0).getRg());
+
+        Assertions.assertEquals(1, response.size());
+        Assertions.assertEquals(Client.class,response.get(0).getClass());
+        Assertions.assertEquals(1L, response.get(0).getId());
+        Assertions.assertEquals("Joao", response.get(0).getName());
+        Assertions.assertEquals("teste@teste.com", response.get(0).getEmail());
+        Assertions.assertEquals("123", response.get(0).getPassword());
+        Assertions.assertEquals("56006548", response.get(0).getRg());
+        Assertions.assertEquals("09113144568", response.get(0).getCpf());
+        Assertions.assertEquals(new Date(123, 4, 25), response.get(0).getBirthDay());
+        Assertions.assertEquals("12659874848", response.get(0).getCellphone());
     }
 
 
@@ -102,6 +129,14 @@ class ClientServiceTest {
         Mockito.when(clientRepository.save(Mockito.any())).thenReturn(client);
 
         Client response = clientService.addClient(clientDTO);
+        Assertions.assertNotNull(response.getId());
+        Assertions.assertNotNull(response.getEmail());
+        Assertions.assertNotNull(response.getCpf());
+        Assertions.assertNotNull(response.getName());
+        Assertions.assertNotNull(response.getBirthDay());
+        Assertions.assertNotNull(response.getPassword());
+        Assertions.assertNotNull(response.getRg());
+
         Assertions.assertNotNull(response);
         Assertions.assertEquals(Client.class, response.getClass());
         Assertions.assertEquals(1L, response.getId());
@@ -133,6 +168,14 @@ class ClientServiceTest {
     void whenUpdateThenReturnSucess() {
         Mockito.when(clientRepository.save(Mockito.any())).thenReturn(client);
         Client response = clientService.updateClient(clientDTO);
+        Assertions.assertNotNull(response.getId());
+        Assertions.assertNotNull(response.getEmail());
+        Assertions.assertNotNull(response.getCpf());
+        Assertions.assertNotNull(response.getName());
+        Assertions.assertNotNull(response.getBirthDay());
+        Assertions.assertNotNull(response.getPassword());
+        Assertions.assertNotNull(response.getRg());
+
         Assertions.assertNotNull(response);
         Assertions.assertEquals(1L, response.getId());
         Assertions.assertEquals("Joao", response.getName());

@@ -37,22 +37,18 @@ public class AdressService implements Serializable {
     @Autowired
     private ClientRepository clientRepository;
 
-    public AdressDTO addAdress(AdressDTO adressDTO, Long id){
-        Client client = modelMapper.map(clientService.findClientById(id), Client.class);
+    public Adress addAdress(AdressDTO adressDTO, Long id){
+        Client client = clientService.findClientById(id);
         Adress adress = modelMapper.map(adressDTO, Adress.class);
-        AdressDTO DTO = modelMapper.map(adressRepository.save(adress), AdressDTO.class);
-        client.setAdress(modelMapper.map(DTO, Adress.class));
+        adressRepository.save(adress);
+        client.setAdress(adress);
         clientRepository.save(client);
-        DTO.add(linkTo(methodOn(AdressController.class).adressById(DTO.getId())).withSelfRel());
-        DTO.add(linkTo(methodOn(ClientController.class).findClientById(id)).withSelfRel());
-        return DTO;
+        return adress;
     }
 
-    public List<AdressDTO> findAllAdress(){
-        Type listType = new TypeToken<List<AdressDTO>>() {}.getType();
-        List<AdressDTO> listAdressDTO = modelMapper.map(adressRepository.findAll(), listType);
-        listAdressDTO.stream().forEach(a -> a.add(linkTo(methodOn(AdressController.class).adressById(a.getId())).withSelfRel()));
-        return listAdressDTO;
+    public List<Adress> findAllAdress(){
+        List<Adress> listAdress = adressRepository.findAll();
+        return listAdress;
     }
 
     public Adress findAdressById(Long id){
