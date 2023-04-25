@@ -32,7 +32,7 @@ public class ClientService implements Serializable {
     @Autowired
     private ModelMapper modelMapper;
 
-    public List<Client> findAll(){
+    public List<Client> findAll() {
         List<Client> listClient = clientRepository.findAll();
 //        Type listType = new TypeToken<List<ClientDTO>>() {}.getType();
 //        List<ClientDTO> listClientDTO = modelMapper.map(clientRepository.findAll(), listType);
@@ -42,9 +42,8 @@ public class ClientService implements Serializable {
 
     }
 
-    public Client findClientById(Long id){
-        Client client = clientRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Client Not Found"));
-        return client;
+    public Client findClientById(Long id) {
+        return clientRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Client Not Found"));
     }
 
     public Client addClient(ClientDTO clientDTO) {
@@ -56,38 +55,38 @@ public class ClientService implements Serializable {
 
     }
 
-    public Client updateClient(ClientDTO clientDTO){
+    public Client updateClient(ClientDTO clientDTO) {
         alreadyExistsByEmail(clientDTO);
         return clientRepository.save(modelMapper.map(clientDTO, Client.class));
     }
 
-    public void deleteClient(Long id){
+    public void deleteClient(Long id) {
         findClientById(id);
         clientRepository.deleteById(id);
     }
 
-    private void alreadyExistsByEmail(ClientDTO clientDTO){
+    private void alreadyExistsByEmail(ClientDTO clientDTO) {
         Optional<Client> client = clientRepository.findByEmail(clientDTO.getEmail());
-        if(client.isPresent() && !client.get().getId().equals(clientDTO.getId())){
+        if (client.isPresent() && !client.get().getId().equals(clientDTO.getId())) {
             throw new DataIntegratyViolationException("this E-mail already exists");
         }
     }
 
-    private void alreadyExistsByCpf(ClientDTO clientDTO){
+    private void alreadyExistsByCpf(ClientDTO clientDTO) {
         Optional<Client> client = clientRepository.findByCpf(clientDTO.getCpf());
-        if(client.isPresent() && !client.get().getId().equals(clientDTO.getId())){
+        if (client.isPresent() && !client.get().getId().equals(clientDTO.getId())) {
             throw new DataIntegratyViolationException("this CPF already exists");
         }
     }
 
-    private void alreadyExistsByRg(ClientDTO clientDTO){
+    private void alreadyExistsByRg(ClientDTO clientDTO) {
         Optional<Client> client = clientRepository.findByRg(clientDTO.getRg());
-        if(client.isPresent() && !client.get().getId().equals(clientDTO.getId())){
+        if (client.isPresent() && !client.get().getId().equals(clientDTO.getId())) {
             throw new DataIntegratyViolationException("this RG already exists");
         }
     }
 
-    public Boolean existByClientId(Long id){
+    public Boolean existByClientId(Long id) {
         return clientRepository.existsById(id);
     }
 

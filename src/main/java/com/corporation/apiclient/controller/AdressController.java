@@ -18,6 +18,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @RequestMapping(value = "/adress")
 @RestController
 public class AdressController {
@@ -43,7 +46,8 @@ public class AdressController {
     @GetMapping(value = "/{id}",
             produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
     public ResponseEntity<AdressDTO> adressById(@PathVariable Long id) {
-        AdressDTO adressDTO = adressService.findAdressById(id);
+        AdressDTO adressDTO = modelMapper.map(adressService.findAdressById(id), AdressDTO.class);
+        adressDTO.add(linkTo(methodOn(AdressController.class).adressById(adressDTO.getId())).withSelfRel());
         return ResponseEntity.ok().body(adressDTO);
     }
 

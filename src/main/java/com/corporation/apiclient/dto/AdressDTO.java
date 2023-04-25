@@ -27,7 +27,6 @@ public class AdressDTO extends RepresentationModel<ClientDTO> implements Seriali
     private String number;
     private String city;
     private String state;
-
-    
+    private List<Client> clients;
 
 }
