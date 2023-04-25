@@ -51,7 +51,7 @@ public class ClientController {
     @PostMapping(produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML},
             consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
     public ResponseEntity<ClientDTO> addClient(@Valid @RequestBody ClientDTO clientDTO) {
-        ClientDTO DTO = clientService.addClient(clientDTO);
+        ClientDTO DTO = modelMapper.map(clientService.addClient(clientDTO),ClientDTO.class);
         DTO.add(linkTo(methodOn(ClientController.class).findClientById(DTO.getId())).withSelfRel());
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(clientDTO.getId()).toUri();
         return ResponseEntity.created(uri).body(DTO);

@@ -17,10 +17,9 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.hateoas.Link;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 
@@ -40,13 +39,10 @@ class ClientServiceTest {
     @Mock
     private ModelMapper modelMapper;
 
-    Client client;
-    Adress adress;
-    ClientDTO clientDTO;
-    Optional<Client> optionalClient;
-
-    ClientServiceTest() throws ParseException {
-    }
+    private Client client;
+    private Adress adress;
+    private ClientDTO clientDTO;
+    private Optional<Client> optionalClient;
 
     @BeforeEach
     void setUpMocks() throws Exception {
@@ -99,7 +95,23 @@ class ClientServiceTest {
 
     }
 
+    @Test
+    void whenReturnSucessAddClient(){
+        Mockito.when(clientRepository.save(Mockito.any())).thenReturn(client);
 
+        Client response = clientService.addClient(clientDTO);
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(Client.class, response.getClass());
+        Assertions.assertEquals(1L, response.getId());
+        Assertions.assertEquals("Joao", response.getName());
+        Assertions.assertEquals("teste@teste.com", response.getEmail());
+        Assertions.assertEquals("123", response.getPassword());
+        Assertions.assertEquals("56006548", response.getRg());
+        Assertions.assertEquals("09113144568", response.getCpf());
+        Assertions.assertEquals(new Date(123, 4, 25), response.getBirthDay());
+        Assertions.assertEquals("12659874848", response.getCellphone());
+
+    }
 
     private void startClientAndAdress() {
         client = new Client(1L, "Joao", "teste@teste.com", "123", "56006548", "09113144568", new Date(123, 4, 25), "12659874848", adress);
