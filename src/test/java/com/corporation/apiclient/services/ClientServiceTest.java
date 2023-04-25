@@ -3,6 +3,7 @@ package com.corporation.apiclient.services;
 import com.corporation.apiclient.dto.ClientDTO;
 import com.corporation.apiclient.entities.Adress;
 import com.corporation.apiclient.entities.Client;
+import com.corporation.apiclient.exceptions.DataIntegratyViolationException;
 import com.corporation.apiclient.exceptions.ObjectNotFoundException;
 import com.corporation.apiclient.repositories.ClientRepository;
 import org.junit.jupiter.api.Assertions;
@@ -17,6 +18,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.text.ParseException;
@@ -96,12 +98,42 @@ class ClientServiceTest {
     }
 
     @Test
-    void whenReturnSucessAddClient(){
+    void whenAddThenReturnSucess() {
         Mockito.when(clientRepository.save(Mockito.any())).thenReturn(client);
 
         Client response = clientService.addClient(clientDTO);
         Assertions.assertNotNull(response);
         Assertions.assertEquals(Client.class, response.getClass());
+        Assertions.assertEquals(1L, response.getId());
+        Assertions.assertEquals("Joao", response.getName());
+        Assertions.assertEquals("teste@teste.com", response.getEmail());
+        Assertions.assertEquals("123", response.getPassword());
+        Assertions.assertEquals("56006548", response.getRg());
+        Assertions.assertEquals("09113144568", response.getCpf());
+        Assertions.assertEquals(new Date(123, 4, 25), response.getBirthDay());
+        Assertions.assertEquals("12659874848", response.getCellphone());
+
+    }
+
+    @Test
+    void whenAddThenReturnDataIntegratyViolationException() {
+        Mockito.when(clientRepository.findByEmail(Mockito.anyString())).thenReturn(optionalClient);
+
+        try {
+            optionalClient.get().setId(1L);
+            clientService.addClient(clientDTO);
+        } catch (Exception ex) {
+            Assertions.assertEquals(DataIntegratyViolationException.class, ex.getClass());
+            Assertions.assertEquals("this E-mail already exists", ex.getMessage());
+        }
+
+    }
+
+    @Test
+    void whenUpdateThenReturnSucess() {
+        Mockito.when(clientRepository.save(Mockito.any())).thenReturn(client);
+        Client response = clientService.updateClient(clientDTO);
+        Assertions.assertNotNull(response);
         Assertions.assertEquals(1L, response.getId());
         Assertions.assertEquals("Joao", response.getName());
         Assertions.assertEquals("teste@teste.com", response.getEmail());

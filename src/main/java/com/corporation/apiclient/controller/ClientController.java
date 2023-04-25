@@ -65,7 +65,7 @@ public class ClientController {
         Client clientById = modelMapper.map(clientService.findClientById(id), Client.class);
         clientDTO.setAdress(clientById.getAdress());
         clientDTO.setId(id);
-        ClientDTO DTO = clientService.updateClient(clientDTO);
+        ClientDTO DTO = modelMapper.map(clientService.updateClient(clientDTO),ClientDTO.class);
         DTO.add(linkTo(methodOn(ClientController.class).findClientById(id)).withSelfRel());
         return ResponseEntity.ok().body(DTO);
     }

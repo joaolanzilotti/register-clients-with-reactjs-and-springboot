@@ -56,11 +56,9 @@ public class ClientService implements Serializable {
 
     }
 
-    public ClientDTO updateClient(ClientDTO clientDTO){
-        Client client = modelMapper.map(clientDTO, Client.class);
-        ClientDTO DTO = modelMapper.map(clientRepository.save(client), ClientDTO.class);
-        DTO.add(linkTo(methodOn(ClientController.class).findClientById(DTO.getId())).withSelfRel());
-        return DTO;
+    public Client updateClient(ClientDTO clientDTO){
+        alreadyExistsByEmail(clientDTO);
+        return clientRepository.save(modelMapper.map(clientDTO, Client.class));
     }
 
     public void deleteClient(Long id){
