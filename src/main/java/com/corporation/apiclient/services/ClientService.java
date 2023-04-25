@@ -44,9 +44,6 @@ public class ClientService implements Serializable {
 
     public Client findClientById(Long id){
         Client client = clientRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Client Not Found"));
-       // ClientDTO clientDTO = modelMapper.map(client, ClientDTO.class);
-        //clientDTO.add(linkTo(methodOn(ClientController.class).findClientById(id)).withSelfRel());
-        //clientDTO.add(linkTo(methodOn(AdressController.class).adressById(client.getAdress().getId())).withSelfRel());
         return client;
     }
 
