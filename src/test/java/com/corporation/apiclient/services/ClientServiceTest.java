@@ -145,6 +145,28 @@ class ClientServiceTest {
 
     }
 
+    @Test
+    void deleteClientWithSucess(){
+        Mockito.when(clientRepository.findById(Mockito.anyLong())).thenReturn(optionalClient);
+
+        Mockito.doNothing().when(clientRepository).deleteById(Mockito.anyLong());
+        clientService.deleteClient(1L);
+        Mockito.verify(clientRepository, Mockito.times(1)).deleteById(Mockito.anyLong());
+
+    }
+
+    @Test
+    void deleteClientWithObjectNotFoundException(){
+        Mockito.when(clientRepository.findById(Mockito.anyLong())).thenThrow(new ObjectNotFoundException("Client Not Found"));
+
+        try{
+            clientService.deleteClient(1L);
+        }catch (Exception ex){
+            Assertions.assertEquals(ObjectNotFoundException.class, ex.getClass());
+            Assertions.assertEquals("Client Not Found", ex.getMessage());
+        }
+    }
+
     private void startClientAndAdress() {
         client = new Client(1L, "Joao", "teste@teste.com", "123", "56006548", "09113144568", new Date(123, 4, 25), "12659874848", adress);
         clientDTO = new ClientDTO(1L, "Joao", "teste@teste.com", "123", "56006548", "09113144568", new Date(123, 4, 25), "12659874848", adress);
