@@ -17,6 +17,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Date;
 import java.util.List;
@@ -27,16 +28,17 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class AdressServiceTest {
 
-    @InjectMocks
-    private AdressService adressService;
-
     @Mock
     private ClientService clientService;
+
     @Mock
     private ClientRepository clientRepository;
 
     @Mock
     private AdressRepository adressRepository;
+
+    @InjectMocks
+    private AdressService adressService;
 
     @Mock
     private ModelMapper modelMapper;
@@ -48,14 +50,6 @@ class AdressServiceTest {
     private Client client;
     private ClientDTO clientDTO;
     private Optional<Client> optionalClient;
-
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
-    }
 
     @BeforeEach
     void setUp() {
@@ -111,31 +105,13 @@ class AdressServiceTest {
     }
 
     @Test
-    void findAdressByIdReturnObjectNotFoundException() {
+    public void addAdressTest() {
 
-        Mockito.when(adressRepository.findById(Mockito.anyLong())).thenThrow(new ObjectNotFoundException("Adress Not Found"));
-
-        try {
-            adressService.findAdressById(1L);
-        } catch (Exception ex) {
-            //---Estou Comparando os Valores da classe ObjectNotFoundException---//
-            Assertions.assertEquals(ObjectNotFoundException.class, ex.getClass());
-            Assertions.assertEquals("Adress Not Found", ex.getMessage());
-        }
+        Mockito.when(clientService.findClientById(1L)).thenReturn(client);
+        Mockito.when(adressRepository.save(Mockito.any())).thenReturn(adress);
+        Adress response = adressService.addAdress(adressDTO, 1L);
 
     }
-
-//    @Test
-//    void whenAddThenReturnSucess(){
-//        Mockito.when(adressRepository.save(Mockito.any())).thenReturn(adress);
-//        Mockito.when(clientRepository.save(Mockito.any())).thenReturn(client);
-//        Client responseCliente = clientService.findClientById(1L);
-//        responseCliente.setId(1L);
-//        Adress response = adressService.addAdress(adressDTO, 1L);
-//        Assertions.assertNotNull(response);
-//    }
-
-
     private void startAdress() {
         adress = new Adress(1L, "Rua Tenorio", "Centro", "50", "Ubatuba", "SP", null);
         adressDTO = new AdressDTO(1L, "Rua Tenorio", "Centro", "50", "Ubatuba", "SP");
@@ -144,5 +120,4 @@ class AdressServiceTest {
         clientDTO = new ClientDTO(1L, "Joao", "teste@teste.com", "123", "56006548", "09113144568", new Date(123, 4, 25), "12659874848", null);
         optionalClient = Optional.of(new Client(1L, "Joao", "teste@teste.com", "123", "56006548", "09113144568", new Date(), "12659874848", null));
     }
-
 }

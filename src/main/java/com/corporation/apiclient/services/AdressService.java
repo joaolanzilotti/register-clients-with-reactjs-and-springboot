@@ -10,6 +10,7 @@ import com.corporation.apiclient.exceptions.ObjectNotFoundException;
 import com.corporation.apiclient.repositories.AdressRepository;
 import com.corporation.apiclient.repositories.ClientRepository;
 import com.google.gson.reflect.TypeToken;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
