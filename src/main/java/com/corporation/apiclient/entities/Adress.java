@@ -27,7 +27,7 @@ public class Adress implements Serializable {
     private String state;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "adress")
+    @OneToMany(mappedBy = "adress", cascade = CascadeType.ALL)
     private List<Client> clientes;
 
 }
