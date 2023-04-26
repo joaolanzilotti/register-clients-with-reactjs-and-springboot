@@ -56,11 +56,9 @@ public class AdressService implements Serializable {
         return adressRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Adress Not Found"));
     }
 
-    public AdressDTO updateAdress(AdressDTO adressDTO){
+    public Adress updateAdress(AdressDTO adressDTO){
         Adress adress = modelMapper.map(adressDTO, Adress.class);
-        AdressDTO DTO = modelMapper.map(adressRepository.save(adress),AdressDTO.class);
-        DTO.add(linkTo(methodOn(AdressController.class).adressById(DTO.getId())).withSelfRel());
-        return DTO;
+        return adressRepository.save(adress);
     }
 
     public void deleteAdress(Long id){

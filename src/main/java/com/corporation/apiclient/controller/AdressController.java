@@ -58,7 +58,8 @@ public class AdressController {
     @PutMapping(value = "/{id}")
     public ResponseEntity<AdressDTO> updateAdress(@PathVariable Long id, @RequestBody AdressDTO adressDTO) {
         adressDTO.setId(id);
-        AdressDTO DTO = adressService.updateAdress(adressDTO);
+        AdressDTO DTO = modelMapper.map(adressService.updateAdress(adressDTO), AdressDTO.class);
+        DTO.add(linkTo(methodOn(AdressController.class).adressById(DTO.getId())).withSelfRel());
         return ResponseEntity.ok().body(DTO);
 
     }

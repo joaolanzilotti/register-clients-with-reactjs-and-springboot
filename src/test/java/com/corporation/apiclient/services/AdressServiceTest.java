@@ -105,13 +105,45 @@ class AdressServiceTest {
     }
 
     @Test
-    public void addAdressTest() {
+    void addAdressTest() {
 
         Mockito.when(clientService.findClientById(1L)).thenReturn(client);
         Mockito.when(adressRepository.save(Mockito.any())).thenReturn(adress);
         Adress response = adressService.addAdress(adressDTO, 1L);
 
     }
+
+    @Test
+    void whenSucessUpdateAdressThenReturnSucess() {
+        Mockito.when(adressRepository.save(Mockito.any())).thenReturn(adress);
+        Adress response = adressService.updateAdress(adressDTO);
+
+        Assertions.assertNotNull(response);
+        Assertions.assertNotNull(response.getId());
+        Assertions.assertNotNull(response.getStreet());
+        Assertions.assertNotNull(response.getDistrict());
+        Assertions.assertNotNull(response.getNumber());
+        Assertions.assertNotNull(response.getCity());
+        Assertions.assertNotNull(response.getState());
+
+        Assertions.assertEquals(Adress.class, response.getClass());
+        Assertions.assertEquals(1L, response.getId());
+        Assertions.assertEquals("Rua Tenorio", response.getStreet());
+        Assertions.assertEquals("Centro", response.getDistrict());
+        Assertions.assertEquals("50", response.getNumber());
+        Assertions.assertEquals("Ubatuba", response.getCity());
+        Assertions.assertEquals("SP", response.getState());
+
+    }
+
+    @Test
+    void deleteAdressWithSucess() {
+        Mockito.when(adressRepository.findById(Mockito.anyLong())).thenReturn(optionalAdress);
+        Mockito.doNothing().when(adressRepository).deleteById(Mockito.anyLong());
+        adressService.deleteAdress(1L);
+        Mockito.verify(adressRepository, Mockito.times(1)).deleteById(Mockito.anyLong());
+    }
+
     private void startAdress() {
         adress = new Adress(1L, "Rua Tenorio", "Centro", "50", "Ubatuba", "SP", null);
         adressDTO = new AdressDTO(1L, "Rua Tenorio", "Centro", "50", "Ubatuba", "SP");
