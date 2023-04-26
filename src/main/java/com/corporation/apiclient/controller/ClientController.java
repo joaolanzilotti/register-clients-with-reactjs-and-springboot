@@ -67,7 +67,7 @@ public class ClientController {
     public ResponseEntity<ClientDTO> findClientById(@PathVariable Long id) {
         ClientDTO clientDTO = modelMapper.map(clientService.findClientById(id), ClientDTO.class);
         clientDTO.add(linkTo(methodOn(ClientController.class).findClientById(id)).withSelfRel());
-        clientDTO.add(linkTo(methodOn(AdressController.class).adressById(clientDTO.getAdress().getId())).withSelfRel());
+        clientDTO.add(linkTo(methodOn(AdressController.class).findAdressById(clientDTO.getAdress().getId())).withSelfRel());
         return ResponseEntity.ok().body(clientDTO);
 
     }
