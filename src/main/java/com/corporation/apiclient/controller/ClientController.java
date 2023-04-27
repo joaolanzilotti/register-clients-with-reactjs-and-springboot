@@ -38,6 +38,7 @@ public class ClientController {
     @Autowired
     private ModelMapper modelMapper;
 
+    //@CrossOrigin(origins = "http://localhost:8080")
     @GetMapping(produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
     @Operation(summary = "Finds All Client", description = "Finds All Client", tags = {"Client"},
             responses = {
@@ -55,6 +56,7 @@ public class ClientController {
         return ResponseEntity.ok().body(listClientDTO);
     }
 
+    //@CrossOrigin(origins = "http://localhost:8080")
     @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
     @Operation(summary = "Finds a Client", description = "Finds a Client", tags = {"Client"},
             responses = {
@@ -72,6 +74,7 @@ public class ClientController {
 
     }
 
+    //@CrossOrigin(origins = {"http://localhost:8080", "https://jp.com.br"})
     @PostMapping(produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML},
             consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
     @Operation(summary = "Adds a New Client", description = "Adds a New Client by passing in a JSON, XML or YML representation of the Client.", tags = {"Client"},
@@ -88,6 +91,7 @@ public class ClientController {
 
     }
 
+    //@CrossOrigin(origins = "http://localhost:8080")
     @PutMapping(value = "/{id}",
             produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML},
             consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
@@ -107,6 +111,7 @@ public class ClientController {
         return ResponseEntity.ok().body(DTO);
     }
 
+    //@CrossOrigin(origins = "http://localhost:8080")
     @DeleteMapping(value = "/{id}")
     @Operation(summary = "Deletes a Client", description = "Deletes a Client by passing in a JSON, XML or YML representation of the Client.", tags = {"Client"},
             responses = {

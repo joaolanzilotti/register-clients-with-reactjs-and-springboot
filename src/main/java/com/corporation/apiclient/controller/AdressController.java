@@ -46,6 +46,7 @@ public class AdressController {
     @Autowired
     private ClientRepository clientRepository;
 
+    //@CrossOrigin(origins = "http://localhost:8080")
     @GetMapping(produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
     @Operation(summary = "Finds All Adress", description = "Finds All Adress", tags = {"Adress"},
             responses = {
@@ -61,6 +62,7 @@ public class AdressController {
         return ResponseEntity.ok().body(listAdressDTO);
     }
 
+    //@CrossOrigin(origins = "http://localhost:8080")
     @GetMapping(value = "/{id}",
             produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
     @Operation(summary = "Finds a Adress", description = "Finds a Adress", tags = {"Adress"},
@@ -77,6 +79,7 @@ public class AdressController {
         return ResponseEntity.ok().body(adressDTO);
     }
 
+    //@CrossOrigin(origins = "http://localhost:8080")
     @PutMapping(value = "/{id}")
     @Operation(summary = "Updates a Adress", description = "Updates a Adress by passing in a JSON, XML or YML representation of the Adress.", tags = {"Adress"},
             responses = {
@@ -93,6 +96,7 @@ public class AdressController {
 
     }
 
+    //@CrossOrigin(origins = "http://localhost:8080")
     @PostMapping(value = "/{id}")
     @Operation(summary = "Adds a New Adress", description = "Adds a New Adress by passing in a JSON, XML or YML representation of the Adress.", tags = {"Adress"},
             responses = {
@@ -108,6 +112,7 @@ public class AdressController {
         return ResponseEntity.created(uri).body(DTO);
     }
 
+    //@CrossOrigin(origins = "http://localhost:8080")
     @DeleteMapping(value = "/{id}")
     @Operation(summary = "Deletes a Adress", description = "Deletes a Adress by passing in a JSON, XML or YML representation of the Adress.", tags = {"Adress"},
             responses = {
