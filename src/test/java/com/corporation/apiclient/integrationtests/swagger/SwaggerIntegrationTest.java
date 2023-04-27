@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-public class SwaggerIntegration extends AbstractIntegrationTest {
+public class SwaggerIntegrationTest extends AbstractIntegrationTest {
 
     //Test da Conexao com o Site da Documentação
     @Test

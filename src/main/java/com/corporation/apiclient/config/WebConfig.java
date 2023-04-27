@@ -13,7 +13,7 @@ import java.util.List;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    @Value("${cors.originPatterns:default}")
+    @Value("${cors.originPatters:defaut}")
     private String corsOriginPatterss = "";
 
     @Override
