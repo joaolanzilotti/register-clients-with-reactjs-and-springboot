@@ -19,7 +19,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Users implements Serializable, UserDetails {
+public class User implements Serializable, UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
