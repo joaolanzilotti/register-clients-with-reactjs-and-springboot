@@ -2,6 +2,7 @@ package com.corporation.apiclient.exceptions.handler;
 
 import com.corporation.apiclient.exceptions.DataIntegratyViolationException;
 import com.corporation.apiclient.exceptions.ExceptionResponse;
+import com.corporation.apiclient.exceptions.InvalidJwtAuthenticationException;
 import com.corporation.apiclient.exceptions.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +39,13 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+
+    }
+    @ExceptionHandler(InvalidJwtAuthenticationException.class)
+    public final ResponseEntity<ExceptionResponse> handleInvalidJwtAuthenticationException(Exception ex, WebRequest request){
+
+        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.FORBIDDEN);
 
     }
 
