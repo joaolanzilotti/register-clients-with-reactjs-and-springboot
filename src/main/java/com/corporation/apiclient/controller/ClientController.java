@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-@RequestMapping("/clients")
+@RequestMapping("/api/clients")
 @RestController
 //Configuration Swagger - Change name and Description on Methods Client
 @Tag(name = "Client", description = "Endpoints for Managing Client")

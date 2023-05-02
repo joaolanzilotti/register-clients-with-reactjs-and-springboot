@@ -29,7 +29,7 @@ import java.util.List;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-@RequestMapping(value = "/adress")
+@RequestMapping(value = "/api/adress")
 @RestController
 @Tag(name = "Adress", description = "Endpoints for Managing Adress")
 public class AdressController {
