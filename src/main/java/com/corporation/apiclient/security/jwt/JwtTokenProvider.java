@@ -1,4 +1,4 @@
-package com.corporation.apiclient.securityjwt;
+package com.corporation.apiclient.security.jwt;
 
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -88,7 +88,7 @@ public class JwtTokenProvider {
         return decodedJWT;
     }
 
-    public String resolverToken(HttpServletRequest request){
+    public String resolveToken(HttpServletRequest request){
 
         String bearerToken = request.getHeader("Authorization");
         if(bearerToken != null && bearerToken.startsWith("Bearer ")){
