@@ -1,5 +1,6 @@
 package com.corporation.apiclient.integrationtests.dto.security;
 
+import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Getter
 @Setter
+@XmlRootElement
 public class TokenDTO implements Serializable {
 
     private String username;

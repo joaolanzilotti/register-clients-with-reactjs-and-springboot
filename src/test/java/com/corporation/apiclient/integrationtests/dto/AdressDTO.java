@@ -1,5 +1,6 @@
 package com.corporation.apiclient.integrationtests.dto;
 
+import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@XmlRootElement
 public class AdressDTO implements Serializable {
 
     private Long id;

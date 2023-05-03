@@ -4,6 +4,7 @@ import com.corporation.apiclient.entities.Adress;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@XmlRootElement
 public class ClientDTO implements Serializable {
 
     private Long id;
