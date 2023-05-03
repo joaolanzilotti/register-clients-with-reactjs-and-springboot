@@ -31,6 +31,7 @@ public class ClientDTO implements Serializable {
     private Date birthDay;
     private String cellphone;
     private Adress adress;
+    private boolean enabled;
     
 
 }

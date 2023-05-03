@@ -74,6 +74,21 @@ public class ClientController {
 
     }
 
+    @PatchMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
+    @Operation(summary = "Disable a specific Client by ID", description = "Disable a specific Client by ID", tags = {"Client"},
+            responses = {
+                    @ApiResponse(description = "Success", responseCode = "200", content = {@Content(schema = @Schema(implementation = ClientDTO.class))}),
+                    @ApiResponse(description = "No Content", responseCode = "204", content = {@Content}),
+                    @ApiResponse(description = "Bad Request", responseCode = "400", content = {@Content}),
+                    @ApiResponse(description = "Unauthorized", responseCode = "401", content = {@Content}),
+                    @ApiResponse(description = "Not Found", responseCode = "404", content = {@Content}),
+                    @ApiResponse(description = "Internal Server Error", responseCode = "500", content = {@Content})})
+    public ResponseEntity<ClientDTO> DisableClient(@PathVariable Long id) {
+        clientService.updateDisableClient(id);
+        return ResponseEntity.ok().build();
+
+    }
+
     //@CrossOrigin(origins = {"http://localhost:8080", "https://jp.com.br"})
     @PostMapping(produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML},
             consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})

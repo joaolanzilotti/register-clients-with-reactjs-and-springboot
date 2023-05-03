@@ -46,4 +46,6 @@ public class Client implements Serializable {
     @JoinColumn(name = "adress_id")
     private Adress adress;
 
+    private boolean enabled;
+
 }

@@ -20,7 +20,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonPropertyOrder({"id", "name", "email", "password", "cellphone", "rg", "cpf", "birthDay", "adress"})
+@JsonPropertyOrder({"id", "name", "email", "password", "cellphone", "rg", "cpf", "birthDay", "adress", "enabled"})
 public class ClientDTO extends RepresentationModel<ClientDTO> implements Serializable {
 
     private Long id;
@@ -33,6 +33,7 @@ public class ClientDTO extends RepresentationModel<ClientDTO> implements Seriali
     private Date birthDay;
     private String cellphone;
     private Adress adress;
+    private boolean enabled;
     
 
 }
