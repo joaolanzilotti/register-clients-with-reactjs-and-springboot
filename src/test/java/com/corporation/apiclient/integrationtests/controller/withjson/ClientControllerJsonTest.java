@@ -9,6 +9,8 @@ import com.corporation.apiclient.config.TestConfig;
 import com.corporation.apiclient.entities.Adress;
 import com.corporation.apiclient.integrationtests.dto.AdressDTO;
 import com.corporation.apiclient.integrationtests.dto.ClientDTO;
+import com.corporation.apiclient.integrationtests.dto.security.AccountCredentialsDTO;
+import com.corporation.apiclient.integrationtests.dto.security.TokenDTO;
 import com.corporation.apiclient.integrationtests.testcontainers.AbstractIntegrationTest;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
@@ -51,22 +53,45 @@ public class ClientControllerJsonTest extends AbstractIntegrationTest {
         clientDTO = new ClientDTO();
     }
 
+    @Test
+    @Order(0)
+    public void authorization() throws JsonMappingException, JsonProcessingException {
+
+        AccountCredentialsDTO client = new AccountCredentialsDTO("joaolanzilotti","admin123");
+
+        var acessToken = given()
+                .basePath("/auth/signin")
+                .port(TestConfig.SERVER_PORT)
+                .contentType(TestConfig.CONTENT_TYPE_JSON)
+                .body(client)
+                .when()
+                .post()
+                .then()
+                .statusCode(200)
+                .extract()
+                .body()
+                .as(TokenDTO.class)
+                .getAccessToken();
+
+        specification = new RequestSpecBuilder()
+                .addHeader(TestConfig.HEADER_PARAM_AUTHORIZATION, "Bearer " + acessToken)
+                .setBasePath("/api/clients")
+                .setPort(TestConfig.SERVER_PORT)
+                .addFilter(new RequestLoggingFilter(LogDetail.ALL))
+                .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
+                .build();
+
+    }
+
     //Test da Conexao com o Site da Documentação
     @Test
     @Order(1)
     public void testCreate() throws JsonMappingException, JsonProcessingException {
         mockPerson();
 
-        specification = new RequestSpecBuilder()
-                .addHeader(TestConfig.HEADER_PARAM_ORIGIN, TestConfig.ORIGIN_JP)
-                .setBasePath("/clients")
-                .setPort(TestConfig.SERVER_PORT)
-                .addFilter(new RequestLoggingFilter(LogDetail.ALL))
-                .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
-                .build();
-
         var content = given().spec(specification)
                 .contentType(TestConfig.CONTENT_TYPE_JSON)
+                .header(TestConfig.HEADER_PARAM_ORIGIN, TestConfig.ORIGIN_JP)
                 .body(clientDTO)
                 .when()
                 .post()
@@ -103,16 +128,9 @@ public class ClientControllerJsonTest extends AbstractIntegrationTest {
     public void testCreateWithWrongOrigin() throws JsonMappingException, JsonProcessingException {
         mockPerson();
 
-        specification = new RequestSpecBuilder()
-                .addHeader(TestConfig.HEADER_PARAM_ORIGIN, "https://urlerrada.com.br")
-                .setBasePath("/clients")
-                .setPort(TestConfig.SERVER_PORT)
-                .addFilter(new RequestLoggingFilter(LogDetail.ALL))
-                .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
-                .build();
-
         var content = given().spec(specification)
                 .contentType(TestConfig.CONTENT_TYPE_JSON)
+                .header(TestConfig.HEADER_PARAM_ORIGIN, "https://www.urlerrada.com.br")
                 .body(clientDTO)
                 .when()
                 .post()
@@ -132,16 +150,9 @@ public class ClientControllerJsonTest extends AbstractIntegrationTest {
     public void testFindById() throws JsonMappingException, JsonProcessingException {
         mockPerson();
 
-        specification = new RequestSpecBuilder()
-                .addHeader(TestConfig.HEADER_PARAM_ORIGIN, TestConfig.ORIGIN_JP)
-                .setBasePath("/clients")
-                .setPort(TestConfig.SERVER_PORT)
-                .addFilter(new RequestLoggingFilter(LogDetail.ALL))
-                .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
-                .build();
-
         var content = given().spec(specification)
                 .contentType(TestConfig.CONTENT_TYPE_JSON)
+                .header(TestConfig.HEADER_PARAM_ORIGIN, TestConfig.ORIGIN_JP)
                 .pathParam("id", 1L)
                 .when()
                 .get("{id}")
@@ -179,16 +190,9 @@ public class ClientControllerJsonTest extends AbstractIntegrationTest {
     public void testFindByIdWithWrongOrigin() throws JsonMappingException, JsonProcessingException {
         mockPerson();
 
-        specification = new RequestSpecBuilder()
-                .addHeader(TestConfig.HEADER_PARAM_ORIGIN, "https://www.urlerrada.com.br")
-                .setBasePath("/clients")
-                .setPort(TestConfig.SERVER_PORT)
-                .addFilter(new RequestLoggingFilter(LogDetail.ALL))
-                .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
-                .build();
-
         var content = given().spec(specification)
                 .contentType(TestConfig.CONTENT_TYPE_JSON)
+                .header(TestConfig.HEADER_PARAM_ORIGIN, "https://www.urlerrada.com.br")
                 .pathParam("id", clientDTO.getId())
                 .when()
                 .get("{id}")
