@@ -80,7 +80,9 @@ public class AdressController {
     }
 
     //@CrossOrigin(origins = "http://localhost:8080")
-    @PutMapping(value = "/{id}")
+    @PutMapping(value = "/{id}",
+            produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML},
+            consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
     @Operation(summary = "Updates a Adress", description = "Updates a Adress by passing in a JSON, XML or YML representation of the Adress.", tags = {"Adress"},
             responses = {
                     @ApiResponse(description = "Updated", responseCode = "200", content = {@Content(schema = @Schema(implementation = AdressDTO.class))}),
@@ -97,7 +99,9 @@ public class AdressController {
     }
 
     //@CrossOrigin(origins = "http://localhost:8080")
-    @PostMapping(value = "/{id}")
+    @PostMapping(value = "/{id}",
+            produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML},
+            consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
     @Operation(summary = "Adds a New Adress", description = "Adds a New Adress by passing in a JSON, XML or YML representation of the Adress.", tags = {"Adress"},
             responses = {
                     @ApiResponse(description = "Success", responseCode = "200", content = {@Content(schema = @Schema(implementation = AdressDTO.class))}),

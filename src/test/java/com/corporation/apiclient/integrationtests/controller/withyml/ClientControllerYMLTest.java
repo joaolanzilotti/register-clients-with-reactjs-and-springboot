@@ -124,6 +124,7 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
         Assertions.assertNotNull(persistedPerson.getCpf());
         Assertions.assertNotNull(persistedPerson.getBirthDay());
         Assertions.assertNotNull(persistedPerson.getCellphone());
+        Assertions.assertTrue(persistedPerson.isEnabled());
 
         Assertions.assertEquals("Joao", persistedPerson.getName());
         Assertions.assertEquals("joao@gmail.com", persistedPerson.getEmail());
@@ -172,6 +173,7 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
         Assertions.assertNotNull(persistedPerson.getBirthDay());
         Assertions.assertNotNull(persistedPerson.getCellphone());
         Assertions.assertNotNull(persistedPerson.getAdress());
+        Assertions.assertTrue(persistedPerson.isEnabled());
 
         Assertions.assertEquals("name changed", persistedPerson.getName());
         Assertions.assertEquals("joao@gmail.com", persistedPerson.getEmail());
@@ -256,6 +258,7 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
         Assertions.assertNotNull(persistedPerson.getBirthDay());
         Assertions.assertNotNull(persistedPerson.getCellphone());
         Assertions.assertNotNull(persistedPerson.getAdress());
+        Assertions.assertFalse(persistedPerson.isEnabled());
 
         Assertions.assertEquals(7L, persistedPerson.getId());
         Assertions.assertEquals("name changed", persistedPerson.getName());
@@ -338,6 +341,7 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
         clientDTO.setRg("45645");
         clientDTO.setBirthDay(new Date(2023, 4, 27));
         clientDTO.setCellphone("123654848");
+        clientDTO.setEnabled(true);
     }
 
 }
