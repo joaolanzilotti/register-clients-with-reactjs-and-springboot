@@ -84,7 +84,7 @@ public class AdressControllerJsonTest extends AbstractIntegrationTest {
         var content = given().spec(specification)
                 .contentType(TestConfig.CONTENT_TYPE_JSON)
                 .header(TestConfig.HEADER_PARAM_ORIGIN, TestConfig.ORIGIN_JP)
-                .pathParam("id", 1L)
+                .pathParam("id", 5L)
                 .body(adressDTO)
                 .when()
                 .post("{id}")
@@ -121,7 +121,7 @@ public class AdressControllerJsonTest extends AbstractIntegrationTest {
 
         var content = given().spec(specification)
                 .contentType(TestConfig.CONTENT_TYPE_JSON)
-                .pathParam("id", 1L)
+                .pathParam("id", 5L)
                 .body(adressDTO)
                 .when()
                 .post("{id}")

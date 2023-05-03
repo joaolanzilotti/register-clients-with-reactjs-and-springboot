@@ -84,7 +84,7 @@ public class AdressControllerXMLTest extends AbstractIntegrationTest {
         var content = given().spec(specification)
                 .contentType(TestConfig.CONTENT_TYPE_XML)
                 .header(TestConfig.HEADER_PARAM_ORIGIN, TestConfig.ORIGIN_JP)
-                .pathParam("id", 1L)
+                .pathParam("id", 6L)
                 .body(adressDTO)
                 .when()
                 .post("{id}")
@@ -121,7 +121,7 @@ public class AdressControllerXMLTest extends AbstractIntegrationTest {
 
         var content = given().spec(specification)
                 .contentType(TestConfig.CONTENT_TYPE_XML)
-                .pathParam("id", 1L)
+                .pathParam("id", 6L)
                 .body(adressDTO)
                 .when()
                 .post("{id}")
