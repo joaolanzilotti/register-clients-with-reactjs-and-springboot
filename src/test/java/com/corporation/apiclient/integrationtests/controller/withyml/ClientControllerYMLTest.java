@@ -183,6 +183,45 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
 
     @Test
     @Order(3)
+    public void testDisableClientById() throws JsonMappingException, JsonProcessingException {
+
+        var createdClientDTO = given().spec(specification)
+                .contentType(TestConfig.CONTENT_TYPE_XML)
+                .header(TestConfig.HEADER_PARAM_ORIGIN, TestConfig.ORIGIN_JP)
+                .pathParam("id", clientDTO.getId())
+                .when()
+                .patch("{id}")
+                .then()
+                .statusCode(200)
+                .extract()
+                .body()
+                .as(ClientDTO.class, mapper);
+
+        clientDTO = createdClientDTO;
+
+        Assertions.assertNotNull(createdClientDTO);
+        Assertions.assertNotNull(createdClientDTO.getId());
+        Assertions.assertNotNull(createdClientDTO.getName());
+        Assertions.assertNotNull(createdClientDTO.getEmail());
+        Assertions.assertNotNull(createdClientDTO.getPassword());
+        Assertions.assertNotNull(createdClientDTO.getRg());
+        Assertions.assertNotNull(createdClientDTO.getCpf());
+        Assertions.assertNotNull(createdClientDTO.getBirthDay());
+        Assertions.assertNotNull(createdClientDTO.getCellphone());
+        Assertions.assertNotNull(createdClientDTO.getAdress());
+        Assertions.assertFalse(createdClientDTO.isEnabled());
+
+        Assertions.assertEquals("name changed", createdClientDTO.getName());
+        Assertions.assertEquals("joao@gmail.com", createdClientDTO.getEmail());
+        Assertions.assertEquals("123", createdClientDTO.getPassword());
+        Assertions.assertEquals("65498798", createdClientDTO.getRg());
+        Assertions.assertEquals("32451021004", createdClientDTO.getCpf());
+        //Assertions.assertEquals(new Date(2023, 04, 27), createdClientDTO.getBirthDay());
+        Assertions.assertEquals("123654848", createdClientDTO.getCellphone());
+    }
+
+    @Test
+    @Order(4)
     public void testFindById() throws JsonMappingException, JsonProcessingException {
         mockPerson();
 
@@ -228,7 +267,7 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
     }
 
     @Test
-    @Order(4)
+    @Order(5)
     public void testDelete() throws JsonMappingException, JsonProcessingException {
 
         given().spec(specification)
@@ -249,7 +288,7 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
     }
 
     @Test
-    @Order(5)
+    @Order(6)
     public void testFindAll() throws JsonMappingException, JsonProcessingException {
 
         var content = given().spec(specification)

@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.corporation.apiclient.config.TestConfig;
 import com.corporation.apiclient.entities.Adress;
-import com.corporation.apiclient.integrationtests.dto.AdressDTO;
 import com.corporation.apiclient.integrationtests.dto.ClientDTO;
 import com.corporation.apiclient.integrationtests.dto.security.AccountCredentialsDTO;
 import com.corporation.apiclient.integrationtests.dto.security.TokenDTO;
@@ -114,6 +113,8 @@ public class ClientControllerJsonTest extends AbstractIntegrationTest {
         Assertions.assertNotNull(createdClientDTO.getCpf());
         Assertions.assertNotNull(createdClientDTO.getBirthDay());
         Assertions.assertNotNull(createdClientDTO.getCellphone());
+        Assertions.assertTrue(createdClientDTO.isEnabled());
+
 
         Assertions.assertEquals("Joao", createdClientDTO.getName());
         Assertions.assertEquals("joao@gmail.com", createdClientDTO.getEmail());
@@ -153,6 +154,7 @@ public class ClientControllerJsonTest extends AbstractIntegrationTest {
         Assertions.assertNotNull(persistedPerson.getCpf());
         Assertions.assertNotNull(persistedPerson.getBirthDay());
         Assertions.assertNotNull(persistedPerson.getCellphone());
+        Assertions.assertTrue(persistedPerson.isEnabled());
 
         Assertions.assertEquals("Name Changed", persistedPerson.getName());
         Assertions.assertEquals("joao@gmail.com", persistedPerson.getEmail());
@@ -166,6 +168,46 @@ public class ClientControllerJsonTest extends AbstractIntegrationTest {
 
     @Test
     @Order(3)
+    public void testDisableClientById() throws JsonMappingException, JsonProcessingException {
+
+        var content = given().spec(specification)
+                .contentType(TestConfig.CONTENT_TYPE_JSON)
+                .header(TestConfig.HEADER_PARAM_ORIGIN, TestConfig.ORIGIN_JP)
+                .pathParam("id", clientDTO.getId())
+                .when()
+                .patch("{id}")
+                .then()
+                .statusCode(200)
+                .extract()
+                .body()
+                .asString();
+
+        ClientDTO createdClientDTO = objectMapper.readValue(content, ClientDTO.class);
+        clientDTO = createdClientDTO;
+
+        Assertions.assertNotNull(createdClientDTO);
+        Assertions.assertNotNull(createdClientDTO.getId());
+        Assertions.assertNotNull(createdClientDTO.getName());
+        Assertions.assertNotNull(createdClientDTO.getEmail());
+        Assertions.assertNotNull(createdClientDTO.getPassword());
+        Assertions.assertNotNull(createdClientDTO.getRg());
+        Assertions.assertNotNull(createdClientDTO.getCpf());
+        Assertions.assertNotNull(createdClientDTO.getBirthDay());
+        Assertions.assertNotNull(createdClientDTO.getCellphone());
+        Assertions.assertNotNull(createdClientDTO.getAdress());
+        Assertions.assertFalse(createdClientDTO.isEnabled());
+
+        Assertions.assertEquals("Name Changed", createdClientDTO.getName());
+        Assertions.assertEquals("joao@gmail.com", createdClientDTO.getEmail());
+        Assertions.assertEquals("123", createdClientDTO.getPassword());
+        Assertions.assertEquals("45645", createdClientDTO.getRg());
+        Assertions.assertEquals("92519732024", createdClientDTO.getCpf());
+        //Assertions.assertEquals(new Date(2023, 04, 27), createdClientDTO.getBirthDay());
+        Assertions.assertEquals("123654848", createdClientDTO.getCellphone());
+    }
+
+    @Test
+    @Order(4)
     public void testFindById() throws JsonMappingException, JsonProcessingException {
         mockPerson();
 
@@ -194,6 +236,7 @@ public class ClientControllerJsonTest extends AbstractIntegrationTest {
         Assertions.assertNotNull(createdClientDTO.getBirthDay());
         Assertions.assertNotNull(createdClientDTO.getCellphone());
         Assertions.assertNotNull(createdClientDTO.getAdress());
+        Assertions.assertFalse(createdClientDTO.isEnabled());
 
         Assertions.assertEquals("Name Changed", createdClientDTO.getName());
         Assertions.assertEquals("joao@gmail.com", createdClientDTO.getEmail());
@@ -205,7 +248,7 @@ public class ClientControllerJsonTest extends AbstractIntegrationTest {
     }
 
     @Test
-    @Order(4)
+    @Order(5)
     public void testDelete() throws JsonMappingException, JsonProcessingException {
 
         given().spec(specification)
@@ -218,7 +261,7 @@ public class ClientControllerJsonTest extends AbstractIntegrationTest {
     }
 
     @Test
-    @Order(5)
+    @Order(6)
     public void testFindAll() throws JsonMappingException, JsonProcessingException {
 
         var content = given().spec(specification)
@@ -260,6 +303,7 @@ public class ClientControllerJsonTest extends AbstractIntegrationTest {
         clientDTO.setRg("45645");
         clientDTO.setBirthDay(new Date(2023, 4, 27));
         clientDTO.setCellphone("123654848");
+        clientDTO.setEnabled(true);
     }
 
 }

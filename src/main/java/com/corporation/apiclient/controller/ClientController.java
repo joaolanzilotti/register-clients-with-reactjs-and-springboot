@@ -74,6 +74,7 @@ public class ClientController {
 
     }
 
+    //Usar @PatchMapping quando precisar atualizar valor de apenas um campo
     @PatchMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
     @Operation(summary = "Disable a specific Client by ID", description = "Disable a specific Client by ID", tags = {"Client"},
             responses = {
@@ -84,8 +85,8 @@ public class ClientController {
                     @ApiResponse(description = "Not Found", responseCode = "404", content = {@Content}),
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = {@Content})})
     public ResponseEntity<ClientDTO> DisableClient(@PathVariable Long id) {
-        clientService.updateDisableClient(id);
-        return ResponseEntity.ok().build();
+        ClientDTO clientDTO = modelMapper.map(clientService.updateDisableClient(id),ClientDTO.class);
+        return ResponseEntity.ok().body(clientDTO);
 
     }
 
