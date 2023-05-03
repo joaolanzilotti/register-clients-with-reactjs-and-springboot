@@ -6,6 +6,7 @@ import com.corporation.apiclient.integrationtests.dto.security.AccountCredential
 import com.corporation.apiclient.integrationtests.dto.security.TokenDTO;
 import com.corporation.apiclient.integrationtests.testcontainers.AbstractIntegrationTest;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,6 +20,8 @@ import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
 
 import static io.restassured.RestAssured.given;
 
@@ -112,25 +115,39 @@ public class AdressControllerXMLTest extends AbstractIntegrationTest {
 
     @Test
     @Order(2)
-    public void testCreateWithWrongOrigin() throws JsonMappingException, JsonProcessingException {
-        mockPerson();
+    public void testUpdate() throws JsonMappingException, JsonProcessingException {
+        adressDTO.setStreet("Adress Changed");
+        adressDTO.setCity("Ubatuba");
 
         var content = given().spec(specification)
                 .contentType(TestConfig.CONTENT_TYPE_XML)
-                .header(TestConfig.HEADER_PARAM_ORIGIN, "https:\\www.urlerrada.com.br")
                 .pathParam("id", 1L)
                 .body(adressDTO)
                 .when()
                 .post("{id}")
                 .then()
-                .statusCode(403)
+                .statusCode(201)
                 .extract()
                 .body()
                 .asString();
 
+        AdressDTO persistedAdress = objectMapper.readValue(content, AdressDTO.class);
+        adressDTO = persistedAdress;
 
-        Assertions.assertNotNull(content);
-        Assertions.assertEquals("Invalid CORS request", content);
+        Assertions.assertNotNull(persistedAdress);
+        Assertions.assertNotNull(persistedAdress.getId());
+        Assertions.assertNotNull(persistedAdress.getCity());
+        Assertions.assertNotNull(persistedAdress.getStreet());
+        Assertions.assertNotNull(persistedAdress.getState());
+        Assertions.assertNotNull(persistedAdress.getNumber());
+        Assertions.assertNotNull(persistedAdress.getDistrict());
+
+        Assertions.assertEquals("Ubatuba", persistedAdress.getCity());
+        Assertions.assertEquals("Adress Changed", persistedAdress.getStreet());
+        Assertions.assertEquals("SP", persistedAdress.getState());
+        Assertions.assertEquals("50", persistedAdress.getNumber());
+        Assertions.assertEquals("Mirim", persistedAdress.getDistrict());
+
     }
 
     @Test
@@ -163,7 +180,7 @@ public class AdressControllerXMLTest extends AbstractIntegrationTest {
 
 
         Assertions.assertEquals("Ubatuba", createdAdressDTO.getCity());
-        Assertions.assertEquals("Rua das Flores", createdAdressDTO.getStreet());
+        Assertions.assertEquals("Adress Changed", createdAdressDTO.getStreet());
         Assertions.assertEquals("SP", createdAdressDTO.getState());
         Assertions.assertEquals("50", createdAdressDTO.getNumber());
         Assertions.assertEquals("Mirim", createdAdressDTO.getDistrict());
@@ -171,23 +188,50 @@ public class AdressControllerXMLTest extends AbstractIntegrationTest {
 
     @Test
     @Order(4)
-    public void testFindByIdWithWrongOrigin() throws JsonMappingException, JsonProcessingException {
-        mockPerson();
+    public void testDelete() throws JsonMappingException, JsonProcessingException {
+
+        given().spec(specification)
+                .contentType(TestConfig.CONTENT_TYPE_XML)
+                .pathParam("id", adressDTO.getId())
+                .when()
+                .delete("{id}")
+                .then()
+                .statusCode(204);
+    }
+
+    @Test
+    @Order(5)
+    public void testFindAll() throws JsonMappingException, JsonProcessingException {
 
         var content = given().spec(specification)
                 .contentType(TestConfig.CONTENT_TYPE_XML)
-                .header(TestConfig.HEADER_PARAM_ORIGIN, "https:\\www.urlerrada.com.br")
-                .pathParam("id", adressDTO.getId())
                 .when()
-                .get("{id}")
+                .get()
                 .then()
-                .statusCode(403)
+                .statusCode(200)
                 .extract()
                 .body()
                 .asString();
 
-        Assertions.assertNotNull(content);
-        Assertions.assertEquals("Invalid CORS request", content);
+        List<AdressDTO> adress = objectMapper.readValue(content, new TypeReference<List<AdressDTO>>() {
+        });
+
+        AdressDTO foundAdressOne = adress.get(0);
+
+        Assertions.assertNotNull(foundAdressOne);
+        Assertions.assertNotNull(foundAdressOne.getId());
+        Assertions.assertNotNull(foundAdressOne.getCity());
+        Assertions.assertNotNull(foundAdressOne.getStreet());
+        Assertions.assertNotNull(foundAdressOne.getState());
+        Assertions.assertNotNull(foundAdressOne.getNumber());
+        Assertions.assertNotNull(foundAdressOne.getDistrict());
+
+
+        Assertions.assertEquals("Ubatuba", foundAdressOne.getCity());
+        Assertions.assertEquals("Rua das Flores", foundAdressOne.getStreet());
+        Assertions.assertEquals("SP", foundAdressOne.getState());
+        Assertions.assertEquals("50", foundAdressOne.getNumber());
+        Assertions.assertEquals("Mirim", foundAdressOne.getDistrict());
     }
 
     private void mockPerson() {
