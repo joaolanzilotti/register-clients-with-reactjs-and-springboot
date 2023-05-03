@@ -1,12 +1,13 @@
 package com.corporation.apiclient.integrationtests.controller.withxml;
 
 import com.corporation.apiclient.config.TestConfig;
-import com.corporation.apiclient.integrationtests.dto.AdressDTO;
+import com.corporation.apiclient.entities.Adress;
 import com.corporation.apiclient.integrationtests.dto.ClientDTO;
 import com.corporation.apiclient.integrationtests.dto.security.AccountCredentialsDTO;
 import com.corporation.apiclient.integrationtests.dto.security.TokenDTO;
 import com.corporation.apiclient.integrationtests.testcontainers.AbstractIntegrationTest;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Date;
+import java.util.List;
 
 import static io.restassured.RestAssured.given;
 
@@ -35,7 +37,6 @@ public class ClientControllerXMLTest extends AbstractIntegrationTest {
 
     private static ClientDTO clientDTO;
 
-    private static AdressDTO adressDTO;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -51,7 +52,7 @@ public class ClientControllerXMLTest extends AbstractIntegrationTest {
     @Order(0)
     public void authorization() throws JsonMappingException, JsonProcessingException {
 
-        AccountCredentialsDTO client = new AccountCredentialsDTO("joaolanzilotti","admin123");
+        AccountCredentialsDTO client = new AccountCredentialsDTO("joaolanzilotti", "admin123");
 
         var acessToken = given()
                 .basePath("/auth/signin")
@@ -119,24 +120,42 @@ public class ClientControllerXMLTest extends AbstractIntegrationTest {
 
     @Test
     @Order(2)
-    public void testCreateWithWrongOrigin() throws JsonMappingException, JsonProcessingException {
-        mockPerson();
+    public void testUpdate() throws JsonMappingException, JsonProcessingException {
+        clientDTO.setName("Name Changed");
+        clientDTO.setAdress(new Adress(1L, "maranhao", "district", "50", "Ubatuba", "SP", null));
 
         var content = given().spec(specification)
                 .contentType(TestConfig.CONTENT_TYPE_XML)
-                .header(TestConfig.HEADER_PARAM_ORIGIN, "https://www.urlerrada.com.br")
                 .body(clientDTO)
                 .when()
                 .post()
                 .then()
-                .statusCode(403)
+                .statusCode(201)
                 .extract()
                 .body()
                 .asString();
 
+        ClientDTO persistedPerson = objectMapper.readValue(content, ClientDTO.class);
+        clientDTO = persistedPerson;
 
-        Assertions.assertNotNull(content);
-        Assertions.assertEquals("Invalid CORS request", content);
+        Assertions.assertNotNull(persistedPerson);
+        Assertions.assertNotNull(persistedPerson.getId());
+        Assertions.assertNotNull(persistedPerson.getName());
+        Assertions.assertNotNull(persistedPerson.getEmail());
+        Assertions.assertNotNull(persistedPerson.getPassword());
+        Assertions.assertNotNull(persistedPerson.getRg());
+        Assertions.assertNotNull(persistedPerson.getCpf());
+        Assertions.assertNotNull(persistedPerson.getBirthDay());
+        Assertions.assertNotNull(persistedPerson.getCellphone());
+
+        Assertions.assertEquals("Name Changed", persistedPerson.getName());
+        Assertions.assertEquals("joao@gmail.com", persistedPerson.getEmail());
+        Assertions.assertEquals("123", persistedPerson.getPassword());
+        Assertions.assertEquals("45645", persistedPerson.getRg());
+        Assertions.assertEquals("92519732024", persistedPerson.getCpf());
+        Assertions.assertEquals(new Date(2023, 04, 27), persistedPerson.getBirthDay());
+        Assertions.assertEquals("123654848", persistedPerson.getCellphone());
+
     }
 
     @Test
@@ -147,7 +166,7 @@ public class ClientControllerXMLTest extends AbstractIntegrationTest {
         var content = given().spec(specification)
                 .contentType(TestConfig.CONTENT_TYPE_XML)
                 .header(TestConfig.HEADER_PARAM_ORIGIN, TestConfig.ORIGIN_JP)
-                .pathParam("id", 1L)
+                .pathParam("id", clientDTO.getId())
                 .when()
                 .get("{id}")
                 .then()
@@ -170,36 +189,63 @@ public class ClientControllerXMLTest extends AbstractIntegrationTest {
         Assertions.assertNotNull(createdClientDTO.getCellphone());
         Assertions.assertNotNull(createdClientDTO.getAdress());
 
-        Assertions.assertEquals("Pedro", createdClientDTO.getName());
-        Assertions.assertEquals("pedro54566564@gmail.com", createdClientDTO.getEmail());
-        Assertions.assertEquals("9180", createdClientDTO.getPassword());
-        Assertions.assertEquals("562498715", createdClientDTO.getRg());
-        Assertions.assertEquals("48684998820", createdClientDTO.getCpf());
+        Assertions.assertEquals("Name Changed", createdClientDTO.getName());
+        Assertions.assertEquals("joao@gmail.com", createdClientDTO.getEmail());
+        Assertions.assertEquals("123", createdClientDTO.getPassword());
+        Assertions.assertEquals("45645", createdClientDTO.getRg());
+        Assertions.assertEquals("92519732024", createdClientDTO.getCpf());
         //Assertions.assertEquals(new Date(2023, 04, 27), createdClientDTO.getBirthDay());
-        Assertions.assertEquals("1238334010", createdClientDTO.getCellphone());
+        Assertions.assertEquals("123654848", createdClientDTO.getCellphone());
     }
 
     @Test
     @Order(4)
-    public void testFindByIdWithWrongOrigin() throws JsonMappingException, JsonProcessingException {
-        mockPerson();
+    public void testDelete() throws JsonMappingException, JsonProcessingException {
+
+        given().spec(specification)
+                .contentType(TestConfig.CONTENT_TYPE_XML)
+                .pathParam("id", clientDTO.getId())
+                .when()
+                .delete("{id}")
+                .then()
+                .statusCode(204);
+    }
+
+    @Test
+    @Order(5)
+    public void testFindAll() throws JsonMappingException, JsonProcessingException {
 
         var content = given().spec(specification)
                 .contentType(TestConfig.CONTENT_TYPE_XML)
-                .header(TestConfig.HEADER_PARAM_ORIGIN, "https://www.urlerrada.com.br")
-                .pathParam("id", clientDTO.getId())
                 .when()
-                .get("{id}")
+                .get()
                 .then()
-                .statusCode(403)
+                .statusCode(200)
                 .extract()
                 .body()
                 .asString();
 
-        Assertions.assertNotNull(content);
-        Assertions.assertEquals("Invalid CORS request", content);
-    }
+        List<ClientDTO> people = objectMapper.readValue(content, new TypeReference<List<ClientDTO>>() {
+        });
 
+        ClientDTO foundPersonOne = people.get(0);
+
+        Assertions.assertNotNull(foundPersonOne.getId());
+        Assertions.assertNotNull(foundPersonOne.getName());
+        Assertions.assertNotNull(foundPersonOne.getCellphone());
+        Assertions.assertNotNull(foundPersonOne.getRg());
+        Assertions.assertNotNull(foundPersonOne.getCpf());
+        Assertions.assertNotNull(foundPersonOne.getPassword());
+        Assertions.assertNotNull(foundPersonOne.getBirthDay());
+
+        Assertions.assertEquals("pedro545664564@gmail.com", foundPersonOne.getEmail());
+        Assertions.assertEquals("Pedro", foundPersonOne.getName());
+        Assertions.assertEquals("9180", foundPersonOne.getPassword());
+        Assertions.assertEquals("09113155865", foundPersonOne.getCpf());
+        Assertions.assertEquals("5624987155", foundPersonOne.getRg());
+        Assertions.assertEquals("1238334010", foundPersonOne.getCellphone());
+
+    }
     private void mockPerson() {
         clientDTO.setName("Joao");
         clientDTO.setEmail("joao@gmail.com");

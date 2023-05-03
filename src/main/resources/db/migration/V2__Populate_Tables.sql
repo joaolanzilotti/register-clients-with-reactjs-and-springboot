@@ -20,7 +20,7 @@ INSERT INTO `adress` VALUES (13, 'Ubatuba', 'Mirim', '50', 'SP', 'Rua das Flores
 -- ----------------------------
 INSERT INTO `client` VALUES (1, '2023-04-19', '1238334010', '48684998820', 'pedro54566564@gmail.com', 'Pedro', '9180', '562498715', 1);
 INSERT INTO `client` VALUES (2, '2023-04-19', '1238334010', '09113155865', 'pedro545664564@gmail.com', 'Pedro', '9180', '5624987155', 9);
-INSERT INTO `client` VALUES (3, '2023-04-19', '1238334010', '09113155865', 'pedro544564@gmail.com', 'Pedro', '9180', '549857155', 10);
-INSERT INTO `client` VALUES (4, '2023-04-19', '1238334010', '09113155865', 'pedro54564@gmail.com', 'Pedro', '9180', '54985755', 11);
+INSERT INTO `client` VALUES (3, '2023-04-19', '1238334010', '48406745070', 'pedro544564@gmail.com', 'Pedro', '9180', '549857155', 10);
+INSERT INTO `client` VALUES (4, '2023-04-19', '1238334010', '45053241090', 'pedro54564@gmail.com', 'Pedro', '9180', '54985755', 11);
 INSERT INTO `client` VALUES (5, '2023-04-19', '1238334010', '51488995060', 'pedro564@gmail.com', 'Pedro', '9180', '549855', 12);
 INSERT INTO `client` VALUES (6, '2023-04-19', '1238334010', '74602380077', 'pedro56894@gmail.com', 'Pedro', '9180', '54965855', 13);
