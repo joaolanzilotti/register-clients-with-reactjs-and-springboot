@@ -12,6 +12,8 @@ import com.corporation.apiclient.repositories.ClientRepository;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.google.gson.reflect.TypeToken;
 
@@ -36,12 +38,9 @@ public class ClientService implements Serializable {
     @Autowired
     private ModelMapper modelMapper;
 
-    public List<Client> findAll() {
+    public Page<Client> findAll(Pageable pageable) {
         logger.info("Finding All Clients");
-        List<Client> listClient = clientRepository.findAll();
-//        Type listType = new TypeToken<List<ClientDTO>>() {}.getType();
-//        List<ClientDTO> listClientDTO = modelMapper.map(clientRepository.findAll(), listType);
-//        listClientDTO.stream().forEach(c -> c.add(linkTo(methodOn(ClientController.class).findClientById(c.getId())).withSelfRel()));
+        Page<Client> listClient = clientRepository.findAll(pageable);
 
         return listClient;
 

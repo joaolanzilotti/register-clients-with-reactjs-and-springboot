@@ -4,7 +4,6 @@ import com.corporation.apiclient.dto.ClientDTO;
 import com.corporation.apiclient.entities.Client;
 import com.corporation.apiclient.services.ClientService;
 import com.corporation.apiclient.utils.MediaType;
-import com.google.gson.reflect.TypeToken;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -14,14 +13,16 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.lang.reflect.Type;
 import java.net.URI;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -47,13 +48,19 @@ public class ClientController {
                     @ApiResponse(description = "Unauthorized", responseCode = "401", content = {@Content}),
                     @ApiResponse(description = "Not Found", responseCode = "404", content = {@Content}),
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = {@Content})})
-    public ResponseEntity<List<ClientDTO>> findAll() {
-        Type listType = new TypeToken<List<ClientDTO>>() {
-        }.getType();
-        List<ClientDTO> listClientDTO = modelMapper.map(clientService.findAll(), listType);
-        listClientDTO.stream().forEach(c -> c.add(linkTo(methodOn(ClientController.class).findClientById(c.getId())).withSelfRel().withSelfRel()));
-        //listClientDTO.stream().forEach(c -> c.add(linkTo(methodOn(AdressController.class).adressById(c.getAdress().getId())).withSelfRel().withSelfRel()));
-        return ResponseEntity.ok().body(listClientDTO);
+    public ResponseEntity<Page<ClientDTO>> findAll(
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "size", defaultValue = "15") Integer size,
+            @RequestParam(value = "direction", defaultValue = "asc") String direction) {
+// esta ignorando as Letras Maiuscula ou Minuscula e um operador ternario se ele identificar DESC na Requisicao ele retorna Um Direction.DESC, se nao Direction.ASC
+        Direction sortDirection = "desc".equalsIgnoreCase(direction) ? Direction.DESC : Direction.ASC;  // Ordenando por name
+        //Usando o Page para fazer pesquisa por paginacao
+        Pageable pageable = PageRequest.of(page,size, Sort.by(sortDirection, "name"));
+        Page<Client> clientPage = clientService.findAll(pageable);
+        Page<ClientDTO> clientDTOPage = clientPage.map(c -> modelMapper.map(c, ClientDTO.class));
+        clientDTOPage.map(c -> c.add(linkTo(methodOn(ClientController.class).findClientById(c.getId())).withSelfRel().withSelfRel()));
+
+        return ResponseEntity.ok().body(clientDTOPage);
     }
 
     //@CrossOrigin(origins = "http://localhost:8080")
