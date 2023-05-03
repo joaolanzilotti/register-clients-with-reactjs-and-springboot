@@ -1,7 +1,9 @@
-package com.corporation.apiclient.integrationtests.controller.withjson;
+package com.corporation.apiclient.integrationtests.controller.withyml;
 
 import com.corporation.apiclient.config.TestConfig;
+import com.corporation.apiclient.integrationtests.controller.withyml.mapper.YMLMapper;
 import com.corporation.apiclient.integrationtests.dto.AdressDTO;
+import com.corporation.apiclient.integrationtests.dto.ClientDTO;
 import com.corporation.apiclient.integrationtests.dto.security.AccountCredentialsDTO;
 import com.corporation.apiclient.integrationtests.dto.security.TokenDTO;
 import com.corporation.apiclient.integrationtests.testcontainers.AbstractIntegrationTest;
@@ -11,9 +13,12 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.config.EncoderConfig;
+import io.restassured.config.RestAssuredConfig;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
+import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
@@ -21,6 +26,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
@@ -28,21 +34,18 @@ import static io.restassured.RestAssured.given;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestMethodOrder(OrderAnnotation.class) // Aplicando Minha Ordem para executar os testes
-public class AdressControllerJsonTest extends AbstractIntegrationTest {
+public class AdressControllerYMLTest extends AbstractIntegrationTest {
 
     private static RequestSpecification specification;
-    private static ObjectMapper objectMapper;
 
     private static AdressDTO adressDTO;
 
-    @Autowired
-    private ModelMapper modelMapper;
+    private static YMLMapper mapper;
 
     @BeforeAll
     public static void setup() {
-        objectMapper = new ObjectMapper();
-        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         adressDTO = new AdressDTO();
+        mapper = new YMLMapper();
     }
 
     @Test
@@ -51,22 +54,30 @@ public class AdressControllerJsonTest extends AbstractIntegrationTest {
 
         AccountCredentialsDTO client = new AccountCredentialsDTO("joaolanzilotti","admin123");
 
-        var acessToken = given()
+        var accessToken = given()
+                .config(
+                        RestAssuredConfig
+                                .config()
+                                .encoderConfig(EncoderConfig.encoderConfig()
+                                        .encodeContentTypeAs(
+                                                TestConfig.CONTENT_TYPE_YML,
+                                                ContentType.TEXT)))
                 .basePath("/auth/signin")
                 .port(TestConfig.SERVER_PORT)
-                .contentType(TestConfig.CONTENT_TYPE_JSON)
-                .body(client)
+                .contentType(TestConfig.CONTENT_TYPE_YML)
+                .accept(TestConfig.CONTENT_TYPE_YML)
+                .body(client, mapper)
                 .when()
                 .post()
                 .then()
                 .statusCode(200)
                 .extract()
                 .body()
-                .as(TokenDTO.class)
+                .as(TokenDTO.class, mapper)
                 .getAccessToken();
 
         specification = new RequestSpecBuilder()
-                .addHeader(TestConfig.HEADER_PARAM_AUTHORIZATION, "Bearer " + acessToken)
+                .addHeader(TestConfig.HEADER_PARAM_AUTHORIZATION, "Bearer " + accessToken)
                 .setBasePath("/api/adress")
                 .setPort(TestConfig.SERVER_PORT)
                 .addFilter(new RequestLoggingFilter(LogDetail.ALL))
@@ -81,20 +92,26 @@ public class AdressControllerJsonTest extends AbstractIntegrationTest {
     public void testCreate() throws JsonMappingException, JsonProcessingException {
         mockPerson();
 
-        var content = given().spec(specification)
-                .contentType(TestConfig.CONTENT_TYPE_JSON)
-                .header(TestConfig.HEADER_PARAM_ORIGIN, TestConfig.ORIGIN_JP)
+        var createdAdressDTO = given().spec(specification)
+                .config(
+                        RestAssuredConfig
+                                .config()
+                                .encoderConfig(EncoderConfig.encoderConfig()
+                                        .encodeContentTypeAs(
+                                                TestConfig.CONTENT_TYPE_YML,
+                                                ContentType.TEXT)))
+                .contentType(TestConfig.CONTENT_TYPE_YML)
+                .accept(TestConfig.CONTENT_TYPE_YML)
                 .pathParam("id", 1L)
-                .body(adressDTO)
+                .body(adressDTO, mapper)
                 .when()
                 .post("{id}")
                 .then()
                 .statusCode(201)
                 .extract()
                 .body()
-                .asString();
+                .as(AdressDTO.class, mapper);
 
-        AdressDTO createdAdressDTO = objectMapper.readValue(content, AdressDTO.class);
         adressDTO = createdAdressDTO;
 
         Assertions.assertNotNull(createdAdressDTO);
@@ -119,34 +136,41 @@ public class AdressControllerJsonTest extends AbstractIntegrationTest {
         adressDTO.setStreet("Adress Changed");
         adressDTO.setCity("Ubatuba");
 
-        var content = given().spec(specification)
-                .contentType(TestConfig.CONTENT_TYPE_JSON)
+        var createdAdressDTO = given().spec(specification)
+                .config(
+                        RestAssuredConfig
+                                .config()
+                                .encoderConfig(EncoderConfig.encoderConfig()
+                                        .encodeContentTypeAs(
+                                                TestConfig.CONTENT_TYPE_YML,
+                                                ContentType.TEXT)))
+                .contentType(TestConfig.CONTENT_TYPE_YML)
+                .accept(TestConfig.CONTENT_TYPE_YML)
                 .pathParam("id", 1L)
-                .body(adressDTO)
+                .body(adressDTO, mapper)
                 .when()
                 .post("{id}")
                 .then()
                 .statusCode(201)
                 .extract()
                 .body()
-                .asString();
+                .as(AdressDTO.class, mapper);
 
-        AdressDTO persistedAdress = objectMapper.readValue(content, AdressDTO.class);
-        adressDTO = persistedAdress;
+        adressDTO = createdAdressDTO;
 
-        Assertions.assertNotNull(persistedAdress);
-        Assertions.assertNotNull(persistedAdress.getId());
-        Assertions.assertNotNull(persistedAdress.getCity());
-        Assertions.assertNotNull(persistedAdress.getStreet());
-        Assertions.assertNotNull(persistedAdress.getState());
-        Assertions.assertNotNull(persistedAdress.getNumber());
-        Assertions.assertNotNull(persistedAdress.getDistrict());
+        Assertions.assertNotNull(createdAdressDTO);
+        Assertions.assertNotNull(createdAdressDTO.getId());
+        Assertions.assertNotNull(createdAdressDTO.getCity());
+        Assertions.assertNotNull(createdAdressDTO.getStreet());
+        Assertions.assertNotNull(createdAdressDTO.getState());
+        Assertions.assertNotNull(createdAdressDTO.getNumber());
+        Assertions.assertNotNull(createdAdressDTO.getDistrict());
 
-        Assertions.assertEquals("Ubatuba", persistedAdress.getCity());
-        Assertions.assertEquals("Adress Changed", persistedAdress.getStreet());
-        Assertions.assertEquals("SP", persistedAdress.getState());
-        Assertions.assertEquals("50", persistedAdress.getNumber());
-        Assertions.assertEquals("Mirim", persistedAdress.getDistrict());
+        Assertions.assertEquals("Ubatuba", createdAdressDTO.getCity());
+        Assertions.assertEquals("Adress Changed", createdAdressDTO.getStreet());
+        Assertions.assertEquals("SP", createdAdressDTO.getState());
+        Assertions.assertEquals("50", createdAdressDTO.getNumber());
+        Assertions.assertEquals("Mirim", createdAdressDTO.getDistrict());
 
     }
 
@@ -155,9 +179,16 @@ public class AdressControllerJsonTest extends AbstractIntegrationTest {
     public void testFindById() throws JsonMappingException, JsonProcessingException {
         mockPerson();
 
-        var content = given().spec(specification)
-                .contentType(TestConfig.CONTENT_TYPE_JSON)
-                .header(TestConfig.HEADER_PARAM_ORIGIN, TestConfig.ORIGIN_JP)
+        var createdAdressDTO = given().spec(specification)
+                .config(
+                        RestAssuredConfig
+                                .config()
+                                .encoderConfig(EncoderConfig.encoderConfig()
+                                        .encodeContentTypeAs(
+                                                TestConfig.CONTENT_TYPE_YML,
+                                                ContentType.TEXT)))
+                .contentType(TestConfig.CONTENT_TYPE_YML)
+                .accept(TestConfig.CONTENT_TYPE_YML)
                 .pathParam("id", adressDTO.getId())
                 .when()
                 .get("{id}")
@@ -165,9 +196,8 @@ public class AdressControllerJsonTest extends AbstractIntegrationTest {
                 .statusCode(200)
                 .extract()
                 .body()
-                .asString();
+                .as(AdressDTO.class, mapper);
 
-        AdressDTO createdAdressDTO = objectMapper.readValue(content, AdressDTO.class);
         adressDTO = createdAdressDTO;
 
         Assertions.assertNotNull(createdAdressDTO);
@@ -191,7 +221,15 @@ public class AdressControllerJsonTest extends AbstractIntegrationTest {
     public void testDelete() throws JsonMappingException, JsonProcessingException {
 
         given().spec(specification)
-                .contentType(TestConfig.CONTENT_TYPE_JSON)
+                .config(
+                        RestAssuredConfig
+                                .config()
+                                .encoderConfig(EncoderConfig.encoderConfig()
+                                        .encodeContentTypeAs(
+                                                TestConfig.CONTENT_TYPE_YML,
+                                                ContentType.TEXT)))
+                .contentType(TestConfig.CONTENT_TYPE_YML)
+                .accept(TestConfig.CONTENT_TYPE_YML)
                 .pathParam("id", adressDTO.getId())
                 .when()
                 .delete("{id}")
@@ -204,17 +242,24 @@ public class AdressControllerJsonTest extends AbstractIntegrationTest {
     public void testFindAll() throws JsonMappingException, JsonProcessingException {
 
         var content = given().spec(specification)
-                .contentType(TestConfig.CONTENT_TYPE_JSON)
+                .config(
+                        RestAssuredConfig
+                                .config()
+                                .encoderConfig(EncoderConfig.encoderConfig()
+                                        .encodeContentTypeAs(
+                                                TestConfig.CONTENT_TYPE_YML,
+                                                ContentType.TEXT)))
+                .contentType(TestConfig.CONTENT_TYPE_YML)
+                .accept(TestConfig.CONTENT_TYPE_YML)
                 .when()
                 .get()
                 .then()
                 .statusCode(200)
                 .extract()
                 .body()
-                .asString();
+                .as(AdressDTO[].class, mapper);
 
-        List<AdressDTO> adress = objectMapper.readValue(content, new TypeReference<List<AdressDTO>>() {
-        });
+        List<AdressDTO> adress = Arrays.asList(content);
 
         AdressDTO foundAdressOne = adress.get(0);
 
