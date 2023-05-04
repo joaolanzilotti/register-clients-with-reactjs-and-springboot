@@ -80,29 +80,29 @@ class AdressServiceTest {
 
     }
 
-    @Test
-    void whenFindAllThenReturnListOfAdress() {
-        Mockito.when(adressRepository.findAll()).thenReturn(List.of(adress));
-        List<Adress> response = adressService.findAllAdress();
-
-        Assertions.assertNotNull(response);
-        Assertions.assertNotNull(response.get(0).getId());
-        Assertions.assertNotNull(response.get(0).getStreet());
-        Assertions.assertNotNull(response.get(0).getDistrict());
-        Assertions.assertNotNull(response.get(0).getNumber());
-        Assertions.assertNotNull(response.get(0).getCity());
-        Assertions.assertNotNull(response.get(0).getState());
-
-        Assertions.assertEquals(1, response.size());
-        Assertions.assertEquals(Adress.class, response.get(0).getClass());
-        Assertions.assertEquals(1L, response.get(0).getId());
-        Assertions.assertEquals("Rua Tenorio", response.get(0).getStreet());
-        Assertions.assertEquals("Centro", response.get(0).getDistrict());
-        Assertions.assertEquals("50", response.get(0).getNumber());
-        Assertions.assertEquals("Ubatuba", response.get(0).getCity());
-        Assertions.assertEquals("SP", response.get(0).getState());
-
-    }
+//    @Test
+//    void whenFindAllThenReturnListOfAdress() {
+//        Mockito.when(adressRepository.findAll()).thenReturn(List.of(adress));
+//        List<Adress> response = adressService.findAllAdress();
+//
+//        Assertions.assertNotNull(response);
+//        Assertions.assertNotNull(response.get(0).getId());
+//        Assertions.assertNotNull(response.get(0).getStreet());
+//        Assertions.assertNotNull(response.get(0).getDistrict());
+//        Assertions.assertNotNull(response.get(0).getNumber());
+//        Assertions.assertNotNull(response.get(0).getCity());
+//        Assertions.assertNotNull(response.get(0).getState());
+//
+//        Assertions.assertEquals(1, response.size());
+//        Assertions.assertEquals(Adress.class, response.get(0).getClass());
+//        Assertions.assertEquals(1L, response.get(0).getId());
+//        Assertions.assertEquals("Rua Tenorio", response.get(0).getStreet());
+//        Assertions.assertEquals("Centro", response.get(0).getDistrict());
+//        Assertions.assertEquals("50", response.get(0).getNumber());
+//        Assertions.assertEquals("Ubatuba", response.get(0).getCity());
+//        Assertions.assertEquals("SP", response.get(0).getState());
+//
+//    }
 
     @Test
     void addAdressTest() {

@@ -18,6 +18,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -55,11 +60,16 @@ public class AdressController {
                     @ApiResponse(description = "Unauthorized", responseCode = "401", content = {@Content}),
                     @ApiResponse(description = "Not Found", responseCode = "404", content = {@Content}),
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = {@Content})})
-    public ResponseEntity<List<AdressDTO>> findAllAdress() {
-        Type listType = new TypeToken<List<AdressDTO>>() {}.getType();
-        List<AdressDTO> listAdressDTO = modelMapper.map(adressService.findAllAdress(), listType);
-        listAdressDTO.stream().forEach(a -> a.add(linkTo(methodOn(AdressController.class).findAdressById(a.getId())).withSelfRel()));
-        return ResponseEntity.ok().body(listAdressDTO);
+    public ResponseEntity<PagedModel<EntityModel<AdressDTO>>> findAllAdress(
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "size", defaultValue = "15") Integer size,
+            @RequestParam(value = "direction", defaultValue = "asc") String direction) {
+        // esta ignorando as Letras Maiuscula ou Minuscula e um operador ternario se ele identificar DESC na Requisicao ele retorna Um Direction.DESC, se nao Direction.ASC
+        Sort.Direction sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;  // Ordenando por name
+        //Usando o Page para fazer pesquisa por paginacao
+        Pageable pageable = PageRequest.of(page,size, Sort.by(sortDirection, "street"));
+
+        return ResponseEntity.ok(adressService.findAllAdress(pageable));
     }
 
     //@CrossOrigin(origins = "http://localhost:8080")

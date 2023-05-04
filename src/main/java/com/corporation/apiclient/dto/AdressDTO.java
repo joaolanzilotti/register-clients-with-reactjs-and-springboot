@@ -19,7 +19,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AdressDTO extends RepresentationModel<ClientDTO> implements Serializable {
+public class AdressDTO extends RepresentationModel<AdressDTO> implements Serializable {
 
     private Long id;
     private String street;
@@ -27,5 +27,6 @@ public class AdressDTO extends RepresentationModel<ClientDTO> implements Seriali
     private String number;
     private String city;
     private String state;
+    private List<Client> clientes;
 
 }
