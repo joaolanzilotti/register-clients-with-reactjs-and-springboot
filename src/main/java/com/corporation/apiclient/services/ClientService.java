@@ -3,6 +3,7 @@ package com.corporation.apiclient.services;
 import com.corporation.apiclient.controller.AdressController;
 import com.corporation.apiclient.controller.ClientController;
 import com.corporation.apiclient.entities.Adress;
+import java.util.logging.Logger;
 import com.corporation.apiclient.entities.Client;
 import com.corporation.apiclient.dto.ClientDTO;
 import com.corporation.apiclient.exceptions.DataIntegratyViolationException;
@@ -14,6 +15,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 import com.google.gson.reflect.TypeToken;
 
@@ -30,7 +35,10 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Service
 public class ClientService implements Serializable {
 
-    private java.util.logging.Logger logger = Logger.getLogger(ClientService.class.getName());
+    @Autowired
+    private PagedResourcesAssembler<ClientDTO> assembler;
+
+    private Logger logger = Logger.getLogger(ClientService.class.getName());
 
     @Autowired
     private ClientRepository clientRepository;
@@ -38,11 +46,22 @@ public class ClientService implements Serializable {
     @Autowired
     private ModelMapper modelMapper;
 
-    public Page<Client> findAll(Pageable pageable) {
-        logger.info("Finding All Clients");
-        Page<Client> listClient = clientRepository.findAll(pageable);
+    public PagedModel<EntityModel<ClientDTO>> findAll(Pageable pageable) {
+        Page<Client> clientsPage = clientRepository.findAll(pageable);
 
-        return listClient;
+        Page<ClientDTO> clientDTOPage = clientsPage.map(p -> modelMapper.map(p, ClientDTO.class));
+        clientDTOPage.map(
+                p -> p.add(
+                        linkTo(methodOn(ClientController.class)
+                                .findClientById(p.getId())).withSelfRel()));
+
+        Link link = linkTo(
+                methodOn(ClientController.class)
+                        .findAll(pageable.getPageNumber(),
+                                pageable.getPageSize(),
+                                "asc")).withSelfRel();
+
+        return assembler.toModel(clientDTOPage, link);
 
     }
 

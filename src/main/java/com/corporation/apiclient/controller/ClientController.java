@@ -18,6 +18,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -34,6 +38,9 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class ClientController {
 
     @Autowired
+    private PagedResourcesAssembler<ClientDTO> assembler;
+
+    @Autowired
     private ClientService clientService;
 
     @Autowired
@@ -48,7 +55,7 @@ public class ClientController {
                     @ApiResponse(description = "Unauthorized", responseCode = "401", content = {@Content}),
                     @ApiResponse(description = "Not Found", responseCode = "404", content = {@Content}),
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = {@Content})})
-    public ResponseEntity<Page<ClientDTO>> findAll(
+    public ResponseEntity<PagedModel<EntityModel<ClientDTO>>> findAll(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "15") Integer size,
             @RequestParam(value = "direction", defaultValue = "asc") String direction) {
@@ -56,11 +63,8 @@ public class ClientController {
         Direction sortDirection = "desc".equalsIgnoreCase(direction) ? Direction.DESC : Direction.ASC;  // Ordenando por name
         //Usando o Page para fazer pesquisa por paginacao
         Pageable pageable = PageRequest.of(page,size, Sort.by(sortDirection, "name"));
-        Page<Client> clientPage = clientService.findAll(pageable);
-        Page<ClientDTO> clientDTOPage = clientPage.map(c -> modelMapper.map(c, ClientDTO.class));
-        clientDTOPage.map(c -> c.add(linkTo(methodOn(ClientController.class).findClientById(c.getId())).withSelfRel().withSelfRel()));
 
-        return ResponseEntity.ok().body(clientDTOPage);
+        return ResponseEntity.ok(clientService.findAll(pageable));
     }
 
     //@CrossOrigin(origins = "http://localhost:8080")
