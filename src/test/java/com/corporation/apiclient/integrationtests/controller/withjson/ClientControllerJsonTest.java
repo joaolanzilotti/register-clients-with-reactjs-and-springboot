@@ -373,6 +373,32 @@ public class ClientControllerJsonTest extends AbstractIntegrationTest {
         Assertions.assertEquals("1219053380", foundClientFive.getCellphone());
     }
 
+    @Test
+    @Order(8)
+    public void testHATEOAS() throws JsonMappingException, JsonProcessingException {
+
+        var content = given().spec(specification)
+                .contentType(TestConfig.CONTENT_TYPE_JSON)
+                .queryParams("page", 0,"size", 15, "direction", "asc")
+                .when()
+                .get()
+                .then()
+                .statusCode(200)
+                .extract()
+                .body()
+                .asString();
+
+        assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/clients/277\"}}}"));
+        assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/clients/203\"}}}"));
+        assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/clients/150\"}}}"));
+
+        assertTrue(content.contains("{\"first\":{\"href\":\"http://localhost:8888/api/clients?direction=asc&page=0&size=15&sort=name,asc\"}"));
+        assertTrue(content.contains("\"self\":{\"href\":\"http://localhost:8888/api/clients?page=0&size=15&direction=asc\"}"));
+        assertTrue(content.contains("\"next\":{\"href\":\"http://localhost:8888/api/clients?direction=asc&page=1&size=15&sort=name,asc\"}"));
+        assertTrue(content.contains("\"last\":{\"href\":\"http://localhost:8888/api/clients?direction=asc&page=33&size=15&sort=name,asc\"}}"));
+
+    }
+
     private void mockPerson() {
         clientDTO.setName("Joao");
         clientDTO.setEmail("joao@gmail.com");

@@ -28,6 +28,7 @@ import java.util.Date;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -371,6 +372,33 @@ public class ClientControllerXMLTest extends AbstractIntegrationTest {
         Assertions.assertEquals("2336900245", foundClientFive.getCpf());
         Assertions.assertEquals("7378050129", foundClientFive.getRg());
         Assertions.assertEquals("1219053380", foundClientFive.getCellphone());
+    }
+
+    @Test
+    @Order(8)
+    public void testHATEOAS() throws JsonMappingException, JsonProcessingException {
+
+        var content = given().spec(specification)
+                .contentType(TestConfig.CONTENT_TYPE_XML)
+                .accept(TestConfig.CONTENT_TYPE_XML)
+                .queryParams("page", 0,"size", 15, "direction", "asc")
+                .when()
+                .get()
+                .then()
+                .statusCode(200)
+                .extract()
+                .body()
+                .asString();
+
+        assertTrue(content.contains("<links><rel>self</rel><href>http://localhost:8888/api/clients/203</href></links>"));
+        assertTrue(content.contains("<links><rel>self</rel><href>http://localhost:8888/api/clients/277</href></links>"));
+        assertTrue(content.contains("<links><rel>self</rel><href>http://localhost:8888/api/clients/150</href></links>"));
+
+        assertTrue(content.contains("<links><rel>first</rel><href>http://localhost:8888/api/clients?direction=asc&amp;page=0&amp;size=15&amp;sort=name,asc</href></links>"));
+        assertTrue(content.contains("<links><rel>self</rel><href>http://localhost:8888/api/clients?page=0&amp;size=15&amp;direction=asc</href></links>"));
+        assertTrue(content.contains("<links><rel>next</rel><href>http://localhost:8888/api/clients?direction=asc&amp;page=1&amp;size=15&amp;sort=name,asc</href></links>"));
+        assertTrue(content.contains("<links><rel>last</rel><href>http://localhost:8888/api/clients?direction=asc&amp;page=33&amp;size=15&amp;sort=name,asc</href></links>"));
+
     }
 
     private void mockPerson() {
