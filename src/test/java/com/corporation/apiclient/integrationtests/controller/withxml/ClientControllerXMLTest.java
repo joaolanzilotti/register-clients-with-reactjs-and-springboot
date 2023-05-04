@@ -364,13 +364,13 @@ public class ClientControllerXMLTest extends AbstractIntegrationTest {
         Assertions.assertNotNull(foundClientFive.getPassword());
         Assertions.assertNotNull(foundClientFive.getBirthDay());
 
-        Assertions.assertEquals(435 , foundClientFive.getId());
-        Assertions.assertEquals("pancellbw@pagesperso-orange.fr", foundClientFive.getEmail());
-        Assertions.assertEquals("Pen", foundClientFive.getName());
-        Assertions.assertEquals("167dCJE", foundClientFive.getPassword());
-        Assertions.assertEquals("7153222106", foundClientFive.getCpf());
-        Assertions.assertEquals("6243627226", foundClientFive.getRg());
-        Assertions.assertEquals("7739998025", foundClientFive.getCellphone());
+        Assertions.assertEquals(50 , foundClientFive.getId());
+        Assertions.assertEquals("pluck17@telegraph.co.uk", foundClientFive.getEmail());
+        Assertions.assertEquals("Peyton", foundClientFive.getName());
+        Assertions.assertEquals("d5YgUCBEpY", foundClientFive.getPassword());
+        Assertions.assertEquals("2336900245", foundClientFive.getCpf());
+        Assertions.assertEquals("7378050129", foundClientFive.getRg());
+        Assertions.assertEquals("1219053380", foundClientFive.getCellphone());
     }
 
     private void mockPerson() {
