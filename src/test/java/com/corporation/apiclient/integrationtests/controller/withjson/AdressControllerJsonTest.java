@@ -27,6 +27,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -236,6 +237,29 @@ public class AdressControllerJsonTest extends AbstractIntegrationTest {
         Assertions.assertEquals("SP", foundAdressOne.getState());
         Assertions.assertEquals("50", foundAdressOne.getNumber());
         Assertions.assertEquals("Mirim", foundAdressOne.getDistrict());
+    }
+
+    @Test
+    @Order(6)
+    public void testHATEOAS() throws JsonMappingException, JsonProcessingException {
+
+        var content = given().spec(specification)
+                .contentType(TestConfig.CONTENT_TYPE_JSON)
+                .queryParams("page", 0,"size", 15, "direction", "asc")
+                .when()
+                .get()
+                .then()
+                .statusCode(200)
+                .extract()
+                .body()
+                .asString();
+
+        assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/adress/2\"}}}"));
+        assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/adress/3\"}}}"));
+        assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/adress/4\"}}}"));
+
+        assertTrue(content.contains("\"self\":{\"href\":\"http://localhost:8888/api/adress?page=0&size=15&direction=asc\"}"));
+
     }
 
     private void mockPerson() {
