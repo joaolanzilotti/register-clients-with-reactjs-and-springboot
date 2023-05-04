@@ -67,6 +67,27 @@ public class ClientController {
         return ResponseEntity.ok(clientService.findAll(pageable));
     }
 
+    @GetMapping(value = "/findClientByName/{name}",produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
+    @Operation(summary = "Find Clients By Name", description = "Find Clients By Name", tags = {"Client"},
+            responses = {
+                    @ApiResponse(description = "Success", responseCode = "200", content = {@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ClientDTO.class)))}),
+                    @ApiResponse(description = "Bad Request", responseCode = "400", content = {@Content}),
+                    @ApiResponse(description = "Unauthorized", responseCode = "401", content = {@Content}),
+                    @ApiResponse(description = "Not Found", responseCode = "404", content = {@Content}),
+                    @ApiResponse(description = "Internal Server Error", responseCode = "500", content = {@Content})})
+    public ResponseEntity<PagedModel<EntityModel<ClientDTO>>> findClientByName(
+            @PathVariable String name,
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "size", defaultValue = "15") Integer size,
+            @RequestParam(value = "direction", defaultValue = "asc") String direction) {
+// esta ignorando as Letras Maiuscula ou Minuscula e um operador ternario se ele identificar DESC na Requisicao ele retorna Um Direction.DESC, se nao Direction.ASC
+        Direction sortDirection = "desc".equalsIgnoreCase(direction) ? Direction.DESC : Direction.ASC;  // Ordenando por name
+        //Usando o Page para fazer pesquisa por paginacao
+        Pageable pageable = PageRequest.of(page,size, Sort.by(sortDirection, "name"));
+
+        return ResponseEntity.ok(clientService.findClientByName(name,pageable));
+    }
+
     //@CrossOrigin(origins = "http://localhost:8080")
     @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
     @Operation(summary = "Finds a Client", description = "Finds a Client", tags = {"Client"},

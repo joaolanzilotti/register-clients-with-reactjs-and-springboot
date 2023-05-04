@@ -46,6 +46,25 @@ public class ClientService implements Serializable {
     @Autowired
     private ModelMapper modelMapper;
 
+    public PagedModel<EntityModel<ClientDTO>> findClientByName(String name,Pageable pageable) {
+        Page<Client> clientsPage = clientRepository.findClientsByName(name,pageable);
+
+        Page<ClientDTO> clientDTOPage = clientsPage.map(p -> modelMapper.map(p, ClientDTO.class));
+        clientDTOPage.map(
+                p -> p.add(
+                        linkTo(methodOn(ClientController.class)
+                                .findClientById(p.getId())).withSelfRel()));
+
+        Link link = linkTo(
+                methodOn(ClientController.class)
+                        .findAll(pageable.getPageNumber(),
+                                pageable.getPageSize(),
+                                "asc")).withSelfRel();
+
+        return assembler.toModel(clientDTOPage, link);   // Usando Assembler para Colocar Links das Pages, Sizes e Direction
+
+    }
+
     public PagedModel<EntityModel<ClientDTO>> findAll(Pageable pageable) {
         Page<Client> clientsPage = clientRepository.findAll(pageable);
 
@@ -61,7 +80,7 @@ public class ClientService implements Serializable {
                                 pageable.getPageSize(),
                                 "asc")).withSelfRel();
 
-        return assembler.toModel(clientDTOPage, link);
+        return assembler.toModel(clientDTOPage, link);   // Usando Assembler para Colocar Links das Pages, Sizes e Direction
 
     }
 
