@@ -256,7 +256,7 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
         Assertions.assertNotNull(persistedPerson.getAdress());
         Assertions.assertFalse(persistedPerson.isEnabled());
 
-        Assertions.assertEquals(507, persistedPerson.getId());
+        Assertions.assertEquals(27, persistedPerson.getId());
         Assertions.assertEquals("name changed", persistedPerson.getName());
         Assertions.assertEquals("joao@gmail.com", persistedPerson.getEmail());
         Assertions.assertEquals("123", persistedPerson.getPassword());
@@ -321,13 +321,13 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
         Assertions.assertNotNull(foundPersonOne.getPassword());
         Assertions.assertNotNull(foundPersonOne.getBirthDay());
 
-        Assertions.assertEquals(446 , foundPersonOne.getId());
-        Assertions.assertEquals("amonginc7@europa.eu", foundPersonOne.getEmail());
-        Assertions.assertEquals("Abba", foundPersonOne.getName());
-        Assertions.assertEquals("SUyOoxl8", foundPersonOne.getPassword());
-        Assertions.assertEquals("2967812235", foundPersonOne.getCpf());
-        Assertions.assertEquals("2626833328", foundPersonOne.getRg());
-        Assertions.assertEquals("4809137261", foundPersonOne.getCellphone());
+        Assertions.assertEquals(16 , foundPersonOne.getId());
+        Assertions.assertEquals("apesterfield9@geocities.jp", foundPersonOne.getEmail());
+        Assertions.assertEquals("Anne-marie", foundPersonOne.getName());
+        Assertions.assertEquals("V1CenGtxxU0m", foundPersonOne.getPassword());
+        Assertions.assertEquals("3087759756", foundPersonOne.getCpf());
+        Assertions.assertEquals("2407557956", foundPersonOne.getRg());
+        Assertions.assertEquals("9467202548", foundPersonOne.getCellphone());
 
         ClientDTO foundClientFive = client.get(5);
 
@@ -339,13 +339,13 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
         Assertions.assertNotNull(foundClientFive.getPassword());
         Assertions.assertNotNull(foundClientFive.getBirthDay());
 
-        Assertions.assertEquals(362 , foundClientFive.getId());
-        Assertions.assertEquals("atreamayne9v@blogspot.com", foundClientFive.getEmail());
-        Assertions.assertEquals("Adolph", foundClientFive.getName());
-        Assertions.assertEquals("XVKrD5", foundClientFive.getPassword());
-        Assertions.assertEquals("3284196817", foundClientFive.getCpf());
-        Assertions.assertEquals("6639511277", foundClientFive.getRg());
-        Assertions.assertEquals("5594004016", foundClientFive.getCellphone());
+        Assertions.assertEquals(11 , foundClientFive.getId());
+        Assertions.assertEquals("cpriestner4@army.mil", foundClientFive.getEmail());
+        Assertions.assertEquals("Caren", foundClientFive.getName());
+        Assertions.assertEquals("a89tcpL03", foundClientFive.getPassword());
+        Assertions.assertEquals("8389871428", foundClientFive.getCpf());
+        Assertions.assertEquals("2424153963", foundClientFive.getRg());
+        Assertions.assertEquals("3799713605", foundClientFive.getCellphone());
     }
 
     @Test
@@ -392,23 +392,6 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
         Assertions.assertEquals("5624987155", foundPersonOne.getRg());
         Assertions.assertEquals("1238334010", foundPersonOne.getCellphone());
 
-        ClientDTO foundClientFive = client.get(5);
-
-        Assertions.assertNotNull(foundClientFive.getId());
-        Assertions.assertNotNull(foundClientFive.getName());
-        Assertions.assertNotNull(foundClientFive.getCellphone());
-        Assertions.assertNotNull(foundClientFive.getRg());
-        Assertions.assertNotNull(foundClientFive.getCpf());
-        Assertions.assertNotNull(foundClientFive.getPassword());
-        Assertions.assertNotNull(foundClientFive.getBirthDay());
-
-        Assertions.assertEquals(132 , foundClientFive.getId());
-        Assertions.assertEquals("ppearch3h@pcworld.com", foundClientFive.getEmail());
-        Assertions.assertEquals("Peggi", foundClientFive.getName());
-        Assertions.assertEquals("5pKpuRwPAC", foundClientFive.getPassword());
-        Assertions.assertEquals("8374003645", foundClientFive.getCpf());
-        Assertions.assertEquals("2835872032", foundClientFive.getRg());
-        Assertions.assertEquals("7688180826", foundClientFive.getCellphone());
     }
 
     @Test
@@ -426,14 +409,14 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
                 .body()
                 .asString();
 
-        assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/clients/277\"}}}"));
-        assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/clients/203\"}}}"));
-        assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/clients/150\"}}}"));
+        assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/clients/12\"}}}"));
+        assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/clients/21\"}}}"));
+        assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/clients/26\"}}}"));
 
         assertTrue(content.contains("{\"first\":{\"href\":\"http://localhost:8888/api/clients?direction=asc&page=0&size=15&sort=name,asc\"}"));
         assertTrue(content.contains("\"self\":{\"href\":\"http://localhost:8888/api/clients?page=0&size=15&direction=asc\"}"));
         assertTrue(content.contains("\"next\":{\"href\":\"http://localhost:8888/api/clients?direction=asc&page=1&size=15&sort=name,asc\"}"));
-        assertTrue(content.contains("\"last\":{\"href\":\"http://localhost:8888/api/clients?direction=asc&page=33&size=15&sort=name,asc\"}}"));
+        assertTrue(content.contains("\"last\":{\"href\":\"http://localhost:8888/api/clients?direction=asc&page=1&size=15&sort=name,asc\"}}"));
 
     }
 

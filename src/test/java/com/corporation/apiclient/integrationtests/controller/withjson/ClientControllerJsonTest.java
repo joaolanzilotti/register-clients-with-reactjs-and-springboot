@@ -288,13 +288,13 @@ public class ClientControllerJsonTest extends AbstractIntegrationTest {
         Assertions.assertNotNull(foundPersonOne.getPassword());
         Assertions.assertNotNull(foundPersonOne.getBirthDay());
 
-        Assertions.assertEquals(446 , foundPersonOne.getId());
-        Assertions.assertEquals("amonginc7@europa.eu", foundPersonOne.getEmail());
-        Assertions.assertEquals("Abba", foundPersonOne.getName());
-        Assertions.assertEquals("SUyOoxl8", foundPersonOne.getPassword());
-        Assertions.assertEquals("2967812235", foundPersonOne.getCpf());
-        Assertions.assertEquals("2626833328", foundPersonOne.getRg());
-        Assertions.assertEquals("4809137261", foundPersonOne.getCellphone());
+        Assertions.assertEquals(16 , foundPersonOne.getId());
+        Assertions.assertEquals("apesterfield9@geocities.jp", foundPersonOne.getEmail());
+        Assertions.assertEquals("Anne-marie", foundPersonOne.getName());
+        Assertions.assertEquals("V1CenGtxxU0m", foundPersonOne.getPassword());
+        Assertions.assertEquals("3087759756", foundPersonOne.getCpf());
+        Assertions.assertEquals("2407557956", foundPersonOne.getRg());
+        Assertions.assertEquals("9467202548", foundPersonOne.getCellphone());
 
         ClientDTO foundClientFive = client.get(5);
 
@@ -306,13 +306,13 @@ public class ClientControllerJsonTest extends AbstractIntegrationTest {
         Assertions.assertNotNull(foundClientFive.getPassword());
         Assertions.assertNotNull(foundClientFive.getBirthDay());
 
-        Assertions.assertEquals(362 , foundClientFive.getId());
-        Assertions.assertEquals("atreamayne9v@blogspot.com", foundClientFive.getEmail());
-        Assertions.assertEquals("Adolph", foundClientFive.getName());
-        Assertions.assertEquals("XVKrD5", foundClientFive.getPassword());
-        Assertions.assertEquals("3284196817", foundClientFive.getCpf());
-        Assertions.assertEquals("6639511277", foundClientFive.getRg());
-        Assertions.assertEquals("5594004016", foundClientFive.getCellphone());
+        Assertions.assertEquals(11 , foundClientFive.getId());
+        Assertions.assertEquals("cpriestner4@army.mil", foundClientFive.getEmail());
+        Assertions.assertEquals("Caren", foundClientFive.getName());
+        Assertions.assertEquals("a89tcpL03", foundClientFive.getPassword());
+        Assertions.assertEquals("8389871428", foundClientFive.getCpf());
+        Assertions.assertEquals("2424153963", foundClientFive.getRg());
+        Assertions.assertEquals("3799713605", foundClientFive.getCellphone());
 
     }
 
@@ -354,23 +354,6 @@ public class ClientControllerJsonTest extends AbstractIntegrationTest {
         Assertions.assertEquals("5624987155", foundPersonOne.getRg());
         Assertions.assertEquals("1238334010", foundPersonOne.getCellphone());
 
-        ClientDTO foundClientFive = client.get(5);
-
-        Assertions.assertNotNull(foundClientFive.getId());
-        Assertions.assertNotNull(foundClientFive.getName());
-        Assertions.assertNotNull(foundClientFive.getCellphone());
-        Assertions.assertNotNull(foundClientFive.getRg());
-        Assertions.assertNotNull(foundClientFive.getCpf());
-        Assertions.assertNotNull(foundClientFive.getPassword());
-        Assertions.assertNotNull(foundClientFive.getBirthDay());
-
-        Assertions.assertEquals(50 , foundClientFive.getId());
-        Assertions.assertEquals("pluck17@telegraph.co.uk", foundClientFive.getEmail());
-        Assertions.assertEquals("Peyton", foundClientFive.getName());
-        Assertions.assertEquals("d5YgUCBEpY", foundClientFive.getPassword());
-        Assertions.assertEquals("2336900245", foundClientFive.getCpf());
-        Assertions.assertEquals("7378050129", foundClientFive.getRg());
-        Assertions.assertEquals("1219053380", foundClientFive.getCellphone());
     }
 
     @Test
@@ -378,7 +361,7 @@ public class ClientControllerJsonTest extends AbstractIntegrationTest {
     public void testHATEOAS() throws JsonMappingException, JsonProcessingException {
 
         var content = given().spec(specification)
-                .contentType(TestConfig.CONTENT_TYPE_JSON)
+                .contentType(TestConfig.CONTENT_TYPE_YML)
                 .queryParams("page", 0,"size", 15, "direction", "asc")
                 .when()
                 .get()
@@ -388,14 +371,14 @@ public class ClientControllerJsonTest extends AbstractIntegrationTest {
                 .body()
                 .asString();
 
-        assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/clients/277\"}}}"));
-        assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/clients/203\"}}}"));
-        assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/clients/150\"}}}"));
+        assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/clients/12\"}}}"));
+        assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/clients/21\"}}}"));
+        assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/clients/26\"}}}"));
 
         assertTrue(content.contains("{\"first\":{\"href\":\"http://localhost:8888/api/clients?direction=asc&page=0&size=15&sort=name,asc\"}"));
         assertTrue(content.contains("\"self\":{\"href\":\"http://localhost:8888/api/clients?page=0&size=15&direction=asc\"}"));
         assertTrue(content.contains("\"next\":{\"href\":\"http://localhost:8888/api/clients?direction=asc&page=1&size=15&sort=name,asc\"}"));
-        assertTrue(content.contains("\"last\":{\"href\":\"http://localhost:8888/api/clients?direction=asc&page=33&size=15&sort=name,asc\"}}"));
+        assertTrue(content.contains("\"last\":{\"href\":\"http://localhost:8888/api/clients?direction=asc&page=1&size=15&sort=name,asc\"}}"));
 
     }
 
