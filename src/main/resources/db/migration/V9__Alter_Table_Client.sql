@@ -1,0 +1,1 @@
+﻿ALTER TABLE `client` add column `enabled` BIT(1) DEFAULT b'1' AFTER `adress_id`;
