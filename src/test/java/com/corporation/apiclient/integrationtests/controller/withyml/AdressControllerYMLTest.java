@@ -4,6 +4,7 @@ import com.corporation.apiclient.config.TestConfig;
 import com.corporation.apiclient.integrationtests.controller.withyml.mapper.YMLMapper;
 import com.corporation.apiclient.integrationtests.dto.AdressDTO;
 import com.corporation.apiclient.integrationtests.dto.ClientDTO;
+import com.corporation.apiclient.integrationtests.dto.pagedmodels.PagedModelAdress;
 import com.corporation.apiclient.integrationtests.dto.security.AccountCredentialsDTO;
 import com.corporation.apiclient.integrationtests.dto.security.TokenDTO;
 import com.corporation.apiclient.integrationtests.testcontainers.AbstractIntegrationTest;
@@ -257,9 +258,9 @@ public class AdressControllerYMLTest extends AbstractIntegrationTest {
                 .statusCode(200)
                 .extract()
                 .body()
-                .as(AdressDTO[].class, mapper);
+                .as(PagedModelAdress.class, mapper);
 
-        List<AdressDTO> adress = Arrays.asList(content);
+        List<AdressDTO> adress = content.getContent();
 
         AdressDTO foundAdressOne = adress.get(0);
 

@@ -2,6 +2,8 @@ package com.corporation.apiclient.integrationtests.controller.withxml;
 
 import com.corporation.apiclient.config.TestConfig;
 import com.corporation.apiclient.integrationtests.dto.AdressDTO;
+import com.corporation.apiclient.integrationtests.dto.ClientDTO;
+import com.corporation.apiclient.integrationtests.dto.pagedmodels.PagedModelAdress;
 import com.corporation.apiclient.integrationtests.dto.security.AccountCredentialsDTO;
 import com.corporation.apiclient.integrationtests.dto.security.TokenDTO;
 import com.corporation.apiclient.integrationtests.testcontainers.AbstractIntegrationTest;
@@ -10,6 +12,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.filter.log.RequestLoggingFilter;
@@ -31,7 +34,7 @@ import static io.restassured.RestAssured.given;
 public class AdressControllerXMLTest extends AbstractIntegrationTest {
 
     private static RequestSpecification specification;
-    private static ObjectMapper objectMapper;
+    private static XmlMapper objectMapper;
 
     private static AdressDTO adressDTO;
 
@@ -40,7 +43,7 @@ public class AdressControllerXMLTest extends AbstractIntegrationTest {
 
     @BeforeAll
     public static void setup() {
-        objectMapper = new ObjectMapper();
+        objectMapper = new XmlMapper();
         objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         adressDTO = new AdressDTO();
     }
@@ -83,7 +86,7 @@ public class AdressControllerXMLTest extends AbstractIntegrationTest {
 
         var content = given().spec(specification)
                 .contentType(TestConfig.CONTENT_TYPE_XML)
-                .header(TestConfig.HEADER_PARAM_ORIGIN, TestConfig.ORIGIN_JP)
+                .accept(TestConfig.CONTENT_TYPE_XML)
                 .pathParam("id", 6L)
                 .body(adressDTO)
                 .when()
@@ -121,6 +124,7 @@ public class AdressControllerXMLTest extends AbstractIntegrationTest {
 
         var content = given().spec(specification)
                 .contentType(TestConfig.CONTENT_TYPE_XML)
+                .accept(TestConfig.CONTENT_TYPE_XML)
                 .pathParam("id", 6L)
                 .body(adressDTO)
                 .when()
@@ -157,7 +161,7 @@ public class AdressControllerXMLTest extends AbstractIntegrationTest {
 
         var content = given().spec(specification)
                 .contentType(TestConfig.CONTENT_TYPE_XML)
-                .header(TestConfig.HEADER_PARAM_ORIGIN, TestConfig.ORIGIN_JP)
+                .accept(TestConfig.CONTENT_TYPE_XML)
                 .pathParam("id", adressDTO.getId())
                 .when()
                 .get("{id}")
@@ -192,6 +196,7 @@ public class AdressControllerXMLTest extends AbstractIntegrationTest {
 
         given().spec(specification)
                 .contentType(TestConfig.CONTENT_TYPE_XML)
+                .accept(TestConfig.CONTENT_TYPE_XML)
                 .pathParam("id", adressDTO.getId())
                 .when()
                 .delete("{id}")
@@ -205,6 +210,7 @@ public class AdressControllerXMLTest extends AbstractIntegrationTest {
 
         var content = given().spec(specification)
                 .contentType(TestConfig.CONTENT_TYPE_XML)
+                .accept(TestConfig.CONTENT_TYPE_XML)
                 .when()
                 .get()
                 .then()
@@ -213,10 +219,10 @@ public class AdressControllerXMLTest extends AbstractIntegrationTest {
                 .body()
                 .asString();
 
-        List<AdressDTO> adress = objectMapper.readValue(content, new TypeReference<List<AdressDTO>>() {
-        });
+        PagedModelAdress pagedModelAdress = objectMapper.readValue(content, PagedModelAdress.class);
+        List<AdressDTO> client = pagedModelAdress.getContent();
 
-        AdressDTO foundAdressOne = adress.get(0);
+        AdressDTO foundAdressOne = client.get(0);
 
         Assertions.assertNotNull(foundAdressOne);
         Assertions.assertNotNull(foundAdressOne.getId());

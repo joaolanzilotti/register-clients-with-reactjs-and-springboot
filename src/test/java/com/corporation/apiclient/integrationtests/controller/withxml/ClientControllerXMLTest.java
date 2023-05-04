@@ -3,14 +3,16 @@ package com.corporation.apiclient.integrationtests.controller.withxml;
 import com.corporation.apiclient.config.TestConfig;
 import com.corporation.apiclient.entities.Adress;
 import com.corporation.apiclient.integrationtests.dto.ClientDTO;
+import com.corporation.apiclient.integrationtests.dto.pagedmodels.PagedModelClient;
 import com.corporation.apiclient.integrationtests.dto.security.AccountCredentialsDTO;
 import com.corporation.apiclient.integrationtests.dto.security.TokenDTO;
 import com.corporation.apiclient.integrationtests.testcontainers.AbstractIntegrationTest;
+import com.corporation.apiclient.integrationtests.dto.wrappers.WrapperClientDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.filter.log.RequestLoggingFilter;
@@ -33,7 +35,7 @@ import static io.restassured.RestAssured.given;
 public class ClientControllerXMLTest extends AbstractIntegrationTest {
 
     private static RequestSpecification specification;
-    private static ObjectMapper objectMapper;
+    private static XmlMapper objectMapper;
 
     private static ClientDTO clientDTO;
 
@@ -43,7 +45,7 @@ public class ClientControllerXMLTest extends AbstractIntegrationTest {
 
     @BeforeAll
     public static void setup() {
-        objectMapper = new ObjectMapper();
+        objectMapper = new XmlMapper();
         objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         clientDTO = new ClientDTO();
     }
@@ -86,7 +88,7 @@ public class ClientControllerXMLTest extends AbstractIntegrationTest {
 
         var content = given().spec(specification)
                 .contentType(TestConfig.CONTENT_TYPE_XML)
-                .header(TestConfig.HEADER_PARAM_ORIGIN, TestConfig.ORIGIN_JP)
+                .accept(TestConfig.CONTENT_TYPE_XML)
                 .body(clientDTO)
                 .when()
                 .post()
@@ -128,6 +130,7 @@ public class ClientControllerXMLTest extends AbstractIntegrationTest {
 
         var content = given().spec(specification)
                 .contentType(TestConfig.CONTENT_TYPE_XML)
+                .accept(TestConfig.CONTENT_TYPE_XML)
                 .body(clientDTO)
                 .when()
                 .post()
@@ -167,7 +170,7 @@ public class ClientControllerXMLTest extends AbstractIntegrationTest {
 
         var content = given().spec(specification)
                 .contentType(TestConfig.CONTENT_TYPE_XML)
-                .header(TestConfig.HEADER_PARAM_ORIGIN, TestConfig.ORIGIN_JP)
+                .accept(TestConfig.CONTENT_TYPE_XML)
                 .pathParam("id", clientDTO.getId())
                 .when()
                 .patch("{id}")
@@ -208,7 +211,7 @@ public class ClientControllerXMLTest extends AbstractIntegrationTest {
 
         var content = given().spec(specification)
                 .contentType(TestConfig.CONTENT_TYPE_XML)
-                .header(TestConfig.HEADER_PARAM_ORIGIN, TestConfig.ORIGIN_JP)
+                .accept(TestConfig.CONTENT_TYPE_XML)
                 .pathParam("id", clientDTO.getId())
                 .when()
                 .get("{id}")
@@ -248,6 +251,7 @@ public class ClientControllerXMLTest extends AbstractIntegrationTest {
 
         given().spec(specification)
                 .contentType(TestConfig.CONTENT_TYPE_XML)
+                .accept(TestConfig.CONTENT_TYPE_XML)
                 .pathParam("id", clientDTO.getId())
                 .when()
                 .delete("{id}")
@@ -261,6 +265,8 @@ public class ClientControllerXMLTest extends AbstractIntegrationTest {
 
         var content = given().spec(specification)
                 .contentType(TestConfig.CONTENT_TYPE_XML)
+                .accept(TestConfig.CONTENT_TYPE_XML)
+                .queryParams("page", 0,"size", 15, "direction", "asc")
                 .when()
                 .get()
                 .then()
@@ -269,10 +275,10 @@ public class ClientControllerXMLTest extends AbstractIntegrationTest {
                 .body()
                 .asString();
 
-        List<ClientDTO> people = objectMapper.readValue(content, new TypeReference<List<ClientDTO>>() {
-        });
+        PagedModelClient pagedModelClient = objectMapper.readValue(content, PagedModelClient.class);
+        List<ClientDTO> client = pagedModelClient.getContent();
 
-        ClientDTO foundPersonOne = people.get(0);
+        ClientDTO foundPersonOne = client.get(0);
 
         Assertions.assertNotNull(foundPersonOne.getId());
         Assertions.assertNotNull(foundPersonOne.getName());
@@ -282,12 +288,31 @@ public class ClientControllerXMLTest extends AbstractIntegrationTest {
         Assertions.assertNotNull(foundPersonOne.getPassword());
         Assertions.assertNotNull(foundPersonOne.getBirthDay());
 
-        Assertions.assertEquals("pedro545664564@gmail.com", foundPersonOne.getEmail());
-        Assertions.assertEquals("Pedro", foundPersonOne.getName());
-        Assertions.assertEquals("9180", foundPersonOne.getPassword());
-        Assertions.assertEquals("09113155865", foundPersonOne.getCpf());
-        Assertions.assertEquals("5624987155", foundPersonOne.getRg());
-        Assertions.assertEquals("1238334010", foundPersonOne.getCellphone());
+        Assertions.assertEquals(446 , foundPersonOne.getId());
+        Assertions.assertEquals("amonginc7@europa.eu", foundPersonOne.getEmail());
+        Assertions.assertEquals("Abba", foundPersonOne.getName());
+        Assertions.assertEquals("SUyOoxl8", foundPersonOne.getPassword());
+        Assertions.assertEquals("2967812235", foundPersonOne.getCpf());
+        Assertions.assertEquals("2626833328", foundPersonOne.getRg());
+        Assertions.assertEquals("4809137261", foundPersonOne.getCellphone());
+
+        ClientDTO foundClientFive = client.get(5);
+
+        Assertions.assertNotNull(foundClientFive.getId());
+        Assertions.assertNotNull(foundClientFive.getName());
+        Assertions.assertNotNull(foundClientFive.getCellphone());
+        Assertions.assertNotNull(foundClientFive.getRg());
+        Assertions.assertNotNull(foundClientFive.getCpf());
+        Assertions.assertNotNull(foundClientFive.getPassword());
+        Assertions.assertNotNull(foundClientFive.getBirthDay());
+
+        Assertions.assertEquals(362 , foundClientFive.getId());
+        Assertions.assertEquals("atreamayne9v@blogspot.com", foundClientFive.getEmail());
+        Assertions.assertEquals("Adolph", foundClientFive.getName());
+        Assertions.assertEquals("XVKrD5", foundClientFive.getPassword());
+        Assertions.assertEquals("3284196817", foundClientFive.getCpf());
+        Assertions.assertEquals("6639511277", foundClientFive.getRg());
+        Assertions.assertEquals("5594004016", foundClientFive.getCellphone());
 
     }
     private void mockPerson() {

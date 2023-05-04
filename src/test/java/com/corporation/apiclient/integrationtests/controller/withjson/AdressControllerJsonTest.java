@@ -2,8 +2,11 @@ package com.corporation.apiclient.integrationtests.controller.withjson;
 
 import com.corporation.apiclient.config.TestConfig;
 import com.corporation.apiclient.integrationtests.dto.AdressDTO;
+import com.corporation.apiclient.integrationtests.dto.ClientDTO;
 import com.corporation.apiclient.integrationtests.dto.security.AccountCredentialsDTO;
 import com.corporation.apiclient.integrationtests.dto.security.TokenDTO;
+import com.corporation.apiclient.integrationtests.dto.wrappers.WrapperAdressDTO;
+import com.corporation.apiclient.integrationtests.dto.wrappers.WrapperClientDTO;
 import com.corporation.apiclient.integrationtests.testcontainers.AbstractIntegrationTest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -213,8 +216,9 @@ public class AdressControllerJsonTest extends AbstractIntegrationTest {
                 .body()
                 .asString();
 
-        List<AdressDTO> adress = objectMapper.readValue(content, new TypeReference<List<AdressDTO>>() {
-        });
+        WrapperAdressDTO wrapperAdressDTO = objectMapper.readValue(content, WrapperAdressDTO.class);
+
+        List<AdressDTO> adress = wrapperAdressDTO.getEmbedded().getAdress();
 
         AdressDTO foundAdressOne = adress.get(0);
 

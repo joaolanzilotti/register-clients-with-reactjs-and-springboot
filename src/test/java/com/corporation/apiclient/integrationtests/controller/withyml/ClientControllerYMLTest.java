@@ -2,17 +2,15 @@ package com.corporation.apiclient.integrationtests.controller.withyml;
 
 import com.corporation.apiclient.config.TestConfig;
 import com.corporation.apiclient.entities.Adress;
-import com.corporation.apiclient.entities.Client;
 import com.corporation.apiclient.integrationtests.controller.withyml.mapper.YMLMapper;
-import com.corporation.apiclient.integrationtests.dto.AdressDTO;
 import com.corporation.apiclient.integrationtests.dto.ClientDTO;
+import com.corporation.apiclient.integrationtests.dto.pagedmodels.PagedModelClient;
 import com.corporation.apiclient.integrationtests.dto.security.AccountCredentialsDTO;
 import com.corporation.apiclient.integrationtests.dto.security.TokenDTO;
 import com.corporation.apiclient.integrationtests.testcontainers.AbstractIntegrationTest;
+import com.corporation.apiclient.integrationtests.dto.wrappers.WrapperClientDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.config.EncoderConfig;
 import io.restassured.config.RestAssuredConfig;
@@ -23,11 +21,8 @@ import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -260,7 +255,7 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
         Assertions.assertNotNull(persistedPerson.getAdress());
         Assertions.assertFalse(persistedPerson.isEnabled());
 
-        Assertions.assertEquals(7L, persistedPerson.getId());
+        Assertions.assertEquals(507, persistedPerson.getId());
         Assertions.assertEquals("name changed", persistedPerson.getName());
         Assertions.assertEquals("joao@gmail.com", persistedPerson.getEmail());
         Assertions.assertEquals("123", persistedPerson.getPassword());
@@ -294,7 +289,7 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
     @Order(6)
     public void testFindAll() throws JsonMappingException, JsonProcessingException {
 
-        var content = given().spec(specification)
+        var wrapperClientDTO = given().spec(specification)
                 .config(
                         RestAssuredConfig
                                 .config()
@@ -304,17 +299,18 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
                                                 ContentType.TEXT)))
                 .contentType(TestConfig.CONTENT_TYPE_YML)
                 .accept(TestConfig.CONTENT_TYPE_YML)
+                .queryParams("page", 0,"size", 15, "direction", "asc")
                 .when()
                 .get()
                 .then()
                 .statusCode(200)
                 .extract()
                 .body()
-                .as(ClientDTO[].class, mapper);
+                .as(PagedModelClient.class, mapper);
 
-        List<ClientDTO> people = Arrays.asList(content);
+        List<ClientDTO> client = wrapperClientDTO.getContent();
 
-        ClientDTO foundPersonOne = people.get(0);
+        ClientDTO foundPersonOne = client.get(0);
 
         Assertions.assertNotNull(foundPersonOne.getId());
         Assertions.assertNotNull(foundPersonOne.getName());
@@ -324,6 +320,70 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
         Assertions.assertNotNull(foundPersonOne.getPassword());
         Assertions.assertNotNull(foundPersonOne.getBirthDay());
 
+        Assertions.assertEquals(446 , foundPersonOne.getId());
+        Assertions.assertEquals("amonginc7@europa.eu", foundPersonOne.getEmail());
+        Assertions.assertEquals("Abba", foundPersonOne.getName());
+        Assertions.assertEquals("SUyOoxl8", foundPersonOne.getPassword());
+        Assertions.assertEquals("2967812235", foundPersonOne.getCpf());
+        Assertions.assertEquals("2626833328", foundPersonOne.getRg());
+        Assertions.assertEquals("4809137261", foundPersonOne.getCellphone());
+
+        ClientDTO foundClientFive = client.get(5);
+
+        Assertions.assertNotNull(foundClientFive.getId());
+        Assertions.assertNotNull(foundClientFive.getName());
+        Assertions.assertNotNull(foundClientFive.getCellphone());
+        Assertions.assertNotNull(foundClientFive.getRg());
+        Assertions.assertNotNull(foundClientFive.getCpf());
+        Assertions.assertNotNull(foundClientFive.getPassword());
+        Assertions.assertNotNull(foundClientFive.getBirthDay());
+
+        Assertions.assertEquals(362 , foundClientFive.getId());
+        Assertions.assertEquals("atreamayne9v@blogspot.com", foundClientFive.getEmail());
+        Assertions.assertEquals("Adolph", foundClientFive.getName());
+        Assertions.assertEquals("XVKrD5", foundClientFive.getPassword());
+        Assertions.assertEquals("3284196817", foundClientFive.getCpf());
+        Assertions.assertEquals("6639511277", foundClientFive.getRg());
+        Assertions.assertEquals("5594004016", foundClientFive.getCellphone());
+    }
+
+    @Test
+    @Order(7)
+    public void testFindClientByName() throws JsonMappingException, JsonProcessingException {
+
+        var wrapperClientDTO = given().spec(specification)
+                .config(
+                        RestAssuredConfig
+                                .config()
+                                .encoderConfig(EncoderConfig.encoderConfig()
+                                        .encodeContentTypeAs(
+                                                TestConfig.CONTENT_TYPE_YML,
+                                                ContentType.TEXT)))
+                .contentType(TestConfig.CONTENT_TYPE_YML)
+                .accept(TestConfig.CONTENT_TYPE_YML)
+                .pathParam("name", "pe")
+                .queryParams("page", 0,"size", 15, "direction", "asc")
+                .when()
+                .get("findClientByName/{name}")
+                .then()
+                .statusCode(200)
+                .extract()
+                .body()
+                .as(PagedModelClient.class, mapper);
+
+        List<ClientDTO> client = wrapperClientDTO.getContent();
+
+        ClientDTO foundPersonOne = client.get(0);
+
+        Assertions.assertNotNull(foundPersonOne.getId());
+        Assertions.assertNotNull(foundPersonOne.getName());
+        Assertions.assertNotNull(foundPersonOne.getCellphone());
+        Assertions.assertNotNull(foundPersonOne.getRg());
+        Assertions.assertNotNull(foundPersonOne.getCpf());
+        Assertions.assertNotNull(foundPersonOne.getPassword());
+        Assertions.assertNotNull(foundPersonOne.getBirthDay());
+
+        Assertions.assertEquals(2 , foundPersonOne.getId());
         Assertions.assertEquals("pedro545664564@gmail.com", foundPersonOne.getEmail());
         Assertions.assertEquals("Pedro", foundPersonOne.getName());
         Assertions.assertEquals("9180", foundPersonOne.getPassword());
@@ -331,7 +391,26 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
         Assertions.assertEquals("5624987155", foundPersonOne.getRg());
         Assertions.assertEquals("1238334010", foundPersonOne.getCellphone());
 
+        ClientDTO foundClientFive = client.get(5);
+
+        Assertions.assertNotNull(foundClientFive.getId());
+        Assertions.assertNotNull(foundClientFive.getName());
+        Assertions.assertNotNull(foundClientFive.getCellphone());
+        Assertions.assertNotNull(foundClientFive.getRg());
+        Assertions.assertNotNull(foundClientFive.getCpf());
+        Assertions.assertNotNull(foundClientFive.getPassword());
+        Assertions.assertNotNull(foundClientFive.getBirthDay());
+
+        Assertions.assertEquals(132 , foundClientFive.getId());
+        Assertions.assertEquals("ppearch3h@pcworld.com", foundClientFive.getEmail());
+        Assertions.assertEquals("Peggi", foundClientFive.getName());
+        Assertions.assertEquals("5pKpuRwPAC", foundClientFive.getPassword());
+        Assertions.assertEquals("8374003645", foundClientFive.getCpf());
+        Assertions.assertEquals("2835872032", foundClientFive.getRg());
+        Assertions.assertEquals("7688180826", foundClientFive.getCellphone());
     }
+
+
 
     private static void mockPerson() {
         clientDTO.setName("Joao");
