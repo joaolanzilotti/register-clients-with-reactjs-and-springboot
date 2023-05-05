@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @Tag(name = "File EndPoint")
 @RestController
@@ -26,13 +29,22 @@ public class FileController {
     private FileStorageService fileStorageService;
 
     @PostMapping("/uploadFile")
-    public ResponseEntity<UploadFileResponseDTO> uploadFile(@RequestParam("file")MultipartFile file){
+    public UploadFileResponseDTO uploadFile(@RequestParam("file")MultipartFile file){
         logger.info("Storing file to disk");
 
         String filename = fileStorageService.storeFile(file);
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/file/downloadFile/").path(filename).toUriString();
 
-        return ResponseEntity.ok().body(new UploadFileResponseDTO(filename, fileDownloadUri, file.getContentType(), file.getSize()));
+        return new UploadFileResponseDTO(filename, fileDownloadUri, file.getContentType(), file.getSize());
+    }
+
+    @PostMapping("/uploadMultipleFile")
+    public List<UploadFileResponseDTO> uploadMultipleFile(@RequestParam("files")MultipartFile[] files){
+        logger.info("Storing file to disk");
+
+
+
+        return Arrays.stream(files).map(this::uploadFile).collect(Collectors.toList());
     }
 
 }
