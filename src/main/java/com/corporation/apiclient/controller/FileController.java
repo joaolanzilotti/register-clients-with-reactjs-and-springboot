@@ -4,12 +4,13 @@ import com.corporation.apiclient.dto.UploadFileResponseDTO;
 import com.corporation.apiclient.services.ClientService;
 import com.corporation.apiclient.services.FileStorageService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -45,6 +46,29 @@ public class FileController {
 
 
         return Arrays.stream(files).map(this::uploadFile).collect(Collectors.toList());
+    }
+
+    @GetMapping("/downloadFile/{filename:.+}")
+    public ResponseEntity<Resource> downloadFile(@PathVariable String filename, HttpServletRequest request){
+        logger.info("Downloading this File on Disk");
+
+        Resource resource = fileStorageService.loadFileAsResource(filename);
+
+        String contentType = "";
+        try{
+            contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+        }catch (Exception e){
+            logger.info("Could not determine file type!");
+        }
+
+        if(contentType.isBlank()){
+            contentType = "application/octet-stream";
+        }
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                .body(resource);
     }
 
 }
