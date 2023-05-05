@@ -52,7 +52,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
 
     }
-    @ExceptionHandler(FileNotFoundException.class)
+    @ExceptionHandler(FileStorageException.class)
     public final ResponseEntity<ExceptionResponse> handleFileStorageException(Exception ex, WebRequest request){
 
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));

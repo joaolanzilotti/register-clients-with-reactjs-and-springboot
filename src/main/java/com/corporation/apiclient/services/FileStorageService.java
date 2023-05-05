@@ -15,20 +15,18 @@ import java.nio.file.StandardCopyOption;
 @Service
 public class FileStorageService {
 
-    @Autowired
-    private FileStorageConfig fileStorageConfig;
-
     private final Path fileStorageLocation;    //Caminho aonde os arquivos serão salvos, é pego pela classe Config e colocado no Path
-    public FileStorageService() {
-        fileStorageLocation = Paths.get(fileStorageConfig.getUploadDir()).toAbsolutePath().normalize();  //Capturando o caminho e colocando no Path
 
+    @Autowired
+    public FileStorageService (FileStorageConfig fileStorageConfig){
+        Path path = Paths.get(fileStorageConfig.getUploadDir()).toAbsolutePath().normalize();  //Capturando o caminho e colocando no Path
+        this.fileStorageLocation = path;
         try{
             Files.createDirectories(fileStorageLocation);  // Adicionando o Path no Files
         }catch (Exception e){
             throw  new FileStorageException("Could not create the directory where the uploades files will be stored!", e);
         }
-
-    }
+    };
 
     public String storeFile(MultipartFile file){
         String filename = StringUtils.cleanPath(file.getOriginalFilename());
