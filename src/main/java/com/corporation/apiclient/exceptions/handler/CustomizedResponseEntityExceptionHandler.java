@@ -1,9 +1,6 @@
 package com.corporation.apiclient.exceptions.handler;
 
-import com.corporation.apiclient.exceptions.DataIntegratyViolationException;
-import com.corporation.apiclient.exceptions.ExceptionResponse;
-import com.corporation.apiclient.exceptions.InvalidJwtAuthenticationException;
-import com.corporation.apiclient.exceptions.ObjectNotFoundException;
+import com.corporation.apiclient.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -46,6 +43,20 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(exceptionResponse, HttpStatus.FORBIDDEN);
+
+    }
+    @ExceptionHandler(FileNotFoundException.class)
+    public final ResponseEntity<ExceptionResponse> handleFileNotFoundException(Exception ex, WebRequest request){
+
+        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+
+    }
+    @ExceptionHandler(FileNotFoundException.class)
+    public final ResponseEntity<ExceptionResponse> handleFileStorageException(Exception ex, WebRequest request){
+
+        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.SERVICE_UNAVAILABLE);
 
     }
 
