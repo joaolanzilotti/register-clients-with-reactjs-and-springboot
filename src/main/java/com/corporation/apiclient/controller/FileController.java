@@ -3,6 +3,7 @@ package com.corporation.apiclient.controller;
 import com.corporation.apiclient.dto.UploadFileResponseDTO;
 import com.corporation.apiclient.services.ClientService;
 import com.corporation.apiclient.services.FileStorageService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-@Tag(name = "File EndPoint")
+@Tag(name = "File Local", description = "Endpoints for Files in Local")
 @RestController
 @RequestMapping("/api/file")
 public class FileController {
@@ -30,6 +31,7 @@ public class FileController {
     private FileStorageService fileStorageService;
 
     @PostMapping("/uploadFile")
+    @Operation(summary = "Upload a File to Local", description = "Upload a File to Local", tags = {"File Local"})
     public UploadFileResponseDTO uploadFile(@RequestParam("file")MultipartFile file){
         logger.info("Storing file to disk");
 
@@ -40,6 +42,7 @@ public class FileController {
     }
 
     @PostMapping("/uploadMultipleFile")
+    @Operation(summary = "Upload Multiple Files to Local", description = "Upload Multiple Files to Local", tags = {"File Local"})
     public List<UploadFileResponseDTO> uploadMultipleFile(@RequestParam("files")MultipartFile[] files){
         logger.info("Storing file to disk");
 
@@ -49,6 +52,7 @@ public class FileController {
     }
 
     @GetMapping("/downloadFile/{filename:.+}")
+    @Operation(summary = "Download File", description = "Download File", tags = {"File Local"})
     public ResponseEntity<Resource> downloadFile(@PathVariable String filename, HttpServletRequest request){
         logger.info("Downloading this File on Disk");
 

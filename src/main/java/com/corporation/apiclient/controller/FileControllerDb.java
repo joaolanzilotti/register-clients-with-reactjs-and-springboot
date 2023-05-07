@@ -5,6 +5,8 @@ import com.corporation.apiclient.exceptions.FileNotFoundException;
 import com.corporation.apiclient.response.FileResponse;
 import com.corporation.apiclient.response.MessageResponse;
 import com.corporation.apiclient.services.FileService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,7 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/api/filedb")
+@Tag(name = "File DataBase", description = "Endpoints for Files in DataBase")
 public class FileControllerDb {
 
     private static final ZoneId BRAZIL_TIMEZONE = ZoneId.of("America/Sao_Paulo");
@@ -29,7 +32,9 @@ public class FileControllerDb {
     @Autowired
     private FileService fileService;
 
+
     @PostMapping("/upload")
+    @Operation(summary = "Upload a File to DataBase", description = "Upload a File to DataBase", tags = {"File DataBase"})
     public ResponseEntity<MessageResponse> uploadFile(@RequestParam("file") MultipartFile file)
             throws IOException {
 
@@ -44,6 +49,7 @@ public class FileControllerDb {
     }
 
     @GetMapping("/files")
+    @Operation(summary = "Find All Files In DataBase", description = "Find All Files In DataBase", tags = {"File DataBase"})
     public ResponseEntity<List<FileResponse>> getListFiles() {
 
         List<FileResponse> files = fileService.getAllFiles().map(fileFromDatabase -> {
@@ -60,6 +66,7 @@ public class FileControllerDb {
     }
 
     @GetMapping("/files/{id}")
+    @Operation(summary = "Get File in DataBase", description = "Get File in DataBase", tags = {"File DataBase"})
     public ResponseEntity<byte[]> getFile(@PathVariable Long id) throws FileNotFoundException {
 
         File fileFromDatabase = fileService.getFile(id);

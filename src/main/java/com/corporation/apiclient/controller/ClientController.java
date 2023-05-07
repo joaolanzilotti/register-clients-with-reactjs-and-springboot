@@ -1,6 +1,7 @@
 package com.corporation.apiclient.controller;
 
 import com.corporation.apiclient.dto.ClientDTO;
+import com.corporation.apiclient.entities.Adress;
 import com.corporation.apiclient.entities.Client;
 import com.corporation.apiclient.services.ClientService;
 import com.corporation.apiclient.utils.MediaType;
@@ -101,6 +102,11 @@ public class ClientController {
     public ResponseEntity<ClientDTO> findClientById(@PathVariable Long id) {
         ClientDTO clientDTO = modelMapper.map(clientService.findClientById(id), ClientDTO.class);
         clientDTO.add(linkTo(methodOn(ClientController.class).findClientById(id)).withSelfRel());
+        if(clientDTO.getAdress() == null) {
+            System.out.println("No Adress In Client: " + clientDTO.getName());
+            clientDTO.setAdress(new Adress());
+            return ResponseEntity.ok().body(clientDTO);
+        }
         clientDTO.add(linkTo(methodOn(AdressController.class).findAdressById(clientDTO.getAdress().getId())).withSelfRel());
         return ResponseEntity.ok().body(clientDTO);
 
