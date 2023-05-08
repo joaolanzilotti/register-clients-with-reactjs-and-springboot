@@ -256,7 +256,8 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
         Assertions.assertNotNull(persistedPerson.getAdress());
         Assertions.assertFalse(persistedPerson.isEnabled());
 
-        Assertions.assertEquals(27, persistedPerson.getId());
+        Assertions.assertEquals(clientDTO.getId(), persistedPerson.getId());
+        
         Assertions.assertEquals("name changed", persistedPerson.getName());
         Assertions.assertEquals("joao@gmail.com", persistedPerson.getEmail());
         Assertions.assertEquals("123", persistedPerson.getPassword());
