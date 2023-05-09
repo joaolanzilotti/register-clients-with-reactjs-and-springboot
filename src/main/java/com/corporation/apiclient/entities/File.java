@@ -13,7 +13,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "Files")
+@Table(name = "files")
 public class File implements Serializable {
 
     @Id
