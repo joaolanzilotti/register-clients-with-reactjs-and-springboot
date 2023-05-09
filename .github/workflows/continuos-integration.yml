@@ -26,7 +26,7 @@ jobs:
         cache: maven
 
     - name: Build Application JAR
-      working-directory: ./ProjetosSpring/api-client
+      working-directory: ./ProjetosSpring
       run: mvn clean package
 
     - name: Docker Compose Build
