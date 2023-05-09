@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - dev
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,11 +25,11 @@ jobs:
         cache: maven
 
     - name: Build Application JAR
-      working-directory: C:/Users/joaoferretti/Documents/ProjetosSpring/api-client
+      working-directory: ./ProjetosSpring/api-client
       run: mvn clean package
 
     - name: Docker Compose Build
-      working-directory: C:/Users/joaoferretti/Documents/ProjetosSpring
+      working-directory: ./ProjetosSpring
       run: docker compose build
 
     - name: Push to Docker Hub Container Registry
