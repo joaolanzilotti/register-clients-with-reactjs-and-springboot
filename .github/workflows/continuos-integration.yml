@@ -26,7 +26,7 @@ jobs:
         cache: maven
         
     - name: Build Application Jar
-      working-directory: ./ProjetosSpring/api-autoatendimento
+      working-directory: ./ProjetosSpring/api-client
       run: mvn clean package
       
     - name: Docker Composer Build
@@ -37,7 +37,6 @@ jobs:
       run: |
         docker tag ${{ secrets.DOCKER_USERNAME }}/api-client:latest ${{ secrets.DOCKER_USERNAME }}/api-client:${{ github.run_id }} 
         docker push ${{ secrets.DOCKER_USERNAME }}/api-client:${{ github.run_id }}
-        docker push ${{ secrets.DOCKER_USERNAME }}/api-client:latest
 
     
     - name: Update dependency graph
