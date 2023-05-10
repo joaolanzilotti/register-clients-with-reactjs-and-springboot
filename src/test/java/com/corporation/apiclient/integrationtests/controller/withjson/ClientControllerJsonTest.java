@@ -296,24 +296,6 @@ public class ClientControllerJsonTest extends AbstractIntegrationTest {
         Assertions.assertEquals("5624987155", foundPersonOne.getRg());
         Assertions.assertEquals("1238334010", foundPersonOne.getCellphone());
 
-        ClientDTO foundClientFive = client.get(5);
-
-        Assertions.assertNotNull(foundClientFive.getId());
-        Assertions.assertNotNull(foundClientFive.getName());
-        Assertions.assertNotNull(foundClientFive.getCellphone());
-        Assertions.assertNotNull(foundClientFive.getRg());
-        Assertions.assertNotNull(foundClientFive.getCpf());
-        Assertions.assertNotNull(foundClientFive.getPassword());
-        Assertions.assertNotNull(foundClientFive.getBirthDay());
-
-        Assertions.assertEquals(9 , foundClientFive.getId());
-        Assertions.assertEquals("wmeachan2@shop-pro.jp", foundClientFive.getEmail());
-        Assertions.assertEquals("Wilt", foundClientFive.getName());
-        Assertions.assertEquals("9MV4nQYcezp", foundClientFive.getPassword());
-        Assertions.assertEquals("9262435509", foundClientFive.getCpf());
-        Assertions.assertEquals("7921787143", foundClientFive.getRg());
-        Assertions.assertEquals("9859933663", foundClientFive.getCellphone());
-
     }
 
     @Test

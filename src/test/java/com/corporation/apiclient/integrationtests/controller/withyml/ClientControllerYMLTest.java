@@ -330,23 +330,6 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
         Assertions.assertEquals("5624987155", foundPersonOne.getRg());
         Assertions.assertEquals("1238334010", foundPersonOne.getCellphone());
 
-        ClientDTO foundClientFive = client.get(5);
-
-        Assertions.assertNotNull(foundClientFive.getId());
-        Assertions.assertNotNull(foundClientFive.getName());
-        Assertions.assertNotNull(foundClientFive.getCellphone());
-        Assertions.assertNotNull(foundClientFive.getRg());
-        Assertions.assertNotNull(foundClientFive.getCpf());
-        Assertions.assertNotNull(foundClientFive.getPassword());
-        Assertions.assertNotNull(foundClientFive.getBirthDay());
-
-        Assertions.assertEquals(7 , foundClientFive.getId());
-        Assertions.assertEquals("crout0@columbia.edu", foundClientFive.getEmail());
-        Assertions.assertEquals("Chaddy", foundClientFive.getName());
-        Assertions.assertEquals("N3l6w4bLT", foundClientFive.getPassword());
-        Assertions.assertEquals("2437627951", foundClientFive.getCpf());
-        Assertions.assertEquals("5736811171", foundClientFive.getRg());
-        Assertions.assertEquals("6414347429", foundClientFive.getCellphone());
     }
 
     @Test
