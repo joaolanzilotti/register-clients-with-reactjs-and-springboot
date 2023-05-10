@@ -57,7 +57,7 @@ public class ClientService implements Serializable {
 
         Link link = linkTo(
                 methodOn(ClientController.class)
-                        .findAll(pageable.getPageNumber(),
+                        .findClientByName(name,pageable.getPageNumber(),
                                 pageable.getPageSize(),
                                 "asc")).withSelfRel();
 
@@ -77,8 +77,7 @@ public class ClientService implements Serializable {
         Link link = linkTo(
                 methodOn(ClientController.class)
                         .findAll(pageable.getPageNumber(),
-                                pageable.getPageSize(),
-                                "asc")).withSelfRel();
+                                pageable.getPageSize())).withSelfRel();
 
         return assembler.toModel(clientDTOPage, link);   // Usando Assembler para Colocar Links das Pages, Sizes e Direction
 

@@ -322,13 +322,13 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
         Assertions.assertNotNull(foundPersonOne.getPassword());
         Assertions.assertNotNull(foundPersonOne.getBirthDay());
 
-        Assertions.assertEquals(16 , foundPersonOne.getId());
-        Assertions.assertEquals("apesterfield9@geocities.jp", foundPersonOne.getEmail());
-        Assertions.assertEquals("Anne-marie", foundPersonOne.getName());
-        Assertions.assertEquals("V1CenGtxxU0m", foundPersonOne.getPassword());
-        Assertions.assertEquals("3087759756", foundPersonOne.getCpf());
-        Assertions.assertEquals("2407557956", foundPersonOne.getRg());
-        Assertions.assertEquals("9467202548", foundPersonOne.getCellphone());
+        Assertions.assertEquals(2 , foundPersonOne.getId());
+        Assertions.assertEquals("pedro545664564@gmail.com", foundPersonOne.getEmail());
+        Assertions.assertEquals("Pedro", foundPersonOne.getName());
+        Assertions.assertEquals("9180", foundPersonOne.getPassword());
+        Assertions.assertEquals("09113155865", foundPersonOne.getCpf());
+        Assertions.assertEquals("5624987155", foundPersonOne.getRg());
+        Assertions.assertEquals("1238334010", foundPersonOne.getCellphone());
 
         ClientDTO foundClientFive = client.get(5);
 
@@ -340,13 +340,13 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
         Assertions.assertNotNull(foundClientFive.getPassword());
         Assertions.assertNotNull(foundClientFive.getBirthDay());
 
-        Assertions.assertEquals(11 , foundClientFive.getId());
-        Assertions.assertEquals("cpriestner4@army.mil", foundClientFive.getEmail());
-        Assertions.assertEquals("Caren", foundClientFive.getName());
-        Assertions.assertEquals("a89tcpL03", foundClientFive.getPassword());
-        Assertions.assertEquals("8389871428", foundClientFive.getCpf());
-        Assertions.assertEquals("2424153963", foundClientFive.getRg());
-        Assertions.assertEquals("3799713605", foundClientFive.getCellphone());
+        Assertions.assertEquals(7 , foundClientFive.getId());
+        Assertions.assertEquals("crout0@columbia.edu", foundClientFive.getEmail());
+        Assertions.assertEquals("Chaddy", foundClientFive.getName());
+        Assertions.assertEquals("N3l6w4bLT", foundClientFive.getPassword());
+        Assertions.assertEquals("2437627951", foundClientFive.getCpf());
+        Assertions.assertEquals("5736811171", foundClientFive.getRg());
+        Assertions.assertEquals("6414347429", foundClientFive.getCellphone());
     }
 
     @Test
@@ -411,13 +411,13 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
                 .asString();
 
         assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/clients/12\"}}}"));
-        assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/clients/21\"}}}"));
-        assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/clients/26\"}}}"));
+        assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/clients/15\"}}}"));
+        assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/clients/13\"}}}"));
 
-        assertTrue(content.contains("{\"first\":{\"href\":\"http://localhost:8888/api/clients?direction=asc&page=0&size=15&sort=name,asc\"}"));
-        assertTrue(content.contains("\"self\":{\"href\":\"http://localhost:8888/api/clients?page=0&size=15&direction=asc\"}"));
-        assertTrue(content.contains("\"next\":{\"href\":\"http://localhost:8888/api/clients?direction=asc&page=1&size=15&sort=name,asc\"}"));
-        assertTrue(content.contains("\"last\":{\"href\":\"http://localhost:8888/api/clients?direction=asc&page=1&size=15&sort=name,asc\"}}"));
+        assertTrue(content.contains("{\"first\":{\"href\":\"http://localhost:8888/api/clients?page=0&size=15\"}"));
+        assertTrue(content.contains("\"self\":{\"href\":\"http://localhost:8888/api/clients?page=0&size=15\"}"));
+        assertTrue(content.contains("\"next\":{\"href\":\"http://localhost:8888/api/clients?page=1&size=15\"}"));
+        assertTrue(content.contains("\"last\":{\"href\":\"http://localhost:8888/api/clients?page=1&size=15\"}}"));
 
     }
 

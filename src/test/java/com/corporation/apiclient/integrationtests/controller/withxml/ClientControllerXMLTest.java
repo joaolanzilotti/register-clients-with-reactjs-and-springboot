@@ -289,13 +289,13 @@ public class ClientControllerXMLTest extends AbstractIntegrationTest {
         Assertions.assertNotNull(foundPersonOne.getPassword());
         Assertions.assertNotNull(foundPersonOne.getBirthDay());
 
-        Assertions.assertEquals(16 , foundPersonOne.getId());
-        Assertions.assertEquals("apesterfield9@geocities.jp", foundPersonOne.getEmail());
-        Assertions.assertEquals("Anne-marie", foundPersonOne.getName());
-        Assertions.assertEquals("V1CenGtxxU0m", foundPersonOne.getPassword());
-        Assertions.assertEquals("3087759756", foundPersonOne.getCpf());
-        Assertions.assertEquals("2407557956", foundPersonOne.getRg());
-        Assertions.assertEquals("9467202548", foundPersonOne.getCellphone());
+        Assertions.assertEquals(2 , foundPersonOne.getId());
+        Assertions.assertEquals("pedro545664564@gmail.com", foundPersonOne.getEmail());
+        Assertions.assertEquals("Pedro", foundPersonOne.getName());
+        Assertions.assertEquals("9180", foundPersonOne.getPassword());
+        Assertions.assertEquals("09113155865", foundPersonOne.getCpf());
+        Assertions.assertEquals("5624987155", foundPersonOne.getRg());
+        Assertions.assertEquals("1238334010", foundPersonOne.getCellphone());
 
         ClientDTO foundClientFive = client.get(5);
 
@@ -307,13 +307,13 @@ public class ClientControllerXMLTest extends AbstractIntegrationTest {
         Assertions.assertNotNull(foundClientFive.getPassword());
         Assertions.assertNotNull(foundClientFive.getBirthDay());
 
-        Assertions.assertEquals(11 , foundClientFive.getId());
-        Assertions.assertEquals("cpriestner4@army.mil", foundClientFive.getEmail());
-        Assertions.assertEquals("Caren", foundClientFive.getName());
-        Assertions.assertEquals("a89tcpL03", foundClientFive.getPassword());
-        Assertions.assertEquals("8389871428", foundClientFive.getCpf());
-        Assertions.assertEquals("2424153963", foundClientFive.getRg());
-        Assertions.assertEquals("3799713605", foundClientFive.getCellphone());
+        Assertions.assertEquals(10 , foundClientFive.getId());
+        Assertions.assertEquals("jgotthardsf3@hao123.com", foundClientFive.getEmail());
+        Assertions.assertEquals("Jorrie", foundClientFive.getName());
+        Assertions.assertEquals("Vda4wbGbVoI", foundClientFive.getPassword());
+        Assertions.assertEquals("3616548295", foundClientFive.getCpf());
+        Assertions.assertEquals("4344726047", foundClientFive.getRg());
+        Assertions.assertEquals("1901378531", foundClientFive.getCellphone());
 
     }
 
@@ -377,10 +377,10 @@ public class ClientControllerXMLTest extends AbstractIntegrationTest {
         assertTrue(content.contains("<links><rel>self</rel><href>http://localhost:8888/api/clients/18</href></links>"));
         assertTrue(content.contains("<links><rel>self</rel><href>http://localhost:8888/api/clients/14</href></links>"));
 
-        assertTrue(content.contains("<links><rel>first</rel><href>http://localhost:8888/api/clients?direction=asc&amp;page=0&amp;size=15&amp;sort=name,asc</href></links>"));
-        assertTrue(content.contains("<links><rel>self</rel><href>http://localhost:8888/api/clients?page=0&amp;size=15&amp;direction=asc</href></links>"));
-        assertTrue(content.contains("<links><rel>next</rel><href>http://localhost:8888/api/clients?direction=asc&amp;page=1&amp;size=15&amp;sort=name,asc</href></links>"));
-        assertTrue(content.contains("<links><rel>last</rel><href>http://localhost:8888/api/clients?direction=asc&amp;page=1&amp;size=15&amp;sort=name,asc</href></links>"));
+        assertTrue(content.contains("<links><rel>first</rel><href>http://localhost:8888/api/clients?page=0&amp;size=15</href></links>"));
+        assertTrue(content.contains("<links><rel>self</rel><href>http://localhost:8888/api/clients?page=0&amp;size=15</href></links>"));
+        assertTrue(content.contains("<links><rel>next</rel><href>http://localhost:8888/api/clients?page=1&amp;size=15</href></links>"));
+        assertTrue(content.contains("<links><rel>last</rel><href>http://localhost:8888/api/clients?page=1&amp;size=15</href></links>"));
 
     }
 
