@@ -1,42 +1,44 @@
-package com.corporation.apiclient.integrationtests.controller.withxml;
+package com.corporation.apiclient.integrationtests.controller.withjson;
+
+import static io.restassured.RestAssured.given;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.corporation.apiclient.config.TestConfig;
 import com.corporation.apiclient.entities.Adress;
 import com.corporation.apiclient.integrationtests.dto.ClientDTO;
-import com.corporation.apiclient.integrationtests.dto.pagedmodels.PagedModelClient;
 import com.corporation.apiclient.integrationtests.dto.security.AccountCredentialsDTO;
 import com.corporation.apiclient.integrationtests.dto.security.TokenDTO;
 import com.corporation.apiclient.integrationtests.testcontainers.AbstractIntegrationTest;
 import com.corporation.apiclient.integrationtests.dto.wrappers.WrapperClientDTO;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import io.restassured.builder.RequestSpecBuilder;
-import io.restassured.filter.log.LogDetail;
-import io.restassured.filter.log.RequestLoggingFilter;
-import io.restassured.filter.log.ResponseLoggingFilter;
-import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.filter.log.LogDetail;
+import io.restassured.filter.log.RequestLoggingFilter;
+import io.restassured.filter.log.ResponseLoggingFilter;
+import io.restassured.specification.RequestSpecification;
+
 import java.util.Date;
 import java.util.List;
-
-import static io.restassured.RestAssured.given;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestMethodOrder(OrderAnnotation.class) // Aplicando Minha Ordem para executar os testes
-public class ClientControllerXMLTest extends AbstractIntegrationTest {
+public class ClientControllerJsonTest extends AbstractIntegrationTest {
 
     private static RequestSpecification specification;
-    private static XmlMapper objectMapper;
+    private static ObjectMapper objectMapper;
 
     private static ClientDTO clientDTO;
 
@@ -46,7 +48,7 @@ public class ClientControllerXMLTest extends AbstractIntegrationTest {
 
     @BeforeAll
     public static void setup() {
-        objectMapper = new XmlMapper();
+        objectMapper = new ObjectMapper();
         objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         clientDTO = new ClientDTO();
     }
@@ -60,7 +62,7 @@ public class ClientControllerXMLTest extends AbstractIntegrationTest {
         var acessToken = given()
                 .basePath("/auth/signin")
                 .port(TestConfig.SERVER_PORT)
-                .contentType(TestConfig.CONTENT_TYPE_XML)
+                .contentType(TestConfig.CONTENT_TYPE_JSON)
                 .body(client)
                 .when()
                 .post()
@@ -88,8 +90,8 @@ public class ClientControllerXMLTest extends AbstractIntegrationTest {
         mockPerson();
 
         var content = given().spec(specification)
-                .contentType(TestConfig.CONTENT_TYPE_XML)
-                .accept(TestConfig.CONTENT_TYPE_XML)
+                .contentType(TestConfig.CONTENT_TYPE_JSON)
+                .header(TestConfig.HEADER_PARAM_ORIGIN, TestConfig.ORIGIN_JP)
                 .body(clientDTO)
                 .when()
                 .post()
@@ -130,8 +132,7 @@ public class ClientControllerXMLTest extends AbstractIntegrationTest {
         clientDTO.setAdress(new Adress(1L, "maranhao", "district", "50", "Ubatuba", "SP", null));
 
         var content = given().spec(specification)
-                .contentType(TestConfig.CONTENT_TYPE_XML)
-                .accept(TestConfig.CONTENT_TYPE_XML)
+                .contentType(TestConfig.CONTENT_TYPE_JSON)
                 .body(clientDTO)
                 .when()
                 .post()
@@ -170,8 +171,8 @@ public class ClientControllerXMLTest extends AbstractIntegrationTest {
     public void testDisableClientById() throws JsonMappingException, JsonProcessingException {
 
         var content = given().spec(specification)
-                .contentType(TestConfig.CONTENT_TYPE_XML)
-                .accept(TestConfig.CONTENT_TYPE_XML)
+                .contentType(TestConfig.CONTENT_TYPE_JSON)
+                .header(TestConfig.HEADER_PARAM_ORIGIN, TestConfig.ORIGIN_JP)
                 .pathParam("id", clientDTO.getId())
                 .when()
                 .patch("{id}")
@@ -211,8 +212,8 @@ public class ClientControllerXMLTest extends AbstractIntegrationTest {
         mockPerson();
 
         var content = given().spec(specification)
-                .contentType(TestConfig.CONTENT_TYPE_XML)
-                .accept(TestConfig.CONTENT_TYPE_XML)
+                .contentType(TestConfig.CONTENT_TYPE_JSON)
+                .header(TestConfig.HEADER_PARAM_ORIGIN, TestConfig.ORIGIN_JP)
                 .pathParam("id", clientDTO.getId())
                 .when()
                 .get("{id}")
@@ -251,8 +252,7 @@ public class ClientControllerXMLTest extends AbstractIntegrationTest {
     public void testDelete() throws JsonMappingException, JsonProcessingException {
 
         given().spec(specification)
-                .contentType(TestConfig.CONTENT_TYPE_XML)
-                .accept(TestConfig.CONTENT_TYPE_XML)
+                .contentType(TestConfig.CONTENT_TYPE_JSON)
                 .pathParam("id", clientDTO.getId())
                 .when()
                 .delete("{id}")
@@ -265,8 +265,7 @@ public class ClientControllerXMLTest extends AbstractIntegrationTest {
     public void testFindAll() throws JsonMappingException, JsonProcessingException {
 
         var content = given().spec(specification)
-                .contentType(TestConfig.CONTENT_TYPE_XML)
-                .accept(TestConfig.CONTENT_TYPE_XML)
+                .contentType(TestConfig.CONTENT_TYPE_JSON)
                 .queryParams("page", 0,"size", 15, "direction", "asc")
                 .when()
                 .get()
@@ -276,8 +275,8 @@ public class ClientControllerXMLTest extends AbstractIntegrationTest {
                 .body()
                 .asString();
 
-        PagedModelClient pagedModelClient = objectMapper.readValue(content, PagedModelClient.class);
-        List<ClientDTO> client = pagedModelClient.getContent();
+        WrapperClientDTO wrapperClientDTO = objectMapper.readValue(content, WrapperClientDTO.class);
+        List<ClientDTO> client = wrapperClientDTO.getEmbedded().getClients();
 
         ClientDTO foundPersonOne = client.get(0);
 
@@ -289,31 +288,13 @@ public class ClientControllerXMLTest extends AbstractIntegrationTest {
         Assertions.assertNotNull(foundPersonOne.getPassword());
         Assertions.assertNotNull(foundPersonOne.getBirthDay());
 
-        Assertions.assertEquals(16 , foundPersonOne.getId());
-        Assertions.assertEquals("apesterfield9@geocities.jp", foundPersonOne.getEmail());
-        Assertions.assertEquals("Anne-marie", foundPersonOne.getName());
-        Assertions.assertEquals("V1CenGtxxU0m", foundPersonOne.getPassword());
-        Assertions.assertEquals("3087759756", foundPersonOne.getCpf());
-        Assertions.assertEquals("2407557956", foundPersonOne.getRg());
-        Assertions.assertEquals("9467202548", foundPersonOne.getCellphone());
-
-        ClientDTO foundClientFive = client.get(5);
-
-        Assertions.assertNotNull(foundClientFive.getId());
-        Assertions.assertNotNull(foundClientFive.getName());
-        Assertions.assertNotNull(foundClientFive.getCellphone());
-        Assertions.assertNotNull(foundClientFive.getRg());
-        Assertions.assertNotNull(foundClientFive.getCpf());
-        Assertions.assertNotNull(foundClientFive.getPassword());
-        Assertions.assertNotNull(foundClientFive.getBirthDay());
-
-        Assertions.assertEquals(11 , foundClientFive.getId());
-        Assertions.assertEquals("cpriestner4@army.mil", foundClientFive.getEmail());
-        Assertions.assertEquals("Caren", foundClientFive.getName());
-        Assertions.assertEquals("a89tcpL03", foundClientFive.getPassword());
-        Assertions.assertEquals("8389871428", foundClientFive.getCpf());
-        Assertions.assertEquals("2424153963", foundClientFive.getRg());
-        Assertions.assertEquals("3799713605", foundClientFive.getCellphone());
+        Assertions.assertEquals(2 , foundPersonOne.getId());
+        Assertions.assertEquals("pedro545664564@gmail.com", foundPersonOne.getEmail());
+        Assertions.assertEquals("Pedro", foundPersonOne.getName());
+        Assertions.assertEquals("9180", foundPersonOne.getPassword());
+        Assertions.assertEquals("09113155865", foundPersonOne.getCpf());
+        Assertions.assertEquals("5624987155", foundPersonOne.getRg());
+        Assertions.assertEquals("1238334010", foundPersonOne.getCellphone());
 
     }
 
@@ -322,8 +303,8 @@ public class ClientControllerXMLTest extends AbstractIntegrationTest {
     public void testFindClientByName() throws JsonMappingException, JsonProcessingException {
 
         var content = given().spec(specification)
-                .contentType(TestConfig.CONTENT_TYPE_XML)
-                .accept(TestConfig.CONTENT_TYPE_XML)
+                .contentType(TestConfig.CONTENT_TYPE_JSON)
+                .accept(TestConfig.CONTENT_TYPE_JSON)
                 .pathParam("name", "pe")
                 .queryParams("page", 0,"size", 15, "direction", "asc")
                 .when()
@@ -334,8 +315,8 @@ public class ClientControllerXMLTest extends AbstractIntegrationTest {
                 .body()
                 .asString();
 
-        PagedModelClient pagedModelClient = objectMapper.readValue(content, PagedModelClient.class);
-        List<ClientDTO> client = pagedModelClient.getContent();
+        WrapperClientDTO wrapperClientDTO = objectMapper.readValue(content, WrapperClientDTO.class);
+        List<ClientDTO> client = wrapperClientDTO.getEmbedded().getClients();
 
         ClientDTO foundPersonOne = client.get(0);
 
@@ -362,8 +343,7 @@ public class ClientControllerXMLTest extends AbstractIntegrationTest {
     public void testHATEOAS() throws JsonMappingException, JsonProcessingException {
 
         var content = given().spec(specification)
-                .contentType(TestConfig.CONTENT_TYPE_XML)
-                .accept(TestConfig.CONTENT_TYPE_XML)
+                .contentType(TestConfig.CONTENT_TYPE_YML)
                 .queryParams("page", 0,"size", 15, "direction", "asc")
                 .when()
                 .get()
@@ -373,14 +353,14 @@ public class ClientControllerXMLTest extends AbstractIntegrationTest {
                 .body()
                 .asString();
 
-        assertTrue(content.contains("<links><rel>self</rel><href>http://localhost:8888/api/clients/16</href></links>"));
-        assertTrue(content.contains("<links><rel>self</rel><href>http://localhost:8888/api/clients/18</href></links>"));
-        assertTrue(content.contains("<links><rel>self</rel><href>http://localhost:8888/api/clients/14</href></links>"));
+        assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/clients/12\"}}}"));
+        assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/clients/15\"}}}"));
+        assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/clients/13\"}}}"));
 
-        assertTrue(content.contains("<links><rel>first</rel><href>http://localhost:8888/api/clients?direction=asc&amp;page=0&amp;size=15&amp;sort=name,asc</href></links>"));
-        assertTrue(content.contains("<links><rel>self</rel><href>http://localhost:8888/api/clients?page=0&amp;size=15&amp;direction=asc</href></links>"));
-        assertTrue(content.contains("<links><rel>next</rel><href>http://localhost:8888/api/clients?direction=asc&amp;page=1&amp;size=15&amp;sort=name,asc</href></links>"));
-        assertTrue(content.contains("<links><rel>last</rel><href>http://localhost:8888/api/clients?direction=asc&amp;page=1&amp;size=15&amp;sort=name,asc</href></links>"));
+        assertTrue(content.contains("{\"first\":{\"href\":\"http://localhost:8888/api/clients?page=0&size=15\"}"));
+        assertTrue(content.contains("\"self\":{\"href\":\"http://localhost:8888/api/clients?page=0&size=15\"}"));
+        assertTrue(content.contains("\"next\":{\"href\":\"http://localhost:8888/api/clients?page=1&size=15\"}"));
+        assertTrue(content.contains("\"last\":{\"href\":\"http://localhost:8888/api/clients?page=1&size=15\"}}"));
 
     }
 

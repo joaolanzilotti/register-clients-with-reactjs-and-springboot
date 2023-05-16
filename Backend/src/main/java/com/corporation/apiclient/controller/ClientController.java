@@ -58,12 +58,13 @@ public class ClientController {
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = {@Content})})
     public ResponseEntity<PagedModel<EntityModel<ClientDTO>>> findAll(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
-            @RequestParam(value = "size", defaultValue = "15") Integer size,
-            @RequestParam(value = "direction", defaultValue = "asc") String direction) {
+            @RequestParam(value = "size", defaultValue = "15") Integer size){
+            //@RequestParam(value = "direction", defaultValue = "asc") String direction) {
 // esta ignorando as Letras Maiuscula ou Minuscula e um operador ternario se ele identificar DESC na Requisicao ele retorna Um Direction.DESC, se nao Direction.ASC
-        Direction sortDirection = "desc".equalsIgnoreCase(direction) ? Direction.DESC : Direction.ASC;  // Ordenando por name
+        //Direction sortDirection = "desc".equalsIgnoreCase(direction) ? Direction.DESC : Direction.ASC;  // Ordenando por name
         //Usando o Page para fazer pesquisa por paginacao
-        Pageable pageable = PageRequest.of(page,size, Sort.by(sortDirection, "name"));
+        //Pageable pageable = PageRequest.of(page,size, Sort.by(sortDirection, "name"));
+        Pageable pageable = PageRequest.of(page,size);
 
         return ResponseEntity.ok(clientService.findAll(pageable));
     }
