@@ -1,0 +1,59 @@
+version: '3.9'
+#Servicos do Docker
+services:
+#Configurações do Banco de Dados
+  db:
+  #Imagem do Banco de dados - Peguei no Docker Hub MySQL
+    image: mysql:8.0.29
+    #Comando que pega o plugin de autenticação nativo do MySQL para Autenticar no banco MySQL
+    command: mysqld --default-authentication-plugin=mysql_native_password
+    #Comando para Reiniciar o banco caso ele caia, para evitar quedas.
+    restart: always
+    environment:
+      TZ: America/Sao_Paulo
+      #Tem que definir a senha do usuário Root
+      MYSQL_ROOT_PASSWORD: 19802010
+      #Username do Novo Usuario do Banco
+      MYSQL_USER: docker
+      #Senha do Novo Usuario do Banco
+      MYSQL_PASSWORD: 19802010
+      #Nome do banco que sera criado e utilizado
+      MYSQL_DATABASE: api-client
+      #Todos podem acessar esse Banco de Dados
+      MYSQL_ROOT_HOST: '%'
+      #Porta para Iniciar o MySQL
+      MYSQL_TCP_PORT: 3308
+      #Portas que serão utilizada pelo Host e dentro do Container
+    ports: 
+      - 3308:3308
+      #Porta que ele vai expor
+    expose:
+      - 3308
+    networks:
+      - jp-network
+  api-client:
+    #A imagem do api-client estara no meu usuario joaosinho2 - usa uma imagem que vamos construir
+    image: joaosinho2/api-client
+    restart: always
+    #Vai procurar o Docker File dentro da pasta Especificada ./api-client
+    build: ./api-client
+    working_dir: /api-client
+    environment:
+      TZ: America/Sao_Paulo
+      #Configuração do banco vai substituir o que foi colocado no programa
+      SPRING.DATASOURCE.URL: jdbc:mysql://db:3308/api-client?createDatabaseIfNotExist=true&serverTimezone=UTC
+      SPRING.DATASOURCE.USERNAME: root
+      SPRING.DATASOURCE.PASSWORD: 19802010
+      #portas do DB criadas acima
+    ports: 
+      - 80:80
+      #Necessário esse comando para executar a aplicação do Spring Boot API-CLIENT
+    command: mvn spring-boot:run
+      #O Apli-client Depende do DB
+    depends_on:
+      - db
+    networks:
+      - jp-network
+networks:
+  jp-network:
+    driver: bridge
