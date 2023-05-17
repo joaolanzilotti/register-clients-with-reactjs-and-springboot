@@ -1,3 +1,65 @@
-h1{
+.login{
+    padding: 1%;
+}
+
+.login-container{
+    width: 45%;
+    height: 700px;
+
+    margin: 0 auto;
+
+    border: 1px solid #A0A0A0;
+    border-radius: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-container section.form{
+    width: 100%;
+    max-width: 350px;
+    margin-left: 30px;
+}
+
+.login-container section.form .logo{
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.login-container .loginLock{
+    width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.login-container section.form form h1{
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 32px;
     color: aqua;
+}
+
+.button{
+    width: 100%;
+    height: 60px;
+    background: darkblue;
+    border: 0;
+    border-radius: 8px;
+    color: #DCDCE6;
+    font-weight: 700;
+    margin-top: 16px;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    font-size: 18px;
+    line-height: 60px;
+    transition: filter 0.2s;
+}
+
+.button:hover{
+    filter: brightness(80%);
 }

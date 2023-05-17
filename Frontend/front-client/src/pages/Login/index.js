@@ -5,23 +5,24 @@ import loginLock from '../../assets/login.png'
 
 //Propriedade com React - Definindo que o metodo vai receber Filhos (Children) e especificando dentro do H1 também
 function Login() {
-return (
+        return (
 
-        <div className="login-container">
+                <div className="login">
+                        <div className="login-container">
 
-                <section className="form">
-                <img src={logoImage} alt="Client Logo" />
-                <form>
-                        <h1>Acess your Account</h1>
-                        <input type="text" placeholder="Username"/>
-                        <input type="password" placeholder="Password"/>
-                        <button type="submit"> Login</button>
-                </form>
-                        
-                </section>
-                
-                <img src={loginLock} alt="Login" />
-        </div>
+                                <section className="form">
+
+                                        <img className="logo" src={logoImage} alt="Client Logo" />
+                                        <form>
+                                                <h1>Acess your Account</h1>
+                                                <input type="text" placeholder="Username" />
+                                                <input type="password" placeholder="Password" />
+                                                <button className="button" type="submit"> Login</button>
+                                        </form>
+
+                                </section>
+                        </div>
+                </div>
         )
 
 };
