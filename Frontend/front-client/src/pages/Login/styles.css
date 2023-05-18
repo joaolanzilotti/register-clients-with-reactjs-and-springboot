@@ -1,16 +1,12 @@
 .login{
-    padding: 1%;
+    padding: 3%;
 }
 
 .login-container{
     width: 45%;
-    height: 700px;
-
+    height: 500px;
     margin: 0 auto;
-
-    border: 1px solid #A0A0A0;
     border-radius: 32px;
-
     display: flex;
     align-items: center;
     justify-content: center;
@@ -19,11 +15,10 @@
 .login-container section.form{
     width: 100%;
     max-width: 350px;
-    margin-left: 30px;
 }
 
 .login-container section.form .logo{
-    width: 100%;
+    width: 90%;
     margin-left: auto;
     margin-right: auto;
     display: block;

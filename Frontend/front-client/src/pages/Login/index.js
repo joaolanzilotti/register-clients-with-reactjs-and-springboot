@@ -4,7 +4,7 @@ import logoImage from '../../assets/logo.png'
 import loginLock from '../../assets/login.png'
 
 //Propriedade com React - Definindo que o metodo vai receber Filhos (Children) e especificando dentro do H1 também
-function Login() {
+export default function Login() {
         return (
 
                 <div className="login">
@@ -26,4 +26,3 @@ function Login() {
         )
 
 };
-export default Login;

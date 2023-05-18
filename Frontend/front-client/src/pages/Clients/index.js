@@ -6,7 +6,7 @@ import './styles.css';
 
 import logoJP from '../../assets/logoJP.png';
 
-function Client() {
+export default function Clients() {
     return (
         <div className="client-container">
             <header>
@@ -118,4 +118,3 @@ function Client() {
     );
 }
 
-export default Client;
