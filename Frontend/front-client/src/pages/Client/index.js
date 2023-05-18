@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import { FiPower } from 'react-icons/fi';
+import { FiLogOut } from 'react-icons/fi';
+import { FiUserPlus } from 'react-icons/fi';
 
 import './styles.css';
 
@@ -12,9 +13,16 @@ function Client(){
             <header>
                 <img src={logoJP} alt="JP"/>
                 <span>Welcome, <strong>João</strong></span>
-                <Link className="button" to="/client/new">Add new Client </Link>
-                <button type="button">
-                    <FiPower size={18} color="#251FC5"/>
+                <Link className="buttonClient" to="/client/new">
+                    <div className="container-button">
+                    <div className="iconUserPlus"><FiUserPlus size={24} color="white"/> </div>
+                    <div className="textButton">Add new Client </div>
+                    </div>
+                    </Link>
+
+
+                <button className="buttonPower" type="button">
+                    <FiLogOut size={18} color="#251FC5"/>
                 </button>
             </header>
         </div>
