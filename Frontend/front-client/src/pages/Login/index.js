@@ -14,7 +14,7 @@ function Login() {
 
                                         <img className="logo" src={logoImage} alt="Client Logo" />
                                         <form>
-                                                <h1>Acess your Account</h1>
+                                                <h1>Access your Account</h1>
                                                 <input type="text" placeholder="Username" />
                                                 <input type="password" placeholder="Password" />
                                                 <button className="button" type="submit"> Login</button>
