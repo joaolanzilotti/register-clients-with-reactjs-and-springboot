@@ -26,7 +26,7 @@ public class AuthControllerXMLTest extends AbstractIntegrationTest {
     @Order(1)
     public void testSignin() throws JsonMappingException, JsonProcessingException {
 
-        AccountCredentialsDTO client = new AccountCredentialsDTO("joaolanzilotti","admin123");
+        AccountCredentialsDTO client = new AccountCredentialsDTO("admin","admin123");
 
         tokenDTO = given()
                 .basePath("/auth/signin")
@@ -41,7 +41,7 @@ public class AuthControllerXMLTest extends AbstractIntegrationTest {
                 .body()
                 .as(TokenDTO.class);
 
-        Assertions.assertNotNull(tokenDTO.getAccessToken());
+        Assertions.assertNotNull(tokenDTO.getToken());
         Assertions.assertNotNull(tokenDTO.getRefreshToken());
 
     }
@@ -66,7 +66,7 @@ public class AuthControllerXMLTest extends AbstractIntegrationTest {
                 .body()
                 .as(TokenDTO.class);
 
-        Assertions.assertNotNull(newTokenDTO.getAccessToken());
+        Assertions.assertNotNull(newTokenDTO.getToken());
         Assertions.assertNotNull(newTokenDTO.getRefreshToken());
 
     }

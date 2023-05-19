@@ -54,7 +54,7 @@ public class AdressControllerYMLTest extends AbstractIntegrationTest {
     @Order(0)
     public void authorization() throws JsonMappingException, JsonProcessingException {
 
-        AccountCredentialsDTO client = new AccountCredentialsDTO("joaolanzilotti","admin123");
+        AccountCredentialsDTO client = new AccountCredentialsDTO("admin","admin123");
 
         var accessToken = given()
                 .config(
@@ -76,7 +76,7 @@ public class AdressControllerYMLTest extends AbstractIntegrationTest {
                 .extract()
                 .body()
                 .as(TokenDTO.class, mapper)
-                .getAccessToken();
+                .getToken();
 
         specification = new RequestSpecBuilder()
                 .addHeader(TestConfig.HEADER_PARAM_AUTHORIZATION, "Bearer " + accessToken)
