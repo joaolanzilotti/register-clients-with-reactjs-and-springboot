@@ -27,7 +27,7 @@ export default function Login() {
         const data = {
             username,
             password,
-        };
+        }
         try{
             //Enviado a Requisicao Post para API
             const response = await api.post('auth/signin', data);
