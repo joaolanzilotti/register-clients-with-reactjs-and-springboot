@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import './styles.css';
+import loadingGif from '../../assets/loadingTwoWhite.gif';
 import logoJP from '../../assets/newUser.png';
 import {Link, useNavigate} from "react-router-dom";
 import {FiArrowLeft, FiUserPlus} from "react-icons/fi";
@@ -26,12 +27,16 @@ export default function NewClient() {
     const username = localStorage.getItem('username');
     const accessToken = localStorage.getItem('accessToken');
 
+    const [showLoading, setShowLoading] = useState(false);
+
     //Funcao navigate para Enviar a Rota
     const navigate = useNavigate();
 
     //funcao para nao fazer a pagina dar Refresh
     async function createNewClient(e) {
         e.preventDefault();
+        setShowLoading(true);
+
 
         const data = {
             name,
@@ -55,6 +60,8 @@ export default function NewClient() {
             //navigate('/clients');
         } catch (err) {
             error();
+        } finally {
+            setShowLoading(false);
         }
 
     };
@@ -85,7 +92,13 @@ export default function NewClient() {
                         <input placeholder="CPF" value={cpf} onChange={e => setCpf(e.target.value)}/>
                         <input type="date" value={birthDay} onChange={e => setBirthDay(e.target.value)}/>
                         <input placeholder="Cellphone" value={cellphone} onChange={e => setCellphone(e.target.value)}/>
-                        <button className="button" type="submit">Add</button>
+                        <button className="button" type="submit">
+                            {showLoading ? (
+                                <img className="loadingGif" src={loadingGif} alt="Spinner" />
+                            ) : (
+                                'Add'
+                            )}
+                        </button>
 
                     </form>
                 </div>

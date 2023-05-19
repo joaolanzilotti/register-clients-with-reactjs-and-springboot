@@ -47,6 +47,11 @@ form input{
     line-height: 60px;
     transition: filter 0.2s;
 }
+.button .loadingGif{
+    margin-top: 9px;
+   width: 45px;
+    height: 45px;
+}
 
 .button:hover{
     filter: brightness(80%);
