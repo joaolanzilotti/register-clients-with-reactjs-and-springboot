@@ -4,12 +4,16 @@ import {useNavigate} from "react-router-dom";
 //Servico para se conectar com a API
 import api from '../../services/api';
 
-import './styles.css';
-
+import './styles.css'
 import logoImage from '../../assets/logo.png';
+import { ToastContainer, toast } from "react-toast";
 
 //Propriedade com React - Definindo que o metodo vai receber Filhos (Children) e especificando dentro do H1 também
 export default function Login() {
+
+    //Notifications React Toast
+    const error = () => toast.warn('Login failed! Try agains!');
+
     //Chamando a API para enviar os Dados
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -33,12 +37,13 @@ export default function Login() {
 
             navigate('/clients');
         }catch (err){
-            alert('Login failed! Try agains!')
+            error();
         }
     };
 
     return (
         <div className="login">
+            <ToastContainer position="top-center" delay="3000" />
             <div className="login-container">
 
                 <section className="form">
@@ -51,6 +56,7 @@ export default function Login() {
                         <input type="password" placeholder="Password" value={password}
                                onChange={e => setPassword(e.target.value)}/>
                         <button className="button" type="submit"> Login</button>
+
                     </form>
 
                 </section>
