@@ -65,6 +65,13 @@ public class SecurityConfig {
                 .and()
                 .apply(new JwtConfigurer(tokenProvider))
                 .and()
+                .logout() // Adiciona a configuração de logout
+                .logoutUrl("/logout") // URL para efetuar o logout
+                .logoutSuccessUrl("/") // URL de redirecionamento após o logout bem-sucedido
+                .invalidateHttpSession(true) // invalidar a sessão HTTP existente
+                .deleteCookies("accessToken") // excluir os cookies específicos (opcional)
+                .permitAll() // permitir acesso a todos (opcional)
+                .and()
                 .build();
 
     }
