@@ -1,17 +1,38 @@
-import React from 'react';
-import {Link} from "react-router-dom";
+import React, {useState, useEffect} from 'react';
+import {Link, useNavigate} from "react-router-dom";
 import {FiUserPlus, FiLogOut, FiEdit, FiTrash2} from 'react-icons/fi';
+
+import api from '../../services/api';
 
 import './styles.css';
 
 import logoJP from '../../assets/logoJP.png';
 
 export default function Clients() {
+
+    const username = localStorage.getItem('username');
+    const accessToken = localStorage.getItem('accessToken');
+
+    const navigate = useNavigate();
+
+    const [clients, setClients] = useState([]);
+
+    // useEffect é pra carregar a tela assim que carregar o HTML os dados virao!
+    useEffect(() => {
+        api.get('/api/clients', {
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        }).then(response => {
+            setClients(response.data._embedded.clientDTOList)
+        })
+    })
+
     return (
         <div className="client-container">
             <header>
                 <img src={logoJP} alt="JP"/>
-                <span>Welcome, <strong>João</strong></span>
+                <span>Welcome, <strong>{username.toUpperCase()}</strong></span>
                 <Link className="buttonClient" to="/client/new">
                     <div className="container-button">
                         <div className="iconUserPlus"><FiUserPlus size={24} color="white"/></div>
@@ -24,95 +45,34 @@ export default function Clients() {
             </header>
             <h1>Registered Clients</h1>
             <ul>
-                <li>
-                    <strong>Name:</strong>
-                    <p>João Pedro</p>
-                    <strong>E-mail:</strong>
-                    <p>teste@gmail.com</p>
-                    <strong>RG:</strong>
-                    <p>545589871</p>
-                    <strong>CPF:</strong>
-                    <p>46998565841</p>
-                    <strong>Birthday:</strong>
-                    <p>04/01/2003</p>
-                    <strong>Cellphone:</strong>
-                    <p>21994778998</p>
-                    <strong>Adress:</strong>
-                    <p>Rua Maranhão</p>
-                    <button type="button">
-                        <FiEdit size={20} color="#251FC5"/>
-                    </button>
-                    <button type="button">
-                        <FiTrash2 size={20} color="#251FC5"/>
-                    </button>
-                </li>
-                <li>
-                    <strong>Name:</strong>
-                    <p>João Pedro</p>
-                    <strong>E-mail:</strong>
-                    <p>teste@gmail.com</p>
-                    <strong>RG:</strong>
-                    <p>545589871</p>
-                    <strong>CPF:</strong>
-                    <p>46998565841</p>
-                    <strong>Birthday:</strong>
-                    <p>04/01/2003</p>
-                    <strong>Cellphone:</strong>
-                    <p>21994778998</p>
-                    <strong>Adress:</strong>
-                    <p>Rua Maranhão</p>
-                    <button type="button">
-                        <FiEdit size={20} color="#251FC5"/>
-                    </button>
-                    <button type="button">
-                        <FiTrash2 size={20} color="#251FC5"/>
-                    </button>
-                </li>
-                <li>
-                    <strong>Name:</strong>
-                    <p>João Pedro</p>
-                    <strong>E-mail:</strong>
-                    <p>teste@gmail.com</p>
-                    <strong>RG:</strong>
-                    <p>545589871</p>
-                    <strong>CPF:</strong>
-                    <p>46998565841</p>
-                    <strong>Birthday:</strong>
-                    <p>04/01/2003</p>
-                    <strong>Cellphone:</strong>
-                    <p>21994778998</p>
-                    <strong>Adress:</strong>
-                    <p>Rua Maranhão</p>
-                    <button type="button">
-                        <FiEdit size={20} color="#251FC5"/>
-                    </button>
-                    <button type="button">
-                        <FiTrash2 size={20} color="#251FC5"/>
-                    </button>
-                </li>
-                <li>
-                    <strong>Name:</strong>
-                    <p>João Pedro</p>
-                    <strong>E-mail:</strong>
-                    <p>teste@gmail.com</p>
-                    <strong>RG:</strong>
-                    <p>545589871</p>
-                    <strong>CPF:</strong>
-                    <p>46998565841</p>
-                    <strong>Birthday:</strong>
-                    <p>04/01/2003</p>
-                    <strong>Cellphone:</strong>
-                    <p>21994778998</p>
-                    <strong>Adress:</strong>
-                    <p>Rua Maranhão</p>
-                    <button type="button">
-                        <FiEdit size={20} color="#251FC5"/>
-                    </button>
-                    <button type="button">
-                        <FiTrash2 size={20} color="#251FC5"/>
-                    </button>
-                </li>
-
+                {clients.map(client => (
+                    <li>
+                        <strong>Name:</strong>
+                        <p>{client.name}</p>
+                        <strong>E-mail:</strong>
+                        <p>{client.email}</p>
+                        <strong>RG:</strong>
+                        <p>{client.rg}</p>
+                        <strong>CPF:</strong>
+                        <p>{client.cpf}</p>
+                        <strong>Birthday:</strong>
+                        <p>{Intl.DateTimeFormat('pt-BR').format(new Date(client.birthDay))}</p>
+                        <strong>Cellphone:</strong>
+                        <p>{client.cellphone}</p>
+                        <strong>Adress:</strong>
+                        {client.adress ? (
+                            <p>{client.adress.street + ", " + client.adress.district + ", " + client.adress.number}</p>
+                        ) : (
+                            <p>Endereço não disponível</p>
+                        )}
+                        <button type="button">
+                            <FiEdit size={20} color="#251FC5"/>
+                        </button>
+                        <button type="button">
+                            <FiTrash2 size={20} color="#251FC5"/>
+                        </button>
+                    </li>
+                ))}
             </ul>
         </div>
     );
