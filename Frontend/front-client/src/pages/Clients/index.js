@@ -21,13 +21,13 @@ export default function Clients() {
 
     const [clients, setClients] = useState([]);
 
-    async function logout(){
+    async function logout() {
         localStorage.clear();
         navigate('/');
     }
 
-    async function deleteClient(id){
-        try{
+    async function deleteClient(id) {
+        try {
 
             await api.delete(`/api/clients/${id}`, {
                 headers: {
@@ -36,7 +36,7 @@ export default function Clients() {
             })
             setClients(clients.filter(client => client.id !== id))
             successfulDeleteClient();
-        }catch (err){
+        } catch (err) {
             erroDeleteClient();
         }
     }
@@ -67,9 +67,11 @@ export default function Clients() {
                         <div className="textButton">Add new Client</div>
                     </div>
                 </Link>
-                <button onClick={logout} className="buttonPower" type="button">
-                    <FiLogOut size={18} color="#251FC5"/>
-                </button>
+
+                    <button onClick={logout} className="buttonPower" type="button">
+                        <FiLogOut size={18} color="#251FC5"/>
+                    </button>
+
             </header>
             <h1>Registered Clients</h1>
             <ul>
@@ -93,6 +95,7 @@ export default function Clients() {
                         ) : (
                             <p>Endereço não disponível</p>
                         )}
+
                         <button type="button">
                             <FiEdit size={20} color="#251FC5"/>
                         </button>
