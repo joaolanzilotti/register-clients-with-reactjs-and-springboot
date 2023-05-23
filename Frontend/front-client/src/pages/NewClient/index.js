@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './styles.css';
 import loadingGif from '../../assets/loadingTwoWhite.gif';
 import logoJP from '../../assets/newUser.png';
@@ -19,6 +19,7 @@ export default function NewClient() {
     const [cpf, setCpf] = useState('');
     const [birthDay, setBirthDay] = useState('');
     const [cellphone, setCellphone] = useState('');
+    const [adress, setAdress] = useState('');
 
     const username = localStorage.getItem('username');
     const accessToken = localStorage.getItem('accessToken');
@@ -29,6 +30,38 @@ export default function NewClient() {
 
     //Funcao navigate para Enviar a Rota
     const navigate = useNavigate();
+
+    //async function é uma funcao que aguarda o carregamento da pagina.
+    async function loadClient() {
+        try {
+            const response = await api.get(`/api/clients/${clientId}`, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                }
+            })
+            setId(response.data.id)
+            setName(response.data.name)
+            setEmail(response.data.email)
+            setPassword(response.data.password)
+            setRG(response.data.rg)
+            setCpf(response.data.cpf)
+            setCellphone(response.data.cellphone)
+            setBirthDay(response.data.birthDay)
+            setAdress(response.data.adress)
+        } catch (erro) {
+            toast.error('Error recovering Client!, Try again!')
+            navigate('/clients');
+        }
+    }
+
+    useEffect(() => {
+        if (clientId === '0') return;
+        else {
+            loadClient().then();
+        }
+
+
+    }, [clientId])
 
     //funcao para nao fazer a pagina dar Refresh
     async function createNewClient(e) {
@@ -62,7 +95,7 @@ export default function NewClient() {
             setShowLoading(false);
         }
 
-    };
+    }
 
     return (
         <div className="notification">
@@ -84,15 +117,18 @@ export default function NewClient() {
                     </section>
                     <form onSubmit={createNewClient}>
                         <input placeholder="Name" value={name} onChange={e => setName(e.target.value)}/>
-                        <input type="email" placeholder="E-mail" value={email} onChange={e => setEmail(e.target.value)}/>
-                        <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)}/>
+                        <input type="email" placeholder="E-mail" value={email}
+                               onChange={e => setEmail(e.target.value)}/>
+                        <input type="password" placeholder="Password" value={password}
+                               onChange={e => setPassword(e.target.value)}/>
                         <input placeholder="RG" value={rg} onChange={e => setRG(e.target.value)}/>
                         <input placeholder="CPF" value={cpf} onChange={e => setCpf(e.target.value)}/>
                         <input type="date" value={birthDay} onChange={e => setBirthDay(e.target.value)}/>
-                        <input placeholder="Cellphone" value={cellphone} onChange={e => setCellphone(e.target.value)}/>
+                        <input placeholder="Cellphone" value={cellphone}
+                               onChange={e => setCellphone(e.target.value)}/>
                         <button className="button" type="submit">
                             {showLoading ? (
-                                <img className="loadingGif" src={loadingGif} alt="Spinner" />
+                                <img className="loadingGif" src={loadingGif} alt="Spinner"/>
                             ) : (
                                 'Add'
                             )}
@@ -102,5 +138,6 @@ export default function NewClient() {
                 </div>
             </div>
         </div>
-    );
+    )
 }
+
