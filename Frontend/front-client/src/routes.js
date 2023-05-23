@@ -10,7 +10,7 @@ function AppRoutes(){
             <Routes>
                 <Route path="/" element={<Login/>}/>
                 <Route path="/clients" element={<Clients/>}/>
-                <Route path="/client/new" element={<NewClient/>}/>
+                <Route path="/client/new/:clientId" element={<NewClient/>}/>
             </Routes>
         </BrowserRouter>
     );

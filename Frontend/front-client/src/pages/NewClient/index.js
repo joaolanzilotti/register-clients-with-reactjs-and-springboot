@@ -2,17 +2,13 @@ import React, {useState} from 'react';
 import './styles.css';
 import loadingGif from '../../assets/loadingTwoWhite.gif';
 import logoJP from '../../assets/newUser.png';
-import {Link, useNavigate} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import {FiArrowLeft, FiUserPlus} from "react-icons/fi";
 import {ToastContainer, toast} from "react-toast";
 
 import api from '../../services/api';
 
-
 export default function NewClient() {
-
-    const sucess = () => toast.success('Client added with Sucessfuly!');
-    const error = () => toast.error('Error while Recorde Client! Try Again!');
 
     //Chamando a API para enviar os Dados
     const [id, setId] = useState(null);
@@ -28,6 +24,8 @@ export default function NewClient() {
     const accessToken = localStorage.getItem('accessToken');
 
     const [showLoading, setShowLoading] = useState(false);
+
+    const {clientId} = useParams();
 
     //Funcao navigate para Enviar a Rota
     const navigate = useNavigate();
@@ -56,10 +54,10 @@ export default function NewClient() {
                     Authorization: `Bearer ${accessToken}`
                 }
             });
-            sucess();
+            toast.success('Client added with Sucessfuly!');
             //navigate('/clients');
         } catch (err) {
-            error();
+            toast.error('Error while Recorde Client! Try Again!');
         } finally {
             setShowLoading(false);
         }
