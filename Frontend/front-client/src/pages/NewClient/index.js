@@ -88,7 +88,7 @@ export default function NewClient() {
                         Authorization: `Bearer ${accessToken}`
                     }
                 });
-                toast.success('Client added with Sucessfuly!');
+                toast.success('Client added with Sucess!');
             }else{
                 data.id = id
                 await api.put(`/api/clients/${id}`, data, {
@@ -97,10 +97,11 @@ export default function NewClient() {
                         Authorization: `Bearer ${accessToken}`
                     }
                 });
+                toast.success('Client Updated with Success!');
             }
 
         } catch (err) {
-            toast.error('Error while Recorde Client! Try Again!');
+            toast.error('Error while Record Client! Try Again!');
         } finally {
             setShowLoading(false);
         }
@@ -126,7 +127,7 @@ export default function NewClient() {
                         </Link>
                     </section>
                     <form onSubmit={SaveOrUpdateClient}>
-                        <input placeholder="Name" value={name} onChange={e => setName(e.target.value)}/>
+                        <input id="name" placeholder="Name" value={name} onChange={e => setName(e.target.value)}/>
                         <input type="email" placeholder="E-mail" value={email}
                                onChange={e => setEmail(e.target.value)}/>
                         <input type="password" placeholder="Password" value={password}

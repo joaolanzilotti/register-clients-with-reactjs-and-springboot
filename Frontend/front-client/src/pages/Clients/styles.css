@@ -145,3 +145,96 @@
     opacity: 0.8;
 }
 
+.client-container .modal {
+    position: fixed;
+    top: 200px;
+    right: 500px;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 0 4px 0;
+    padding: 3px;
+    z-index: 9999;
+    opacity: 0; /* Inicia com opacidade 0 */
+    animation: fadeIn 0.5s ease-in-out forwards; /* Aplica a animação */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0; /* Opacidade inicial */
+    }
+    to {
+        opacity: 1; /* Opacidade final */
+    }
+}
+
+.client-container .modal .buttonCloseModal{
+    background: none;
+    border: 0;
+    display: flex;
+    margin-top: 1px;
+    margin-left: 93%;
+
+}
+
+.client-container .modal-content {
+    display: inline;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.client-container .modal h2 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.client-container .modal p {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.client-container .modal .iconContainer .iconAlertModal {
+    margin-left: 45%;
+    margin-bottom: 10px;
+}
+
+.client-container .modal h5 {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.client-container .modal button {
+    margin-right: 40px;
+    font-weight: bold;
+}
+
+.client-container .modal .buttonConfirmDialog{
+    margin-left: 36px;
+    font-size: 13px;
+    color: white;
+    width: 120px;
+    height: 27px;
+    border: 0;
+    border-radius: 16px;
+    background: red;
+}
+.client-container .modal .buttonCancelDialog{
+    margin-bottom: 20px;
+    font-size: 13px;
+    color: white;
+    width: 120px;
+    height: 27px;
+    border: 0;
+    border-radius: 16px;
+    background: #737380;
+}
+.client-container .modal .buttonConfirmDialog:hover{
+    opacity: 0.8;
+}
+.client-container .modal .buttonCancelDialog:hover{
+    opacity: 0.8;
+}
+
+
+
+
