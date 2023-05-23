@@ -64,7 +64,7 @@ export default function NewClient() {
     }, [clientId])
 
     //funcao para nao fazer a pagina dar Refresh
-    async function createNewClient(e) {
+    async function SaveOrUpdateClient(e) {
         e.preventDefault();
         setShowLoading(true);
 
@@ -81,14 +81,24 @@ export default function NewClient() {
         }
 
         try {
-            await api.post('/api/clients', data, {
-                //Adicionando na resposta o Header com o Token
-                headers: {
-                    Authorization: `Bearer ${accessToken}`
-                }
-            });
-            toast.success('Client added with Sucessfuly!');
-            //navigate('/clients');
+            if(clientId === '0') {
+                await api.post('/api/clients', data, {
+                    //Adicionando na resposta o Header com o Token
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                });
+                toast.success('Client added with Sucessfuly!');
+            }else{
+                data.id = id
+                await api.put(`/api/clients/${id}`, data, {
+                    //Adicionando na resposta o Header com o Token
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                });
+            }
+
         } catch (err) {
             toast.error('Error while Recorde Client! Try Again!');
         } finally {
@@ -106,16 +116,16 @@ export default function NewClient() {
                 <div className="content">
                     <section className="form">
                         <img src={logoJP} alt="JP"/>
-                        <h1>Add New Client</h1>
-                        <p>Enter the client information and click on 'Add'!</p>
+                        <h1>{clientId === '0' ? 'Add New' : 'Update'} Client</h1>
+                        <p>Enter the client information and click on {clientId === "'0'" ? "'Add'" : 'Update'}</p>
                         <Link className="back-link" to="/clients">
                             <div className="container-button">
                                 <div className="iconArrowLeft"><FiArrowLeft size={16} color="blue"/></div>
-                                <div className="textButton">Home</div>
+                                <div className="textButton">Back to Clients</div>
                             </div>
                         </Link>
                     </section>
-                    <form onSubmit={createNewClient}>
+                    <form onSubmit={SaveOrUpdateClient}>
                         <input placeholder="Name" value={name} onChange={e => setName(e.target.value)}/>
                         <input type="email" placeholder="E-mail" value={email}
                                onChange={e => setEmail(e.target.value)}/>
@@ -130,7 +140,7 @@ export default function NewClient() {
                             {showLoading ? (
                                 <img className="loadingGif" src={loadingGif} alt="Spinner"/>
                             ) : (
-                                'Add'
+                                clientId === '0' ? 'Add' : 'Update'
                             )}
                         </button>
 
