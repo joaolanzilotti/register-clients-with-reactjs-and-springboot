@@ -123,3 +123,25 @@
     font-size: 16px;
 }
 
+
+.client-container .buttonMorePage{
+    margin-top: 0;
+    margin-left: 46%;
+    height: 55px;
+    background: transparent;
+    border: 0;
+    border-radius: 8px;
+    color: #251FC5;
+    font-weight: 700;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    font-size: 15px;
+    line-height: 60px;
+    transition: filter 0.5s;
+}
+
+.client-container .buttonMorePage:hover{
+    opacity: 0.8;
+}
+
