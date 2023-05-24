@@ -1,4 +1,4 @@
-.new-client-container {
+.new-user-container {
     width: 70%;
     max-width: 1120px;
     height: 100vh;
@@ -9,7 +9,7 @@
     justify-content: space-between;
 }
 
-.new-client-container .content {
+.new-user-container .content {
     width: 90%;
     height: 580px;
     padding: 80px;
@@ -23,45 +23,45 @@
 
 }
 
-.new-client-container .content section {
+.new-user-container .content section {
     width: 100%;
     max-width: 380px;
 }
 
-.new-client-container section.form{
+.new-user-container section.form{
     width: 100%;
     max-width: 350px;
     margin-right: 30px;
 }
 
-.new-client-container section.form img {
+.new-user-container section.form img {
     width: 75%;
     margin-left: auto;
     margin-right: auto;
     display: block;
 }
 
-.new-client-container .content section h1{
+.new-user-container .content section h1{
     margin: 64px 0 32px;
     font-size: 32px;
 }
 
-.new-client-container .content section p {
+.new-user-container .content section p {
     font-size: 18px;
     color: #737380;
     line-height: 32px;
 }
 
-.new-client-container .content form {
+.new-user-container .content form {
     width: 100%;
     max-width: 450px;
 }
 
-.new-client-container .content form input {
+.new-user-container .content form input {
     margin-top: 8px;
 }
 
-.new-client-container .content .back-link{
+.new-user-container .content .back-link{
     background: transparent;
     border-radius: 8px;
     color: #251FC5;
@@ -75,11 +75,11 @@
     transition: filter 0.2s;
 }
 
-.new-client-container .content .back-link .container-button{
+.new-user-container .content .back-link .container-button{
     display: inline-flex;
 }
 
-.new-client-container .content .back-link .iconArrowLeft{
+.new-user-container .content .back-link .iconArrowLeft{
     margin-top: 3px;
     margin-right: 10px;
 }

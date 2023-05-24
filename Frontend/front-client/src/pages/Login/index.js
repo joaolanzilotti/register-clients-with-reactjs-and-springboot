@@ -15,10 +15,9 @@ export default function Login() {
     const [showLoading, setShowLoading] = useState(false);
 
     //Notifications React Toast
-    const error = () => toast.warn('Login failed! Try agains!');
 
     //Chamando a API para enviar os Dados
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     //Funcao navigate para Enviar a Rota
@@ -29,19 +28,19 @@ export default function Login() {
         e.preventDefault();
         setShowLoading(true);
         const data = {
-            username,
+            email: email,
             password,
         }
         try {
             //Enviado a Requisicao Post para API
             const response = await api.post('auth/signin', data);
             //Armazenando o login no LocalStorage
-            localStorage.setItem('username', username);
+            localStorage.setItem('email', email);
             localStorage.setItem('accessToken', response.data.token);
 
-            navigate('/clients');
+            navigate('/users');
         } catch (err) {
-            error();
+            toast.warn('Login failed! Try agains!');
         } finally {
             setShowLoading(false);
         }
@@ -54,11 +53,11 @@ export default function Login() {
 
                 <section className="form">
 
-                    <img className="logo" src={logoImage} alt="Client Logo"/>
+                    <img className="logo" src={logoImage} alt="User Logo"/>
                     <form onSubmit={login}>
                         <h1>Access your Account</h1>
-                        <input type="text" placeholder="Username" value={username}
-                               onChange={e => setUsername(e.target.value)}/>
+                        <input type="text" placeholder="Email" value={email}
+                               onChange={e => setEmail(e.target.value)}/>
                         <input type="password" placeholder="Password" value={password}
                                onChange={e => setPassword(e.target.value)}/>
                         <button className="button" type="submit">

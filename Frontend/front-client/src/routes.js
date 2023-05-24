@@ -1,16 +1,16 @@
 import React from 'react';
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import Login from './pages/Login';
-import Clients from './pages/Clients';
-import NewClient from './pages/NewClient';
+import Users from './pages/Users';
+import NewUser from './pages/NewUser';
 
 function AppRoutes(){
     return (
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Login/>}/>
-                <Route path="/clients" element={<Clients/>}/>
-                <Route path="/client/new/:clientId" element={<NewClient/>}/>
+                <Route path="/users" element={<Users/>}/>
+                <Route path="/user/new/:userId" element={<NewUser/>}/>
             </Routes>
         </BrowserRouter>
     );

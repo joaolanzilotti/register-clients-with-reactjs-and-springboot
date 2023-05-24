@@ -8,7 +8,7 @@ import {ToastContainer, toast} from "react-toast";
 
 import api from '../../services/api';
 
-export default function NewClient() {
+export default function NewUser() {
 
     //Chamando a API para enviar os Dados
     const [id, setId] = useState(null);
@@ -21,20 +21,20 @@ export default function NewClient() {
     const [cellphone, setCellphone] = useState('');
     const [adress, setAdress] = useState('');
 
-    const username = localStorage.getItem('username');
+    const username = localStorage.getItem('email');
     const accessToken = localStorage.getItem('accessToken');
 
     const [showLoading, setShowLoading] = useState(false);
 
-    const {clientId} = useParams();
+    const {userId} = useParams();
 
     //Funcao navigate para Enviar a Rota
     const navigate = useNavigate();
 
     //async function é uma funcao que aguarda o carregamento da pagina.
-    async function loadClient() {
+    async function loadUser() {
         try {
-            const response = await api.get(`/api/clients/${clientId}`, {
+            const response = await api.get(`/api/users/${userId}`, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`
                 }
@@ -49,22 +49,22 @@ export default function NewClient() {
             setBirthDay(response.data.birthDay)
             setAdress(response.data.adress)
         } catch (erro) {
-            toast.error('Error recovering Client!, Try again!')
-            navigate('/clients');
+            toast.error('Error recovering User!, Try again!')
+            navigate('/users');
         }
     }
 
     useEffect(() => {
-        if (clientId === '0') return;
+        if (userId === '0') return;
         else {
-            loadClient().then();
+            loadUser().then();
         }
 
 
-    }, [clientId])
+    }, [userId])
 
     //funcao para nao fazer a pagina dar Refresh
-    async function SaveOrUpdateClient(e) {
+    async function SaveOrUpdateUser(e) {
         e.preventDefault();
         setShowLoading(true);
 
@@ -81,27 +81,27 @@ export default function NewClient() {
         }
 
         try {
-            if(clientId === '0') {
-                await api.post('/api/clients', data, {
+            if(userId === '0') {
+                await api.post('/api/users', data, {
                     //Adicionando na resposta o Header com o Token
                     headers: {
                         Authorization: `Bearer ${accessToken}`
                     }
                 });
-                toast.success('Client added with Sucess!');
+                toast.success('User added with Sucess!');
             }else{
                 data.id = id
-                await api.put(`/api/clients/${id}`, data, {
+                await api.put(`/api/users/${id}`, data, {
                     //Adicionando na resposta o Header com o Token
                     headers: {
                         Authorization: `Bearer ${accessToken}`
                     }
                 });
-                toast.success('Client Updated with Success!');
+                toast.success('User Updated with Success!');
             }
 
         } catch (err) {
-            toast.error('Error while Record Client! Try Again!');
+            toast.error('Error while Record User! Try Again!');
         } finally {
             setShowLoading(false);
         }
@@ -112,21 +112,21 @@ export default function NewClient() {
         <div className="notification">
             <ToastContainer position="top-center" delay="3000"/>
 
-            <div className="new-client-container">
+            <div className="new-user-container">
 
                 <div className="content">
                     <section className="form">
                         <img src={logoJP} alt="JP"/>
-                        <h1>{clientId === '0' ? 'Add New' : 'Update'} Client</h1>
-                        <p>Enter the client information and click on {clientId === "'0'" ? "'Add'" : 'Update'}</p>
-                        <Link className="back-link" to="/clients">
+                        <h1>{userId === '0' ? 'Add New' : 'Update'} User</h1>
+                        <p>Enter the user information and click on {userId === "'0'" ? "'Add'" : 'Update'}</p>
+                        <Link className="back-link" to="/users">
                             <div className="container-button">
                                 <div className="iconArrowLeft"><FiArrowLeft size={16} color="blue"/></div>
-                                <div className="textButton">Back to Clients</div>
+                                <div className="textButton">Back to Users</div>
                             </div>
                         </Link>
                     </section>
-                    <form onSubmit={SaveOrUpdateClient}>
+                    <form onSubmit={SaveOrUpdateUser}>
                         <input id="name" placeholder="Name" value={name} onChange={e => setName(e.target.value)}/>
                         <input type="email" placeholder="E-mail" value={email}
                                onChange={e => setEmail(e.target.value)}/>
@@ -141,7 +141,7 @@ export default function NewClient() {
                             {showLoading ? (
                                 <img className="loadingGif" src={loadingGif} alt="Spinner"/>
                             ) : (
-                                clientId === '0' ? 'Add' : 'Update'
+                                userId === '0' ? 'Add' : 'Update'
                             )}
                         </button>
 

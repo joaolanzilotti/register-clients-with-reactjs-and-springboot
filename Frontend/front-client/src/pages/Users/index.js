@@ -9,16 +9,16 @@ import './styles.css';
 
 import logoJP from '../../assets/logoJP.png';
 
-export default function Clients() {
-    const username = localStorage.getItem('username');
+export default function Users() {
+    const username = localStorage.getItem('email');
     const accessToken = localStorage.getItem('accessToken');
 
     const navigate = useNavigate();
     const [showConfirmation, setShowConfirmation] = useState(false);
-    const [selectedClientId, setSelectedClientId] = useState(null);
-    const [selectedClientName, setSelectedClientName] = useState(null);
+    const [selectedUserId, setSelectedUserId] = useState(null);
+    const [selectedUserName, setSelectedUserName] = useState(null);
 
-    const [clients, setClients] = useState([]);
+    const [users, setUsers] = useState([]);
     const [page, setPage] = useState(0);
 
     async function logout() {
@@ -26,30 +26,30 @@ export default function Clients() {
         navigate('/');
     }
 
-    async function editClient(id) {
+    async function editUser(id) {
         try {
-            navigate(`/client/new/${id}`);
+            navigate(`/user/new/${id}`);
         } catch (error) {
             toast.error('Edit Failed! Try Again.');
         }
     }
 
-    async function deleteClient(id) {
+    async function deleteUser(id) {
         try {
-            await api.delete(`/api/clients/${id}`, {
+            await api.delete(`/api/users/${id}`, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
                 },
             });
-            setClients(clients.filter((client) => client.id !== id));
-            toast.success('Client Deleted Successfully!');
+            setUsers(users.filter((client) => client.id !== id));
+            toast.success('User Deleted Successfully!');
         } catch (err) {
             toast.error('Delete Failed!');
         }
     }
 
-    async function fetchMoreClients() {
-        const response = await api.get('/api/clients', {
+    async function fetchMoreUsers() {
+        const response = await api.get('/api/users', {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             },
@@ -59,45 +59,45 @@ export default function Clients() {
             },
         });
 
-        setClients([...clients, ...response.data._embedded.clientDTOList]);
+        setUsers([...users, ...response.data._embedded.userDTOList]);
         setPage(page + 1);
     }
 
     function handleDeleteClick(id, name) {
-        setSelectedClientId(id);
-        setSelectedClientName(name)
+        setSelectedUserId(id);
+        setSelectedUserName(name)
         setShowConfirmation(true);
     }
 
     function handleConfirmDelete() {
-        deleteClient(selectedClientId);
+        deleteUser(selectedUserId);
         setShowConfirmation(false);
     }
 
     function handleCancelDelete() {
-        setSelectedClientId(null);
-        setSelectedClientName(null);
+        setSelectedUserId(null);
+        setSelectedUserName(null);
         setShowConfirmation(false);
     }
 
     // useEffect é para carregar a tela assim que carregar o HTML, os dados virão!
     useEffect(() => {
-        fetchMoreClients();
+        fetchMoreUsers().then();
     }, []);
 
     return (
-        <div className="client-container">
+        <div className="user-container">
             <header>
                 <img src={logoJP} alt="JP" />
                 <span>
-          Welcome, <strong>{username.toUpperCase()}</strong>
+          <strong>Welcome</strong>
         </span>
-                <Link className="buttonClient" to="/client/new/0">
+                <Link className="buttonUser" to="/user/new/0">
                     <div className="container-button">
                         <div className="iconUserPlus">
                             <FiUserPlus size={24} color="white" />
                         </div>
-                        <div className="textButton">Add new Client</div>
+                        <div className="textButton">Add new User</div>
                     </div>
                 </Link>
 
@@ -105,47 +105,47 @@ export default function Clients() {
                     <FiLogOut size={18} color="#251FC5" />
                 </button>
             </header>
-            <h1>Registered Clients</h1>
+            <h1>Registered Users</h1>
             <ul>
-                {clients.map((client) => (
-                    <li key={client.id}>
+                {users.map((user) => (
+                    <li key={user.id}>
                         <strong>Name:</strong>
-                        <p>{client.name}</p>
+                        <p>{user.name}</p>
                         <strong>E-mail:</strong>
-                        <p>{client.email}</p>
+                        <p>{user.email}</p>
                         <strong>RG:</strong>
-                        <p>{client.rg}</p>
+                        <p>{user.rg}</p>
                         <strong>CPF:</strong>
-                        <p>{client.cpf}</p>
+                        <p>{user.cpf}</p>
                         <strong>Birthday:</strong>
                         <p>
-                            {Intl.DateTimeFormat('pt-BR').format(new Date(client.birthDay))}
+                            {Intl.DateTimeFormat('pt-BR').format(new Date(user.birthDay))}
                         </p>
                         <strong>Cellphone:</strong>
-                        <p>{client.cellphone}</p>
+                        <p>{user.cellphone}</p>
                         <strong>Adress:</strong>
-                        {client.adress ? (
+                        {user.adress ? (
                             <p>
-                                {client.adress.street +
+                                {user.adress.street +
                                     ', ' +
-                                    client.adress.district +
+                                    user.adress.district +
                                     ', ' +
-                                    client.adress.number}
+                                    user.adress.number}
                             </p>
                         ) : (
                             <p>Endereço não disponível</p>
                         )}
 
                         <button type="button">
-                            <FiEdit onClick={() => editClient(client.id)} size={20} color="#251FC5" />
+                            <FiEdit onClick={() => editUser(user.id)} size={20} color="#251FC5" />
                         </button>
-                        <button onClick={() => handleDeleteClick(client.id, client.name)} type="button">
+                        <button onClick={() => handleDeleteClick(user.id, user.name)} type="button">
                             <FiTrash2 size={20} color="#251FC5" />
                         </button>
                     </li>
                 ))}
             </ul>
-            <button className="buttonMorePage" onClick={fetchMoreClients} type="button">
+            <button className="buttonMorePage" onClick={fetchMoreUsers} type="button">
                 Load More
             </button>
 
@@ -157,8 +157,8 @@ export default function Clients() {
                         <FiAlertTriangle className="iconAlertModal" size="45" color='orange' />
                         </div>
                         <h2>Confirmation</h2>
-                        <p>Are you sure you want to delete client?</p>
-                        <h5>{selectedClientName}</h5>
+                        <p>Are you sure you want to delete user?</p>
+                        <h5>{selectedUserName}</h5>
                         <button className="buttonConfirmDialog" onClick={handleConfirmDelete}>Delete</button>
                         <button className="buttonCancelDialog" onClick={handleCancelDelete}>Cancel</button>
                     </div>
