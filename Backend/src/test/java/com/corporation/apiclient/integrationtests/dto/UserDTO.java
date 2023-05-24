@@ -1,7 +1,6 @@
 package com.corporation.apiclient.integrationtests.dto;
 
 import com.corporation.apiclient.entities.Adress;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.xml.bind.annotation.XmlRootElement;
@@ -9,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -19,7 +17,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @XmlRootElement
-public class ClientDTO implements Serializable {
+public class UserDTO implements Serializable {
 
     private Long id;
     private String name;

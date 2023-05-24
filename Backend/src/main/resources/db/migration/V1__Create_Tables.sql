@@ -16,23 +16,25 @@ CREATE TABLE `adress`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Table structure for client
+-- Table structure for user
 -- ----------------------------
-DROP TABLE IF EXISTS `client`;
-CREATE TABLE `client`  (
-                           `id` bigint NOT NULL AUTO_INCREMENT,
-                           `birth_day` datetime NULL DEFAULT NULL,
-                           `cellphone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-                           `cpf` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-                           `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-                           `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-                           `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-                           `rg` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-                           `adress_id` bigint NULL DEFAULT NULL,
-                           PRIMARY KEY (`id`) USING BTREE,
-                           INDEX `FKad9pqvvl7xgbq4mv8x5vpijvq`(`adress_id` ASC) USING BTREE,
-                           CONSTRAINT `FKad9pqvvl7xgbq4mv8x5vpijvq` FOREIGN KEY (`adress_id`) REFERENCES `adress` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
-
-
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE IF NOT EXISTS `users` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT,
+    `birth_day` datetime NULL DEFAULT NULL,
+    `cellphone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+    `cpf` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+    `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+    `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+    `rg` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+    `adress_id` bigint NULL DEFAULT NULL,
+    `password` varchar(255) DEFAULT NULL,
+    `account_non_expired` bit(1) DEFAULT NULL,
+    `account_non_locked` bit(1) DEFAULT NULL,
+    `credentials_non_expired` bit(1) DEFAULT NULL,
+    `enabled` BIT(1) DEFAULT b'1',
+    PRIMARY KEY (`id`) USING BTREE,
+    INDEX `FKad9pqvvl7xgbq4mv8x5vpijvq`(`adress_id` ASC) USING BTREE,
+    CONSTRAINT `FKad9pqvvl7xgbq4mv8x5vpijvq` FOREIGN KEY (`adress_id`) REFERENCES `adress` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+    ) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 SET FOREIGN_KEY_CHECKS = 1;

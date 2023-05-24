@@ -1,3 +1,0 @@
-﻿INSERT INTO `users` (`user_name`, `full_name`, `password`, `account_non_expired`, `account_non_locked`, `credentials_non_expired`, `enabled`) VALUES
-																																				  ('joaolanzilotti', 'João Pedro Lanzilotti Ferretti', '$2a$12$fVB6CVvVPD7rbaH06DrBlO6Dothjk95NUkI2mhQdi4Q6aTl2r9oW2', b'1', b'1', b'1', b'1'),
-																																				  ('admin', 'Administrador', '$2a$12$4BRTJQ75u59qdSqaS04zbOPnQjftY7IDKAVa9E/eJK.Rw/JZ0OYHe', b'1', b'1', b'1', b'1');

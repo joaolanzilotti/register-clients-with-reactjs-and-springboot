@@ -14,7 +14,7 @@ import java.util.Date;
 @Setter
 public class TokenDTO implements Serializable {
 
-    private String username;
+    private String email;
     private Boolean authenticated;
     private Date created;
     private Date expiration;

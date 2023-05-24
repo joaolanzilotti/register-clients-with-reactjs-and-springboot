@@ -15,7 +15,12 @@ import java.io.Serializable;
 @XmlRootElement
 public class AccountCredentialsDTO implements Serializable {
 
-    private String username;
+    private String name;
+    private String email;
     private String password;
 
+    public AccountCredentialsDTO(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
 }

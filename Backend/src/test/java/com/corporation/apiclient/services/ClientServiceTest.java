@@ -1,11 +1,11 @@
 package com.corporation.apiclient.services;
 
-import com.corporation.apiclient.dto.ClientDTO;
+import com.corporation.apiclient.dto.UserDTO;
 import com.corporation.apiclient.entities.Adress;
-import com.corporation.apiclient.entities.Client;
+import com.corporation.apiclient.entities.User;
 import com.corporation.apiclient.exceptions.DataIntegratyViolationException;
 import com.corporation.apiclient.exceptions.ObjectNotFoundException;
-import com.corporation.apiclient.repositories.ClientRepository;
+import com.corporation.apiclient.repositories.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,18 +18,9 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.text.ParseException;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -37,18 +28,18 @@ import static org.junit.jupiter.api.Assertions.*;
 class ClientServiceTest {
 
     @InjectMocks
-    private ClientService clientService;
+    private UserServices userServices;
 
     @Mock
-    private ClientRepository clientRepository;
+    private UserRepository userRepository;
 
     @Mock
     private ModelMapper modelMapper;
 
-    private Client client;
+    private User user;
     private Adress adress;
-    private ClientDTO clientDTO;
-    private Optional<Client> optionalClient;
+    private UserDTO userDTO;
+    private Optional<User> optionalUser;
 
     @BeforeEach
     void setUpMocks() throws Exception {
@@ -59,8 +50,8 @@ class ClientServiceTest {
 
     @Test
     void findClientById() {
-        Mockito.when(clientRepository.findById(Mockito.anyLong())).thenReturn(optionalClient);
-        Client response = clientService.findClientById(1L);
+        Mockito.when(userRepository.findById(Mockito.anyLong())).thenReturn(optionalUser);
+        User response = userServices.findUserById(1L);
         response.setBirthDay(new Date(123, 4, 25));
 
         //---Verificando se os valores não estão nulos---//
@@ -73,7 +64,7 @@ class ClientServiceTest {
         Assertions.assertNotNull(response.getPassword());
         Assertions.assertNotNull(response.getRg());
         //---Verificando se os Valores são iguais---//
-        Assertions.assertEquals(Client.class, response.getClass());
+        Assertions.assertEquals(User.class, response.getClass());
         Assertions.assertEquals(1L, response.getId());
         Assertions.assertEquals("Joao", response.getName());
         Assertions.assertEquals("teste@teste.com", response.getEmail());
@@ -88,10 +79,10 @@ class ClientServiceTest {
     @Test
     void findClientByIdReturnObjectNotFoundException() {
 
-        Mockito.when(clientRepository.findById(Mockito.anyLong())).thenThrow(new ObjectNotFoundException("Client Not Found"));
+        Mockito.when(userRepository.findById(Mockito.anyLong())).thenThrow(new ObjectNotFoundException("Client Not Found"));
 
         try {
-            clientService.findClientById(1L);
+            userServices.findUserById(1L);
         } catch (Exception ex) {
             //---Estou Comparando os Valores da classe ObjectNotFoundException---//
             Assertions.assertEquals(ObjectNotFoundException.class, ex.getClass());
@@ -102,9 +93,9 @@ class ClientServiceTest {
 
     @Test
     void whenAddThenReturnSucess() {
-        Mockito.when(clientRepository.save(Mockito.any())).thenReturn(client);
+        Mockito.when(userRepository.save(Mockito.any())).thenReturn(user);
 
-        Client response = clientService.addClient(clientDTO);
+        User response = userServices.addUser(userDTO);
         Assertions.assertNotNull(response.getId());
         Assertions.assertNotNull(response.getEmail());
         Assertions.assertNotNull(response.getCpf());
@@ -114,7 +105,7 @@ class ClientServiceTest {
         Assertions.assertNotNull(response.getRg());
 
         Assertions.assertNotNull(response);
-        Assertions.assertEquals(Client.class, response.getClass());
+        Assertions.assertEquals(User.class, response.getClass());
         Assertions.assertEquals(1L, response.getId());
         Assertions.assertEquals("Joao", response.getName());
         Assertions.assertEquals("teste@teste.com", response.getEmail());
@@ -128,11 +119,11 @@ class ClientServiceTest {
 
     @Test
     void whenAddThenReturnDataIntegratyViolationException() {
-        Mockito.when(clientRepository.findByEmail(Mockito.anyString())).thenReturn(optionalClient);
+        Mockito.when(userRepository.findByEmail(Mockito.anyString())).thenReturn(optionalUser);
 
         try {
-            optionalClient.get().setId(1L);
-            clientService.addClient(clientDTO);
+            optionalUser.get().setId(1L);
+            userServices.addUser(userDTO);
         } catch (Exception ex) {
             Assertions.assertEquals(DataIntegratyViolationException.class, ex.getClass());
             Assertions.assertEquals("this E-mail already exists", ex.getMessage());
@@ -142,8 +133,8 @@ class ClientServiceTest {
 
     @Test
     void whenUpdateThenReturnSucess() {
-        Mockito.when(clientRepository.save(Mockito.any())).thenReturn(client);
-        Client response = clientService.updateClient(clientDTO);
+        Mockito.when(userRepository.save(Mockito.any())).thenReturn(user);
+        User response = userServices.updateUser(userDTO);
         Assertions.assertNotNull(response.getId());
         Assertions.assertNotNull(response.getEmail());
         Assertions.assertNotNull(response.getCpf());
@@ -166,20 +157,20 @@ class ClientServiceTest {
 
     @Test
     void deleteClientWithSucess(){
-        Mockito.when(clientRepository.findById(Mockito.anyLong())).thenReturn(optionalClient);
+        Mockito.when(userRepository.findById(Mockito.anyLong())).thenReturn(optionalUser);
 
-        Mockito.doNothing().when(clientRepository).deleteById(Mockito.anyLong());
-        clientService.deleteClient(1L);
-        Mockito.verify(clientRepository, Mockito.times(1)).deleteById(Mockito.anyLong());
+        Mockito.doNothing().when(userRepository).deleteById(Mockito.anyLong());
+        userServices.deleteUser(1L);
+        Mockito.verify(userRepository, Mockito.times(1)).deleteById(Mockito.anyLong());
 
     }
 
     @Test
     void deleteClientWithObjectNotFoundException(){
-        Mockito.when(clientRepository.findById(Mockito.anyLong())).thenThrow(new ObjectNotFoundException("Client Not Found"));
+        Mockito.when(userRepository.findById(Mockito.anyLong())).thenThrow(new ObjectNotFoundException("Client Not Found"));
 
         try{
-            clientService.deleteClient(1L);
+            userServices.deleteUser(1L);
         }catch (Exception ex){
             Assertions.assertEquals(ObjectNotFoundException.class, ex.getClass());
             Assertions.assertEquals("Client Not Found", ex.getMessage());
@@ -187,9 +178,9 @@ class ClientServiceTest {
     }
 
     private void startClientAndAdress() {
-        client = new Client(1L, "Joao", "teste@teste.com", "123", "56006548", "09113144568", new Date(123, 4, 25), "12659874848", adress, true);
-        clientDTO = new ClientDTO(1L, "Joao", "teste@teste.com", "123", "56006548", "09113144568", new Date(123, 4, 25), "12659874848", adress, true);
-        optionalClient = Optional.of(new Client(1L, "Joao", "teste@teste.com", "123", "56006548", "09113144568", new Date(), "12659874848", adress, true));
+        user = new User(1L, "teste@teste.com", "56006548", "09113144568", new Date(123, 4, 25), "12659874848", adress, true, "Joao", "123");
+        userDTO = new UserDTO(1L, "Joao", "teste@teste.com", "123", "56006548", "09113144568", new Date(123, 4, 25), "12659874848", adress, true);
+        optionalUser = Optional.of(new User(1L, "teste@teste.com", "56006548", "09113144568", new Date(123, 4, 25), "12659874848", adress, true, "Joao", "123"));
         adress = new Adress(1L, "maranhao", "district", "50", "Ubatuba", "SP", null);
     }
 }

@@ -45,7 +45,7 @@ public class AuthControllerYMLTest extends AbstractIntegrationTest {
     @Order(1)
     public void testSignin() throws JsonMappingException, JsonProcessingException {
 
-        AccountCredentialsDTO user = new AccountCredentialsDTO("admin","admin123");
+        AccountCredentialsDTO user = new AccountCredentialsDTO("admin@admin.com","admin123");
 
         RequestSpecification specification = new RequestSpecBuilder()
                 .addFilter(new RequestLoggingFilter(LogDetail.ALL))
@@ -93,7 +93,7 @@ public class AuthControllerYMLTest extends AbstractIntegrationTest {
                 .basePath("/auth/refresh")
                 .port(TestConfig.SERVER_PORT)
                 .contentType(TestConfig.CONTENT_TYPE_YML)
-                .pathParam("username", tokenDTO.getUsername())
+                .pathParam("username", tokenDTO.getEmail())
                 .header(TestConfig.HEADER_PARAM_AUTHORIZATION, "Bearer " + tokenDTO.getRefreshToken())
                 .when()
                 .put("{username}")

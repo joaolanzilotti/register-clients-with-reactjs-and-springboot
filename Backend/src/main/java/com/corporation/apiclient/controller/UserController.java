@@ -1,9 +1,9 @@
 package com.corporation.apiclient.controller;
 
-import com.corporation.apiclient.dto.ClientDTO;
+import com.corporation.apiclient.dto.UserDTO;
 import com.corporation.apiclient.entities.Adress;
-import com.corporation.apiclient.entities.Client;
-import com.corporation.apiclient.services.ClientService;
+import com.corporation.apiclient.entities.User;
+import com.corporation.apiclient.services.UserServices;
 import com.corporation.apiclient.utils.MediaType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -14,14 +14,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,52 +30,52 @@ import java.net.URI;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-@RequestMapping("/api/clients")
+@RequestMapping("/api/users")
 @RestController
 //Configuration Swagger - Change name and Description on Methods Client
-@Tag(name = "Client", description = "Endpoints for Managing Client")
-public class ClientController {
+@Tag(name = "Users", description = "Endpoints for Managing User")
+public class UserController {
 
     @Autowired
-    private PagedResourcesAssembler<ClientDTO> assembler;
+    private PagedResourcesAssembler<UserDTO> assembler;
 
     @Autowired
-    private ClientService clientService;
+    private UserServices userServices;
 
     @Autowired
     private ModelMapper modelMapper;
 
     //@CrossOrigin(origins = "http://localhost:8080")
     @GetMapping(produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
-    @Operation(summary = "Finds All Client", description = "Finds All Client", tags = {"Client"},
+    @Operation(summary = "Finds All Users", description = "Finds All Users", tags = {"User"},
             responses = {
-                    @ApiResponse(description = "Success", responseCode = "200", content = {@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ClientDTO.class)))}),
+                    @ApiResponse(description = "Success", responseCode = "200", content = {@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = UserDTO.class)))}),
                     @ApiResponse(description = "Bad Request", responseCode = "400", content = {@Content}),
                     @ApiResponse(description = "Unauthorized", responseCode = "401", content = {@Content}),
                     @ApiResponse(description = "Not Found", responseCode = "404", content = {@Content}),
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = {@Content})})
-    public ResponseEntity<PagedModel<EntityModel<ClientDTO>>> findAll(
+    public ResponseEntity<PagedModel<EntityModel<UserDTO>>> findAll(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "15") Integer size){
-            //@RequestParam(value = "direction", defaultValue = "asc") String direction) {
+        //@RequestParam(value = "direction", defaultValue = "asc") String direction) {
 // esta ignorando as Letras Maiuscula ou Minuscula e um operador ternario se ele identificar DESC na Requisicao ele retorna Um Direction.DESC, se nao Direction.ASC
         //Direction sortDirection = "desc".equalsIgnoreCase(direction) ? Direction.DESC : Direction.ASC;  // Ordenando por name
         //Usando o Page para fazer pesquisa por paginacao
         //Pageable pageable = PageRequest.of(page,size, Sort.by(sortDirection, "name"));
         Pageable pageable = PageRequest.of(page,size);
 
-        return ResponseEntity.ok(clientService.findAll(pageable));
+        return ResponseEntity.ok(userServices.findAll(pageable));
     }
 
-    @GetMapping(value = "/findClientByName/{name}",produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
-    @Operation(summary = "Find Clients By Name", description = "Find Clients By Name", tags = {"Client"},
+    @GetMapping(value = "/findUserByName/{name}",produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
+    @Operation(summary = "Find User By Name", description = "Find User By Name", tags = {"User"},
             responses = {
-                    @ApiResponse(description = "Success", responseCode = "200", content = {@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ClientDTO.class)))}),
+                    @ApiResponse(description = "Success", responseCode = "200", content = {@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = UserDTO.class)))}),
                     @ApiResponse(description = "Bad Request", responseCode = "400", content = {@Content}),
                     @ApiResponse(description = "Unauthorized", responseCode = "401", content = {@Content}),
                     @ApiResponse(description = "Not Found", responseCode = "404", content = {@Content}),
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = {@Content})})
-    public ResponseEntity<PagedModel<EntityModel<ClientDTO>>> findClientByName(
+    public ResponseEntity<PagedModel<EntityModel<UserDTO>>> findClientByName(
             @PathVariable String name,
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "15") Integer size,
@@ -87,45 +85,45 @@ public class ClientController {
         //Usando o Page para fazer pesquisa por paginacao
         Pageable pageable = PageRequest.of(page,size, Sort.by(sortDirection, "name"));
 
-        return ResponseEntity.ok(clientService.findClientByName(name,pageable));
+        return ResponseEntity.ok(userServices.findUserByName(name,pageable));
     }
 
     //@CrossOrigin(origins = "http://localhost:8080")
     @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
-    @Operation(summary = "Finds a Client", description = "Finds a Client", tags = {"Client"},
+    @Operation(summary = "Finds a User", description = "Finds a User", tags = {"User"},
             responses = {
-                    @ApiResponse(description = "Success", responseCode = "200", content = {@Content(schema = @Schema(implementation = ClientDTO.class))}),
+                    @ApiResponse(description = "Success", responseCode = "200", content = {@Content(schema = @Schema(implementation = UserDTO.class))}),
                     @ApiResponse(description = "No Content", responseCode = "204", content = {@Content}),
                     @ApiResponse(description = "Bad Request", responseCode = "400", content = {@Content}),
                     @ApiResponse(description = "Unauthorized", responseCode = "401", content = {@Content}),
                     @ApiResponse(description = "Not Found", responseCode = "404", content = {@Content}),
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = {@Content})})
-    public ResponseEntity<ClientDTO> findClientById(@PathVariable Long id) {
-        ClientDTO clientDTO = modelMapper.map(clientService.findClientById(id), ClientDTO.class);
-        clientDTO.add(linkTo(methodOn(ClientController.class).findClientById(id)).withSelfRel());
-        if(clientDTO.getAdress() == null) {
-            System.out.println("No Adress In Client: " + clientDTO.getName());
-            clientDTO.setAdress(new Adress());
-            return ResponseEntity.ok().body(clientDTO);
+    public ResponseEntity<UserDTO> findUserById(@PathVariable Long id) {
+        UserDTO userDTO = modelMapper.map(userServices.findUserById(id), UserDTO.class);
+        userDTO.add(linkTo(methodOn(UserController.class).findUserById(id)).withSelfRel());
+        if(userDTO.getAdress() == null) {
+            System.out.println("No Adress In Client: " + userDTO.getName());
+            userDTO.setAdress(new Adress());
+            return ResponseEntity.ok().body(userDTO);
         }
-        clientDTO.add(linkTo(methodOn(AdressController.class).findAdressById(clientDTO.getAdress().getId())).withSelfRel());
-        return ResponseEntity.ok().body(clientDTO);
+        userDTO.add(linkTo(methodOn(AdressController.class).findAdressById(userDTO.getAdress().getId())).withSelfRel());
+        return ResponseEntity.ok().body(userDTO);
 
     }
 
     //Usar @PatchMapping quando precisar atualizar valor de apenas um campo
     @PatchMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
-    @Operation(summary = "Disable a specific Client by ID", description = "Disable a specific Client by ID", tags = {"Client"},
+    @Operation(summary = "Disable a specific User by ID", description = "Disable a specific User by ID", tags = {"User"},
             responses = {
-                    @ApiResponse(description = "Success", responseCode = "200", content = {@Content(schema = @Schema(implementation = ClientDTO.class))}),
+                    @ApiResponse(description = "Success", responseCode = "200", content = {@Content(schema = @Schema(implementation = UserDTO.class))}),
                     @ApiResponse(description = "No Content", responseCode = "204", content = {@Content}),
                     @ApiResponse(description = "Bad Request", responseCode = "400", content = {@Content}),
                     @ApiResponse(description = "Unauthorized", responseCode = "401", content = {@Content}),
                     @ApiResponse(description = "Not Found", responseCode = "404", content = {@Content}),
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = {@Content})})
-    public ResponseEntity<ClientDTO> DisableClient(@PathVariable Long id) {
-        ClientDTO clientDTO = modelMapper.map(clientService.updateDisableClient(id),ClientDTO.class);
-        return ResponseEntity.ok().body(clientDTO);
+    public ResponseEntity<UserDTO> DisableUser(@PathVariable Long id) {
+        UserDTO userDTO = modelMapper.map(userServices.updateDisableClient(id),UserDTO.class);
+        return ResponseEntity.ok().body(userDTO);
 
     }
 
@@ -134,14 +132,14 @@ public class ClientController {
             consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
     @Operation(summary = "Adds a New Client", description = "Adds a New Client by passing in a JSON, XML or YML representation of the Client.", tags = {"Client"},
             responses = {
-                    @ApiResponse(description = "Success", responseCode = "200", content = {@Content(schema = @Schema(implementation = ClientDTO.class))}),
+                    @ApiResponse(description = "Success", responseCode = "200", content = {@Content(schema = @Schema(implementation = UserDTO.class))}),
                     @ApiResponse(description = "Bad Request", responseCode = "400", content = {@Content}),
                     @ApiResponse(description = "Unauthorized", responseCode = "401", content = {@Content}),
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = {@Content})})
-    public ResponseEntity<ClientDTO> addClient(@Valid @RequestBody ClientDTO clientDTO) {
-        ClientDTO DTO = modelMapper.map(clientService.addClient(clientDTO), ClientDTO.class);
-        DTO.add(linkTo(methodOn(ClientController.class).findClientById(DTO.getId())).withSelfRel());
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(clientDTO.getId()).toUri();
+    public ResponseEntity<UserDTO> addClient(@Valid @RequestBody UserDTO userDTO) {
+        UserDTO DTO = modelMapper.map(userServices.addUser(userDTO), UserDTO.class);
+        DTO.add(linkTo(methodOn(UserController.class).findUserById(DTO.getId())).withSelfRel());
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(userDTO.getId()).toUri();
         return ResponseEntity.created(uri).body(DTO);
 
     }
@@ -150,25 +148,25 @@ public class ClientController {
     @PutMapping(value = "/{id}",
             produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML},
             consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
-    @Operation(summary = "Updates a Client", description = "Updates a Client by passing in a JSON, XML or YML representation of the Client.", tags = {"Client"},
+    @Operation(summary = "Updates a User", description = "Updates a User by passing in a JSON, XML or YML representation of the User.", tags = {"User"},
             responses = {
-                    @ApiResponse(description = "Updated", responseCode = "200", content = {@Content(schema = @Schema(implementation = ClientDTO.class))}),
+                    @ApiResponse(description = "Updated", responseCode = "200", content = {@Content(schema = @Schema(implementation = UserDTO.class))}),
                     @ApiResponse(description = "Bad Request", responseCode = "400", content = {@Content}),
                     @ApiResponse(description = "Unauthorized", responseCode = "401", content = {@Content}),
                     @ApiResponse(description = "Not Found", responseCode = "404", content = {@Content}),
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = {@Content})})
-    public ResponseEntity<ClientDTO> updateClient(@PathVariable Long id, @Valid @RequestBody ClientDTO clientDTO) {
-        Client clientById = modelMapper.map(clientService.findClientById(id), Client.class);
-        clientDTO.setAdress(clientById.getAdress());
-        clientDTO.setId(id);
-        ClientDTO DTO = modelMapper.map(clientService.updateClient(clientDTO), ClientDTO.class);
-        DTO.add(linkTo(methodOn(ClientController.class).findClientById(id)).withSelfRel());
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @Valid @RequestBody UserDTO userDTO) {
+        User userById = modelMapper.map(userServices.findUserById(id), User.class);
+        userDTO.setAdress(userById.getAdress());
+        userDTO.setId(id);
+        UserDTO DTO = modelMapper.map(userServices.updateUser(userDTO), UserDTO.class);
+        DTO.add(linkTo(methodOn(UserController.class).findUserById(id)).withSelfRel());
         return ResponseEntity.ok().body(DTO);
     }
 
     //@CrossOrigin(origins = "http://localhost:8080")
     @DeleteMapping(value = "/{id}")
-    @Operation(summary = "Deletes a Client", description = "Deletes a Client by passing in a JSON, XML or YML representation of the Client.", tags = {"Client"},
+    @Operation(summary = "Deletes a User", description = "Deletes a User by passing in a JSON, XML or YML representation of the User.", tags = {"User"},
             responses = {
                     @ApiResponse(description = "No Content", responseCode = "204", content = {@Content}),
                     @ApiResponse(description = "Bad Request", responseCode = "400", content = {@Content}),
@@ -176,7 +174,7 @@ public class ClientController {
                     @ApiResponse(description = "Not Found", responseCode = "404", content = {@Content}),
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = {@Content})})
     public ResponseEntity<Void> deleteClient(@PathVariable Long id) {
-        clientService.deleteClient(id);
+        userServices.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
 

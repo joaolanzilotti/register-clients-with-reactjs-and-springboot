@@ -3,12 +3,11 @@ package com.corporation.apiclient.integrationtests.controller.withyml;
 import com.corporation.apiclient.config.TestConfig;
 import com.corporation.apiclient.entities.Adress;
 import com.corporation.apiclient.integrationtests.controller.withyml.mapper.YMLMapper;
-import com.corporation.apiclient.integrationtests.dto.ClientDTO;
-import com.corporation.apiclient.integrationtests.dto.pagedmodels.PagedModelClient;
+import com.corporation.apiclient.integrationtests.dto.UserDTO;
+import com.corporation.apiclient.integrationtests.dto.pagedmodels.PagedModelUser;
 import com.corporation.apiclient.integrationtests.dto.security.AccountCredentialsDTO;
 import com.corporation.apiclient.integrationtests.dto.security.TokenDTO;
 import com.corporation.apiclient.integrationtests.testcontainers.AbstractIntegrationTest;
-import com.corporation.apiclient.integrationtests.dto.wrappers.WrapperClientDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import io.restassured.builder.RequestSpecBuilder;
@@ -36,13 +35,13 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
 
     private static RequestSpecification specification;
 
-    private static ClientDTO clientDTO;
+    private static UserDTO userDTO;
 
     private static YMLMapper mapper;
 
     @BeforeAll
     public static void setup() {
-        clientDTO = new ClientDTO();
+        userDTO = new UserDTO();
         mapper = new YMLMapper();
     }
 
@@ -50,7 +49,7 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
     @Order(0)
     public void authorization() throws JsonMappingException, JsonProcessingException {
 
-        AccountCredentialsDTO client = new AccountCredentialsDTO("admin","admin123");
+        AccountCredentialsDTO user = new AccountCredentialsDTO("admin@admin.com","admin123");
 
         var accessToken = given()
                 .config(
@@ -64,7 +63,7 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
                 .port(TestConfig.SERVER_PORT)
                 .contentType(TestConfig.CONTENT_TYPE_YML)
                 .accept(TestConfig.CONTENT_TYPE_YML)
-                .body(client, mapper)
+                .body(user, mapper)
                 .when()
                 .post()
                 .then()
@@ -76,7 +75,7 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
 
         specification = new RequestSpecBuilder()
                 .addHeader(TestConfig.HEADER_PARAM_AUTHORIZATION, "Bearer " + accessToken)
-                .setBasePath("/api/clients")
+                .setBasePath("/api/users")
                 .setPort(TestConfig.SERVER_PORT)
                 .addFilter(new RequestLoggingFilter(LogDetail.ALL))
                 .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
@@ -100,22 +99,21 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
                                                 ContentType.TEXT)))
                 .contentType(TestConfig.CONTENT_TYPE_YML)
                 .accept(TestConfig.CONTENT_TYPE_YML)
-                .body(clientDTO, mapper)
+                .body(userDTO, mapper)
                 .when()
                 .post()
                 .then()
                 .statusCode(201)
                 .extract()
                 .body()
-                .as(ClientDTO.class, mapper);
+                .as(UserDTO.class, mapper);
 
-        clientDTO = persistedPerson;
+        userDTO = persistedPerson;
 
         Assertions.assertNotNull(persistedPerson);
         Assertions.assertNotNull(persistedPerson.getId());
         Assertions.assertNotNull(persistedPerson.getName());
         Assertions.assertNotNull(persistedPerson.getEmail());
-        Assertions.assertNotNull(persistedPerson.getPassword());
         Assertions.assertNotNull(persistedPerson.getRg());
         Assertions.assertNotNull(persistedPerson.getCpf());
         Assertions.assertNotNull(persistedPerson.getBirthDay());
@@ -124,7 +122,6 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
 
         Assertions.assertEquals("Joao", persistedPerson.getName());
         Assertions.assertEquals("joao@gmail.com", persistedPerson.getEmail());
-        Assertions.assertEquals("123", persistedPerson.getPassword());
         Assertions.assertEquals("45645", persistedPerson.getRg());
         Assertions.assertEquals("92519732024", persistedPerson.getCpf());
         Assertions.assertEquals(new Date(2023, 04, 27), persistedPerson.getBirthDay());
@@ -134,10 +131,10 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
     @Test
     @Order(2)
     public void testUpdate() throws JsonMappingException, JsonProcessingException {
-        clientDTO.setName("name changed");
-        clientDTO.setRg("65498798");
-        clientDTO.setCpf("32451021004");
-        clientDTO.setAdress(new Adress(1L, "maranhao", "district", "50", "Ubatuba", "SP", null));
+        userDTO.setName("name changed");
+        userDTO.setRg("65498798");
+        userDTO.setCpf("32451021004");
+        userDTO.setAdress(new Adress(1L, "maranhao", "district", "50", "Ubatuba", "SP", null));
         var persistedPerson = given().spec(specification)
                 .config(
                         RestAssuredConfig
@@ -148,22 +145,21 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
                                                 ContentType.TEXT)))
                 .contentType(TestConfig.CONTENT_TYPE_YML)
                 .accept(TestConfig.CONTENT_TYPE_YML)
-                .body(clientDTO, mapper)
+                .body(userDTO, mapper)
                 .when()
                 .post()
                 .then()
                 .statusCode(201)
                 .extract()
                 .body()
-                .as(ClientDTO.class, mapper);
+                .as(UserDTO.class, mapper);
 
-        clientDTO = persistedPerson;
+        userDTO = persistedPerson;
 
         Assertions.assertNotNull(persistedPerson);
         Assertions.assertNotNull(persistedPerson.getId());
         Assertions.assertNotNull(persistedPerson.getName());
         Assertions.assertNotNull(persistedPerson.getEmail());
-        Assertions.assertNotNull(persistedPerson.getPassword());
         Assertions.assertNotNull(persistedPerson.getRg());
         Assertions.assertNotNull(persistedPerson.getCpf());
         Assertions.assertNotNull(persistedPerson.getBirthDay());
@@ -173,7 +169,6 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
 
         Assertions.assertEquals("name changed", persistedPerson.getName());
         Assertions.assertEquals("joao@gmail.com", persistedPerson.getEmail());
-        Assertions.assertEquals("123", persistedPerson.getPassword());
         Assertions.assertEquals("65498798", persistedPerson.getRg());
         Assertions.assertEquals("32451021004", persistedPerson.getCpf());
         Assertions.assertEquals("123654848", persistedPerson.getCellphone());
@@ -183,39 +178,37 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
     @Order(3)
     public void testDisableClientById() throws JsonMappingException, JsonProcessingException {
 
-        var createdClientDTO = given().spec(specification)
+        var createdUserDTO = given().spec(specification)
                 .contentType(TestConfig.CONTENT_TYPE_XML)
                 .header(TestConfig.HEADER_PARAM_ORIGIN, TestConfig.ORIGIN_JP)
-                .pathParam("id", clientDTO.getId())
+                .pathParam("id", userDTO.getId())
                 .when()
                 .patch("{id}")
                 .then()
                 .statusCode(200)
                 .extract()
                 .body()
-                .as(ClientDTO.class, mapper);
+                .as(UserDTO.class, mapper);
 
-        clientDTO = createdClientDTO;
+        userDTO = createdUserDTO;
 
-        Assertions.assertNotNull(createdClientDTO);
-        Assertions.assertNotNull(createdClientDTO.getId());
-        Assertions.assertNotNull(createdClientDTO.getName());
-        Assertions.assertNotNull(createdClientDTO.getEmail());
-        Assertions.assertNotNull(createdClientDTO.getPassword());
-        Assertions.assertNotNull(createdClientDTO.getRg());
-        Assertions.assertNotNull(createdClientDTO.getCpf());
-        Assertions.assertNotNull(createdClientDTO.getBirthDay());
-        Assertions.assertNotNull(createdClientDTO.getCellphone());
-        Assertions.assertNotNull(createdClientDTO.getAdress());
-        Assertions.assertFalse(createdClientDTO.isEnabled());
+        Assertions.assertNotNull(createdUserDTO);
+        Assertions.assertNotNull(createdUserDTO.getId());
+        Assertions.assertNotNull(createdUserDTO.getName());
+        Assertions.assertNotNull(createdUserDTO.getEmail());
+        Assertions.assertNotNull(createdUserDTO.getRg());
+        Assertions.assertNotNull(createdUserDTO.getCpf());
+        Assertions.assertNotNull(createdUserDTO.getBirthDay());
+        Assertions.assertNotNull(createdUserDTO.getCellphone());
+        Assertions.assertNotNull(createdUserDTO.getAdress());
+        Assertions.assertFalse(createdUserDTO.isEnabled());
 
-        Assertions.assertEquals("name changed", createdClientDTO.getName());
-        Assertions.assertEquals("joao@gmail.com", createdClientDTO.getEmail());
-        Assertions.assertEquals("123", createdClientDTO.getPassword());
-        Assertions.assertEquals("65498798", createdClientDTO.getRg());
-        Assertions.assertEquals("32451021004", createdClientDTO.getCpf());
-        //Assertions.assertEquals(new Date(2023, 04, 27), createdClientDTO.getBirthDay());
-        Assertions.assertEquals("123654848", createdClientDTO.getCellphone());
+        Assertions.assertEquals("name changed", createdUserDTO.getName());
+        Assertions.assertEquals("joao@gmail.com", createdUserDTO.getEmail());
+        Assertions.assertEquals("65498798", createdUserDTO.getRg());
+        Assertions.assertEquals("32451021004", createdUserDTO.getCpf());
+        //Assertions.assertEquals(new Date(2023, 04, 27), createdUserDTO.getBirthDay());
+        Assertions.assertEquals("123654848", createdUserDTO.getCellphone());
     }
 
     @Test
@@ -233,22 +226,21 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
                                                 ContentType.TEXT)))
                 .contentType(TestConfig.CONTENT_TYPE_YML)
                 .accept(TestConfig.CONTENT_TYPE_YML)
-                .pathParam("id", clientDTO.getId())
+                .pathParam("id", userDTO.getId())
                 .when()
                 .get("{id}")
                 .then()
                 .statusCode(200)
                 .extract()
                 .body()
-                .as(ClientDTO.class, mapper);
+                .as(UserDTO.class, mapper);
 
-        clientDTO = persistedPerson;
+        userDTO = persistedPerson;
 
         Assertions.assertNotNull(persistedPerson);
         Assertions.assertNotNull(persistedPerson.getId());
         Assertions.assertNotNull(persistedPerson.getName());
         Assertions.assertNotNull(persistedPerson.getEmail());
-        Assertions.assertNotNull(persistedPerson.getPassword());
         Assertions.assertNotNull(persistedPerson.getRg());
         Assertions.assertNotNull(persistedPerson.getCpf());
         Assertions.assertNotNull(persistedPerson.getBirthDay());
@@ -256,11 +248,10 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
         Assertions.assertNotNull(persistedPerson.getAdress());
         Assertions.assertFalse(persistedPerson.isEnabled());
 
-        Assertions.assertEquals(clientDTO.getId(), persistedPerson.getId());
+        Assertions.assertEquals(userDTO.getId(), persistedPerson.getId());
         
         Assertions.assertEquals("name changed", persistedPerson.getName());
         Assertions.assertEquals("joao@gmail.com", persistedPerson.getEmail());
-        Assertions.assertEquals("123", persistedPerson.getPassword());
         Assertions.assertEquals("65498798", persistedPerson.getRg());
         Assertions.assertEquals("32451021004", persistedPerson.getCpf());
         Assertions.assertEquals("123654848", persistedPerson.getCellphone());
@@ -280,7 +271,7 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
                                                 ContentType.TEXT)))
                 .contentType(TestConfig.CONTENT_TYPE_YML)
                 .accept(TestConfig.CONTENT_TYPE_YML)
-                .pathParam("id", clientDTO.getId())
+                .pathParam("id", userDTO.getId())
                 .when()
                 .delete("{id}")
                 .then()
@@ -291,7 +282,7 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
     @Order(6)
     public void testFindAll() throws JsonMappingException, JsonProcessingException {
 
-        var wrapperClientDTO = given().spec(specification)
+        var wrapperUserDTO = given().spec(specification)
                 .config(
                         RestAssuredConfig
                                 .config()
@@ -308,24 +299,22 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
                 .statusCode(200)
                 .extract()
                 .body()
-                .as(PagedModelClient.class, mapper);
+                .as(PagedModelUser.class, mapper);
 
-        List<ClientDTO> client = wrapperClientDTO.getContent();
+        List<UserDTO> user = wrapperUserDTO.getContent();
 
-        ClientDTO foundPersonOne = client.get(0);
+        UserDTO foundPersonOne = user.get(0);
 
         Assertions.assertNotNull(foundPersonOne.getId());
         Assertions.assertNotNull(foundPersonOne.getName());
         Assertions.assertNotNull(foundPersonOne.getCellphone());
         Assertions.assertNotNull(foundPersonOne.getRg());
         Assertions.assertNotNull(foundPersonOne.getCpf());
-        Assertions.assertNotNull(foundPersonOne.getPassword());
         Assertions.assertNotNull(foundPersonOne.getBirthDay());
 
         Assertions.assertEquals(2 , foundPersonOne.getId());
         Assertions.assertEquals("pedro545664564@gmail.com", foundPersonOne.getEmail());
         Assertions.assertEquals("Pedro", foundPersonOne.getName());
-        Assertions.assertEquals("9180", foundPersonOne.getPassword());
         Assertions.assertEquals("09113155865", foundPersonOne.getCpf());
         Assertions.assertEquals("5624987155", foundPersonOne.getRg());
         Assertions.assertEquals("1238334010", foundPersonOne.getCellphone());
@@ -336,7 +325,7 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
     @Order(7)
     public void testFindClientByName() throws JsonMappingException, JsonProcessingException {
 
-        var wrapperClientDTO = given().spec(specification)
+        var wrapperUserDTO = given().spec(specification)
                 .config(
                         RestAssuredConfig
                                 .config()
@@ -349,29 +338,27 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
                 .pathParam("name", "pe")
                 .queryParams("page", 0,"size", 15, "direction", "asc")
                 .when()
-                .get("findClientByName/{name}")
+                .get("findUserByName/{name}")
                 .then()
                 .statusCode(200)
                 .extract()
                 .body()
-                .as(PagedModelClient.class, mapper);
+                .as(PagedModelUser.class, mapper);
 
-        List<ClientDTO> client = wrapperClientDTO.getContent();
+        List<UserDTO> user = wrapperUserDTO.getContent();
 
-        ClientDTO foundPersonOne = client.get(0);
+        UserDTO foundPersonOne = user.get(0);
 
         Assertions.assertNotNull(foundPersonOne.getId());
         Assertions.assertNotNull(foundPersonOne.getName());
         Assertions.assertNotNull(foundPersonOne.getCellphone());
         Assertions.assertNotNull(foundPersonOne.getRg());
         Assertions.assertNotNull(foundPersonOne.getCpf());
-        Assertions.assertNotNull(foundPersonOne.getPassword());
         Assertions.assertNotNull(foundPersonOne.getBirthDay());
 
         Assertions.assertEquals(2 , foundPersonOne.getId());
         Assertions.assertEquals("pedro545664564@gmail.com", foundPersonOne.getEmail());
         Assertions.assertEquals("Pedro", foundPersonOne.getName());
-        Assertions.assertEquals("9180", foundPersonOne.getPassword());
         Assertions.assertEquals("09113155865", foundPersonOne.getCpf());
         Assertions.assertEquals("5624987155", foundPersonOne.getRg());
         Assertions.assertEquals("1238334010", foundPersonOne.getCellphone());
@@ -405,14 +392,14 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
     }
 
     private static void mockPerson() {
-        clientDTO.setName("Joao");
-        clientDTO.setEmail("joao@gmail.com");
-        clientDTO.setPassword("123");
-        clientDTO.setCpf("92519732024");
-        clientDTO.setRg("45645");
-        clientDTO.setBirthDay(new Date(2023, 4, 27));
-        clientDTO.setCellphone("123654848");
-        clientDTO.setEnabled(true);
+        userDTO.setName("Joao");
+        userDTO.setEmail("joao@gmail.com");
+        userDTO.setPassword("123");
+        userDTO.setCpf("92519732024");
+        userDTO.setRg("45645");
+        userDTO.setBirthDay(new Date(2023, 4, 27));
+        userDTO.setCellphone("123654848");
+        userDTO.setEnabled(true);
     }
 
 }

@@ -1,22 +1,24 @@
 package com.corporation.apiclient.integrationtests.dto.wrappers;
 
-import com.corporation.apiclient.integrationtests.dto.ClientDTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.List;
 
+@XmlRootElement
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class ClientEmbeddedDTO implements Serializable {
+public class WrapperUserDTO implements Serializable {
 
-    @JsonProperty("clientDTOList")
-    private List<ClientDTO> clients;
+    @JsonProperty("_embedded")
+    private UserEmbeddedDTO embedded;
+
+
 
 }

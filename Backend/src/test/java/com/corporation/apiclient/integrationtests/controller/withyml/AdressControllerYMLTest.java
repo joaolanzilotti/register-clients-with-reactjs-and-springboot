@@ -3,16 +3,12 @@ package com.corporation.apiclient.integrationtests.controller.withyml;
 import com.corporation.apiclient.config.TestConfig;
 import com.corporation.apiclient.integrationtests.controller.withyml.mapper.YMLMapper;
 import com.corporation.apiclient.integrationtests.dto.AdressDTO;
-import com.corporation.apiclient.integrationtests.dto.ClientDTO;
 import com.corporation.apiclient.integrationtests.dto.pagedmodels.PagedModelAdress;
 import com.corporation.apiclient.integrationtests.dto.security.AccountCredentialsDTO;
 import com.corporation.apiclient.integrationtests.dto.security.TokenDTO;
 import com.corporation.apiclient.integrationtests.testcontainers.AbstractIntegrationTest;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.config.EncoderConfig;
 import io.restassured.config.RestAssuredConfig;
@@ -23,11 +19,8 @@ import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
@@ -54,7 +47,7 @@ public class AdressControllerYMLTest extends AbstractIntegrationTest {
     @Order(0)
     public void authorization() throws JsonMappingException, JsonProcessingException {
 
-        AccountCredentialsDTO client = new AccountCredentialsDTO("admin","admin123");
+        AccountCredentialsDTO user = new AccountCredentialsDTO("admin@admin.com","admin123");
 
         var accessToken = given()
                 .config(
@@ -68,7 +61,7 @@ public class AdressControllerYMLTest extends AbstractIntegrationTest {
                 .port(TestConfig.SERVER_PORT)
                 .contentType(TestConfig.CONTENT_TYPE_YML)
                 .accept(TestConfig.CONTENT_TYPE_YML)
-                .body(client, mapper)
+                .body(user, mapper)
                 .when()
                 .post()
                 .then()

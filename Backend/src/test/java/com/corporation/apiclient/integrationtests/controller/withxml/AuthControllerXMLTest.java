@@ -26,13 +26,13 @@ public class AuthControllerXMLTest extends AbstractIntegrationTest {
     @Order(1)
     public void testSignin() throws JsonMappingException, JsonProcessingException {
 
-        AccountCredentialsDTO client = new AccountCredentialsDTO("admin","admin123");
+        AccountCredentialsDTO user = new AccountCredentialsDTO("admin@admin.com","admin123");
 
         tokenDTO = given()
                 .basePath("/auth/signin")
                 .port(TestConfig.SERVER_PORT)
                 .contentType(TestConfig.CONTENT_TYPE_XML)
-                .body(client)
+                .body(user)
                 .when()
                 .post()
                 .then()
@@ -50,13 +50,11 @@ public class AuthControllerXMLTest extends AbstractIntegrationTest {
     @Order(2)
     public void testRefresh() throws JsonMappingException, JsonProcessingException {
 
-        AccountCredentialsDTO client = new AccountCredentialsDTO("joaolanzilotti","admin123");
-
         TokenDTO newTokenDTO = given()
                 .basePath("/auth/refresh")
                 .port(TestConfig.SERVER_PORT)
                 .contentType(TestConfig.CONTENT_TYPE_XML)
-                .pathParam("username", tokenDTO.getUsername())
+                .pathParam("username", tokenDTO.getEmail())
                 .header(TestConfig.HEADER_PARAM_AUTHORIZATION, "Bearer " + tokenDTO.getRefreshToken())
                 .when()
                 .put("{username}")

@@ -1,6 +1,7 @@
 package com.corporation.apiclient.dto;
 
 import com.corporation.apiclient.entities.Adress;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -20,12 +21,13 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonPropertyOrder({"id", "name", "email", "password", "cellphone", "rg", "cpf", "birthDay", "adress", "enabled"})
-public class ClientDTO extends RepresentationModel<ClientDTO> implements Serializable {
+@JsonPropertyOrder({"id", "name", "email", "cellphone", "rg", "cpf", "birthDay", "adress", "enabled"})
+public class UserDTO extends RepresentationModel<UserDTO> implements Serializable {
 
     private Long id;
     private String name;
     private String email;
+    @JsonIgnore
     private String password;
     private String rg;
     private String cpf;
@@ -34,6 +36,6 @@ public class ClientDTO extends RepresentationModel<ClientDTO> implements Seriali
     private String cellphone;
     private Adress adress;
     private boolean enabled;
-    
+
 
 }

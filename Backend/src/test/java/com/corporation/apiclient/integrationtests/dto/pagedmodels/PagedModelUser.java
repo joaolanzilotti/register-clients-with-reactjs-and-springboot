@@ -1,6 +1,6 @@
 package com.corporation.apiclient.integrationtests.dto.pagedmodels;
 
-import com.corporation.apiclient.integrationtests.dto.ClientDTO;
+import com.corporation.apiclient.integrationtests.dto.UserDTO;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.AllArgsConstructor;
@@ -15,9 +15,9 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class PagedModelClient {
+public class PagedModelUser {
 
     @XmlElement(name = "content")
-    private List<ClientDTO> content;
+    private List<UserDTO> content;
 
 }
