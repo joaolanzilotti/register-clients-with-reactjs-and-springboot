@@ -46,10 +46,10 @@ public class JwtTokenProvider {
     public TokenDTO createAccessToken(String username, List<String> roles) {
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
-        var accessToken = getAccessToken(username, roles, now, validity);
+        var token = getAccessToken(username, roles, now, validity);
         var refreshToken = getRefreshToken(username, roles, now);
 
-        return new TokenDTO(username, true, now, validity, accessToken, refreshToken);
+        return new TokenDTO(username, true, now, validity, token, refreshToken);
     }
 
 

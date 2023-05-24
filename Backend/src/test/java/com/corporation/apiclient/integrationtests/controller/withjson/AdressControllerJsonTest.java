@@ -2,14 +2,11 @@ package com.corporation.apiclient.integrationtests.controller.withjson;
 
 import com.corporation.apiclient.config.TestConfig;
 import com.corporation.apiclient.integrationtests.dto.AdressDTO;
-import com.corporation.apiclient.integrationtests.dto.ClientDTO;
 import com.corporation.apiclient.integrationtests.dto.security.AccountCredentialsDTO;
 import com.corporation.apiclient.integrationtests.dto.security.TokenDTO;
 import com.corporation.apiclient.integrationtests.dto.wrappers.WrapperAdressDTO;
-import com.corporation.apiclient.integrationtests.dto.wrappers.WrapperClientDTO;
 import com.corporation.apiclient.integrationtests.testcontainers.AbstractIntegrationTest;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -53,13 +50,13 @@ public class AdressControllerJsonTest extends AbstractIntegrationTest {
     @Order(0)
     public void authorization() throws JsonMappingException, JsonProcessingException {
 
-        AccountCredentialsDTO client = new AccountCredentialsDTO("joaolanzilotti","admin123");
+        AccountCredentialsDTO user = new AccountCredentialsDTO("admin@admin.com","admin123");
 
         var acessToken = given()
                 .basePath("/auth/signin")
                 .port(TestConfig.SERVER_PORT)
                 .contentType(TestConfig.CONTENT_TYPE_JSON)
-                .body(client)
+                .body(user)
                 .when()
                 .post()
                 .then()
@@ -67,7 +64,7 @@ public class AdressControllerJsonTest extends AbstractIntegrationTest {
                 .extract()
                 .body()
                 .as(TokenDTO.class)
-                .getAccessToken();
+                .getToken();
 
         specification = new RequestSpecBuilder()
                 .addHeader(TestConfig.HEADER_PARAM_AUTHORIZATION, "Bearer " + acessToken)
@@ -245,7 +242,7 @@ public class AdressControllerJsonTest extends AbstractIntegrationTest {
 
         var content = given().spec(specification)
                 .contentType(TestConfig.CONTENT_TYPE_JSON)
-                .queryParams("page", 0,"size", 15, "direction", "asc")
+                .queryParams("page", 0,"size", 15)
                 .when()
                 .get()
                 .then()
@@ -258,7 +255,7 @@ public class AdressControllerJsonTest extends AbstractIntegrationTest {
         assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/adress/3\"}}}"));
         assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/adress/4\"}}}"));
 
-        assertTrue(content.contains("\"self\":{\"href\":\"http://localhost:8888/api/adress?page=0&size=15&direction=asc\"}"));
+        assertTrue(content.contains("\"self\":{\"href\":\"http://localhost:8888/api/adress?page=0&size=15\"}"));
 
     }
 

@@ -28,16 +28,17 @@ public class AuthServices {
     @SuppressWarnings("rawtypes")
     public ResponseEntity signin(AccountCredentialsDTO data) {
         try {
-            var username = data.getUsername();
+            var username = data.getEmail();
             var password = data.getPassword();
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(username, password));
 
-            var user = repository.findByUsername(username);
+            var user = repository.findByEmail(username);
+
 
             var tokenResponse = new TokenDTO();
             if (user != null) {
-                tokenResponse = tokenProvider.createAccessToken(username, user.getRoles());
+                tokenResponse = tokenProvider.createAccessToken(username, user.get().getRoles());
             } else {
                 throw new UsernameNotFoundException("Username " + username + " not found!");
             }
@@ -49,10 +50,10 @@ public class AuthServices {
 
     @SuppressWarnings("rawtypes")
     public ResponseEntity refreshToken(String username, String refreshToken) {
-        var user = repository.findByUsername(username);
+        var user = repository.findByEmail(username);
 
         var tokenResponse = new TokenDTO();
-        if (user != null) {
+        if (user.get() != null) {
             tokenResponse = tokenProvider.refreshToken(refreshToken);
         } else {
             throw new UsernameNotFoundException("Username " + username + " not found!");

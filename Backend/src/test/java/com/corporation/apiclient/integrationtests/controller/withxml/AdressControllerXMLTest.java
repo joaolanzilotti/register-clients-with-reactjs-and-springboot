@@ -2,16 +2,13 @@ package com.corporation.apiclient.integrationtests.controller.withxml;
 
 import com.corporation.apiclient.config.TestConfig;
 import com.corporation.apiclient.integrationtests.dto.AdressDTO;
-import com.corporation.apiclient.integrationtests.dto.ClientDTO;
 import com.corporation.apiclient.integrationtests.dto.pagedmodels.PagedModelAdress;
 import com.corporation.apiclient.integrationtests.dto.security.AccountCredentialsDTO;
 import com.corporation.apiclient.integrationtests.dto.security.TokenDTO;
 import com.corporation.apiclient.integrationtests.testcontainers.AbstractIntegrationTest;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
@@ -53,13 +50,13 @@ public class AdressControllerXMLTest extends AbstractIntegrationTest {
     @Order(0)
     public void authorization() throws JsonMappingException, JsonProcessingException {
 
-        AccountCredentialsDTO client = new AccountCredentialsDTO("joaolanzilotti","admin123");
+        AccountCredentialsDTO user = new AccountCredentialsDTO("admin@admin.com","admin123");
 
         var acessToken = given()
                 .basePath("/auth/signin")
                 .port(TestConfig.SERVER_PORT)
                 .contentType(TestConfig.CONTENT_TYPE_XML)
-                .body(client)
+                .body(user)
                 .when()
                 .post()
                 .then()
@@ -67,7 +64,7 @@ public class AdressControllerXMLTest extends AbstractIntegrationTest {
                 .extract()
                 .body()
                 .as(TokenDTO.class)
-                .getAccessToken();
+                .getToken();
 
         specification = new RequestSpecBuilder()
                 .addHeader(TestConfig.HEADER_PARAM_AUTHORIZATION, "Bearer " + acessToken)
@@ -248,7 +245,7 @@ public class AdressControllerXMLTest extends AbstractIntegrationTest {
         var content = given().spec(specification)
                 .contentType(TestConfig.CONTENT_TYPE_XML)
                 .accept(TestConfig.CONTENT_TYPE_XML)
-                .queryParams("page", 0,"size", 15, "direction", "asc")
+                .queryParams("page", 0,"size", 15)
                 .when()
                 .get()
                 .then()
@@ -261,7 +258,7 @@ public class AdressControllerXMLTest extends AbstractIntegrationTest {
         assertTrue(content.contains("<links><rel>self</rel><href>http://localhost:8888/api/adress/3</href></links>"));
         assertTrue(content.contains("<links><rel>self</rel><href>http://localhost:8888/api/adress/4</href></links>"));
 
-        assertTrue(content.contains("<links><rel>self</rel><href>http://localhost:8888/api/adress?page=0&amp;size=15&amp;direction=asc</href></links>"));
+        assertTrue(content.contains("<links><rel>self</rel><href>http://localhost:8888/api/adress?page=0&amp;size=15</href></links>"));
 
 
     }

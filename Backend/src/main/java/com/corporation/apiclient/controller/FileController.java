@@ -1,7 +1,6 @@
 package com.corporation.apiclient.controller;
 
 import com.corporation.apiclient.dto.UploadFileResponseDTO;
-import com.corporation.apiclient.services.ClientService;
 import com.corporation.apiclient.services.FileStorageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

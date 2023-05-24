@@ -28,6 +28,6 @@ public class Adress implements Serializable {
 
     @JsonIgnore
     @OneToMany(mappedBy = "adress", cascade = CascadeType.ALL)
-    private List<Client> clientes;
+    private List<User> users;
 
 }

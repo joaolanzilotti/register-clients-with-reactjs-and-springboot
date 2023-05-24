@@ -1,7 +1,6 @@
 package com.corporation.apiclient.integrationtests.dto.wrappers;
 
 import com.corporation.apiclient.integrationtests.dto.AdressDTO;
-import com.corporation.apiclient.integrationtests.dto.ClientDTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

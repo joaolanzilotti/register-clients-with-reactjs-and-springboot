@@ -1,14 +1,9 @@
 package com.corporation.apiclient.controller;
 
 import com.corporation.apiclient.dto.AdressDTO;
-import com.corporation.apiclient.dto.ClientDTO;
 import com.corporation.apiclient.entities.Adress;
-import com.corporation.apiclient.entities.Client;
-import com.corporation.apiclient.repositories.ClientRepository;
 import com.corporation.apiclient.services.AdressService;
-import com.corporation.apiclient.services.ClientService;
 import com.corporation.apiclient.utils.MediaType;
-import com.google.gson.reflect.TypeToken;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -27,9 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.lang.reflect.Type;
 import java.net.URI;
-import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -45,11 +38,6 @@ public class AdressController {
     @Autowired
     private ModelMapper modelMapper;
 
-    @Autowired
-    private ClientService clientService;
-
-    @Autowired
-    private ClientRepository clientRepository;
 
     //@CrossOrigin(origins = "http://localhost:8080")
     @GetMapping(produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
@@ -62,12 +50,11 @@ public class AdressController {
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = {@Content})})
     public ResponseEntity<PagedModel<EntityModel<AdressDTO>>> findAllAdress(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
-            @RequestParam(value = "size", defaultValue = "15") Integer size,
-            @RequestParam(value = "direction", defaultValue = "asc") String direction) {
+            @RequestParam(value = "size", defaultValue = "15") Integer size) {
         // esta ignorando as Letras Maiuscula ou Minuscula e um operador ternario se ele identificar DESC na Requisicao ele retorna Um Direction.DESC, se nao Direction.ASC
-        Sort.Direction sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;  // Ordenando por name
+
         //Usando o Page para fazer pesquisa por paginacao
-        Pageable pageable = PageRequest.of(page,size, Sort.by(sortDirection, "street"));
+        Pageable pageable = PageRequest.of(page,size);
 
         return ResponseEntity.ok(adressService.findAllAdress(pageable));
     }
@@ -121,7 +108,7 @@ public class AdressController {
     public ResponseEntity<AdressDTO> addAdress(@PathVariable Long id, @Valid @RequestBody AdressDTO adressDTO) {
         AdressDTO DTO = modelMapper.map(adressService.addAdress(adressDTO, id), AdressDTO.class);
         DTO.add(linkTo(methodOn(AdressController.class).findAdressById(DTO.getId())).withSelfRel());
-        DTO.add(linkTo(methodOn(ClientController.class).findClientById(id)).withSelfRel());
+        DTO.add(linkTo(methodOn(UserController.class).findUserById(id)).withSelfRel());
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(DTO.getId()).toUri();
         return ResponseEntity.created(uri).body(DTO);
     }

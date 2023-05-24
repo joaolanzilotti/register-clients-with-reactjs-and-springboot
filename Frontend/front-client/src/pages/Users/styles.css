@@ -1,0 +1,240 @@
+.user-container{
+    width: 100%;
+    max-width: 1180px;
+    padding: 0 30px;
+    margin: 32px auto;
+}
+
+.user-container header{
+    display: flex;
+    align-items: center;
+}
+
+.user-container header span{
+    font-size: 20px;
+    margin-left: 24px;
+}
+
+.user-container header span strong{
+    color: black;
+}
+
+.user-container header img{
+    height: 64px;
+}
+
+.user-container header a{
+    width: 260px;
+    margin-left: auto;
+    margin-top: 0;
+}
+
+.user-container header .buttonUser{
+    width: 200px;
+    height: 55px;
+    background: darkblue;
+    border: 0;
+    border-radius: 8px;
+    color: white;
+    font-weight: 700;
+    margin-top: 0;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    font-size: 18px;
+    line-height: 60px;
+    transition: filter 0.2s;
+}
+
+.user-container header .buttonPower{
+    height: 55px;
+    width: 60px;
+    border-radius: 4px;
+    border: 1px solid #DCDCE6;
+    background: transparent;
+    margin-left: 16px;
+    transition: 0.5s;
+}
+
+.user-container header .buttonUser .container-button{
+    display: inline-flex;
+}
+
+.user-container header .buttonUser .iconUserPlus{
+   margin-top: 3px;
+    margin-right: 10px;
+}
+
+.buttonUser:hover{
+    filter: brightness(80%);
+}
+
+.user-container header .buttonPower:hover{
+    border-color: #251FC5;
+}
+.user-container h1{
+    margin-top: 80px;
+    margin-bottom: 24px;
+}
+.user-container ul{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    grid-gap: 24px;
+    list-style: none;
+}
+
+.user-container ul li{
+    background: #ffffff;
+    padding: 24px;
+    border-radius: 32px;
+    position: relative;
+}
+
+.user-container ul li button{
+    position: absolute;
+    right: 24px;
+    top: 24px;
+    border: 0;
+    background: transparent;
+
+}
+
+.user-container ul li button + button{
+    top: 50px;
+}
+
+.user-container ul li button:hover{
+    opacity: 0.8;
+}
+
+.user-container ul li strong{
+    display: block;
+    margin-bottom: 8px;
+    color: #41414D;
+}
+
+.user-container ul li p + strong{
+    margin-top: 32px;
+}
+
+.user-container ul li p{
+    color: #737380;
+    line-height: 21px;
+    font-size: 16px;
+}
+
+
+.user-container .buttonMorePage{
+    margin-top: 0;
+    margin-left: 46%;
+    height: 55px;
+    background: transparent;
+    border: 0;
+    border-radius: 8px;
+    color: #251FC5;
+    font-weight: 700;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    font-size: 15px;
+    line-height: 60px;
+    transition: filter 0.5s;
+}
+
+.user-container .buttonMorePage:hover{
+    opacity: 0.8;
+}
+
+.user-container .modal {
+    position: fixed;
+    top: 200px;
+    right: 500px;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 0 4px 0;
+    padding: 3px;
+    z-index: 9999;
+    opacity: 0; /* Inicia com opacidade 0 */
+    animation: fadeIn 0.5s ease-in-out forwards; /* Aplica a animação */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0; /* Opacidade inicial */
+    }
+    to {
+        opacity: 1; /* Opacidade final */
+    }
+}
+
+.user-container .modal .buttonCloseModal{
+    background: none;
+    border: 0;
+    display: flex;
+    margin-top: 1px;
+    margin-left: 93%;
+
+}
+
+.user-container .modal-content {
+    display: inline;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.user-container .modal h2 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.user-container .modal p {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.user-container .modal .iconContainer .iconAlertModal {
+    margin-left: 45%;
+    margin-bottom: 10px;
+}
+
+.user-container .modal h5 {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.user-container .modal button {
+    margin-right: 40px;
+    font-weight: bold;
+}
+
+.user-container .modal .buttonConfirmDialog{
+    margin-left: 36px;
+    font-size: 13px;
+    color: white;
+    width: 120px;
+    height: 27px;
+    border: 0;
+    border-radius: 16px;
+    background: red;
+}
+.user-container .modal .buttonCancelDialog{
+    margin-bottom: 20px;
+    font-size: 13px;
+    color: white;
+    width: 120px;
+    height: 27px;
+    border: 0;
+    border-radius: 16px;
+    background: #737380;
+}
+.user-container .modal .buttonConfirmDialog:hover{
+    opacity: 0.8;
+}
+.user-container .modal .buttonCancelDialog:hover{
+    opacity: 0.8;
+}
+
+
+
+

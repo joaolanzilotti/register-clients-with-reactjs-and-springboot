@@ -1,10 +1,6 @@
 package com.corporation.apiclient.dto;
 
-import com.corporation.apiclient.entities.Adress;
-import com.corporation.apiclient.entities.Client;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import com.corporation.apiclient.entities.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +8,6 @@ import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -27,6 +22,6 @@ public class AdressDTO extends RepresentationModel<AdressDTO> implements Seriali
     private String number;
     private String city;
     private String state;
-    private List<Client> clientes;
+    private List<User> users;
 
 }

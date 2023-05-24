@@ -1,13 +1,11 @@
 package com.corporation.apiclient.services;
 
 import com.corporation.apiclient.dto.AdressDTO;
-import com.corporation.apiclient.dto.ClientDTO;
 import com.corporation.apiclient.entities.Adress;
-import com.corporation.apiclient.entities.Client;
-import com.corporation.apiclient.exceptions.ObjectNotFoundException;
+import com.corporation.apiclient.entities.User;
+import com.corporation.apiclient.integrationtests.dto.UserDTO;
 import com.corporation.apiclient.repositories.AdressRepository;
-import com.corporation.apiclient.repositories.ClientRepository;
-import jakarta.persistence.ManyToOne;
+import com.corporation.apiclient.repositories.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,22 +15,18 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class AdressServiceTest {
 
     @Mock
-    private ClientService clientService;
+    private UserServices userServices;
 
     @Mock
-    private ClientRepository clientRepository;
+    private UserRepository userRepository;
 
     @Mock
     private AdressRepository adressRepository;
@@ -44,12 +38,10 @@ class AdressServiceTest {
     private ModelMapper modelMapper;
 
     private Adress adress;
+    private User user;
+
     private AdressDTO adressDTO;
     private Optional<Adress> optionalAdress;
-
-    private Client client;
-    private ClientDTO clientDTO;
-    private Optional<Client> optionalClient;
 
     @BeforeEach
     void setUp() {
@@ -83,7 +75,7 @@ class AdressServiceTest {
     @Test
     void addAdressTest() {
 
-        Mockito.when(clientService.findClientById(1L)).thenReturn(client);
+        Mockito.when(userServices.findUserById(1L)).thenReturn(user);
         Mockito.when(adressRepository.save(Mockito.any())).thenReturn(adress);
         Adress response = adressService.addAdress(adressDTO, 1L);
 
@@ -121,11 +113,10 @@ class AdressServiceTest {
     }
 
     private void startAdress() {
+        user = new User(1L, "teste@teste.com", "56006548", "09113144568", new Date(123, 4, 25), "12659874848", adress, true, "Joao", "123");
         adress = new Adress(1L, "Rua Tenorio", "Centro", "50", "Ubatuba", "SP", null);
         adressDTO = new AdressDTO(1L, "Rua Tenorio", "Centro", "50", "Ubatuba", "SP", null);
         optionalAdress = Optional.of(new Adress(1L, "Rua Tenorio", "Centro", "50", "Ubatuba", "SP", null));
-        client = new Client(1L, "Joao", "teste@teste.com", "123", "56006548", "09113144568", new Date(123, 4, 25), "12659874848", null, true);
-        clientDTO = new ClientDTO(1L, "Joao", "teste@teste.com", "123", "56006548", "09113144568", new Date(123, 4, 25), "12659874848", null, true);
-        optionalClient = Optional.of(new Client(1L, "Joao", "teste@teste.com", "123", "56006548", "09113144568", new Date(), "12659874848", null, true));
+
     }
 }
