@@ -15,6 +15,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Optional;
+
 import static io.restassured.RestAssured.given;
 
 @ExtendWith(SpringExtension.class)
@@ -35,10 +37,33 @@ public class UserRepositoryTest extends AbstractIntegrationTest {
 
     @Test
     @Order(1)
-    public void testFindClientByName() throws JsonMappingException, JsonProcessingException {
+    public void testFindUserByName() throws JsonMappingException, JsonProcessingException {
 
         Pageable pageable = PageRequest.of(0, 15, Sort.by(Sort.Direction.ASC, "name"));
         user = userRepository.findUserByNamePage("Joao", pageable).getContent().get(0);
+
+        Assertions.assertNotNull(user.getId());
+        Assertions.assertNotNull(user.getName());
+        Assertions.assertNotNull(user.getCellphone());
+        Assertions.assertNotNull(user.getRg());
+        Assertions.assertNotNull(user.getCpf());
+        Assertions.assertNotNull(user.getBirthDay());
+
+        Assertions.assertEquals(14, user.getId());
+        Assertions.assertEquals("algamerjoao1@hotmail.com", user.getEmail());
+        Assertions.assertEquals("Joao Pedro", user.getName());
+        Assertions.assertEquals("48684998820", user.getCpf());
+        Assertions.assertEquals("5656566", user.getRg());
+        Assertions.assertEquals("12996598968", user.getCellphone());
+
+    }
+    @Test
+    @Order(2)
+    public void testFindUserByEmail() throws JsonMappingException, JsonProcessingException {
+
+
+        Optional<User> userOp = userRepository.findByEmail("algamerjoao1@hotmail.com");
+        user = userOp.get();
 
         Assertions.assertNotNull(user.getId());
         Assertions.assertNotNull(user.getName());

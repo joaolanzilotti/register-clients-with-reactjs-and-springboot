@@ -68,7 +68,7 @@ public class UserServices implements UserDetailsService {
 
         Link link = linkTo(
                 methodOn(UserController.class)
-                        .findClientByName(name,pageable.getPageNumber(),
+                        .findUserByName(name,pageable.getPageNumber(),
                                 pageable.getPageSize(),
                                 "asc")).withSelfRel();
 
@@ -96,6 +96,10 @@ public class UserServices implements UserDetailsService {
 
     public User findUserById(Long id) {
         return repository.findById(id).orElseThrow(() -> new ObjectNotFoundException("User Not Found"));
+    }
+
+    public User findByEmail(String email) {
+        return repository.findByEmail(email).orElseThrow(() -> new ObjectNotFoundException("User Not Found"));
     }
 
     @Transactional // Quando a Query é criada e precisa modificar os dados precisa adicionar @Transactional

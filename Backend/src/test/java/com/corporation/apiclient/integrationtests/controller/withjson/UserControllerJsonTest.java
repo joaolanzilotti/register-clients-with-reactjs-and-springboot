@@ -290,7 +290,7 @@ public class UserControllerJsonTest extends AbstractIntegrationTest {
 
     @Test
     @Order(7)
-    public void testFindClientByName() throws JsonMappingException, JsonProcessingException {
+    public void testFindUserByName() throws JsonMappingException, JsonProcessingException {
 
         var content = given().spec(specification)
                 .contentType(TestConfig.CONTENT_TYPE_JSON)
@@ -325,9 +325,43 @@ public class UserControllerJsonTest extends AbstractIntegrationTest {
         Assertions.assertEquals("12996598968", foundPersonOne.getCellphone());
 
     }
-
     @Test
     @Order(8)
+    public void testFindUserByEmail() throws JsonMappingException, JsonProcessingException {
+
+        var content = given().spec(specification)
+                .contentType(TestConfig.CONTENT_TYPE_JSON)
+                .accept(TestConfig.CONTENT_TYPE_JSON)
+                .pathParam("email", "algamerjoao1@hotmail.com")
+                .when()
+                .get("findUserByEmail/{email}")
+                .then()
+                .statusCode(200)
+                .extract()
+                .body()
+                .asString();
+
+        UserDTO createdUserDTO = objectMapper.readValue(content, UserDTO.class);
+        userDTO = createdUserDTO;
+
+        Assertions.assertNotNull(createdUserDTO.getId());
+        Assertions.assertNotNull(createdUserDTO.getName());
+        Assertions.assertNotNull(createdUserDTO.getCellphone());
+        Assertions.assertNotNull(createdUserDTO.getRg());
+        Assertions.assertNotNull(createdUserDTO.getCpf());
+        Assertions.assertNotNull(createdUserDTO.getBirthDay());
+
+        Assertions.assertEquals(14 , createdUserDTO.getId());
+        Assertions.assertEquals("algamerjoao1@hotmail.com", createdUserDTO.getEmail());
+        Assertions.assertEquals("Joao Pedro", createdUserDTO.getName());
+        Assertions.assertEquals("48684998820", createdUserDTO.getCpf());
+        Assertions.assertEquals("5656566", createdUserDTO.getRg());
+        Assertions.assertEquals("12996598968", createdUserDTO.getCellphone());
+
+    }
+
+    @Test
+    @Order(9)
     public void testHATEOAS() throws JsonMappingException, JsonProcessingException {
 
         var content = given().spec(specification)

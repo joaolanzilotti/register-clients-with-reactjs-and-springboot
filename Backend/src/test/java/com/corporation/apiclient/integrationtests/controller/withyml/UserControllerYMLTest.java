@@ -49,7 +49,7 @@ public class UserControllerYMLTest extends AbstractIntegrationTest {
     @Order(0)
     public void authorization() throws JsonMappingException, JsonProcessingException {
 
-        AccountCredentialsDTO user = new AccountCredentialsDTO("admin@admin.com","admin123");
+        AccountCredentialsDTO user = new AccountCredentialsDTO("admin@admin.com", "admin123");
 
         var accessToken = given()
                 .config(
@@ -176,7 +176,7 @@ public class UserControllerYMLTest extends AbstractIntegrationTest {
 
     @Test
     @Order(3)
-    public void testDisableClientById() throws JsonMappingException, JsonProcessingException {
+    public void testDisableUserById() throws JsonMappingException, JsonProcessingException {
 
         var createdUserDTO = given().spec(specification)
                 .contentType(TestConfig.CONTENT_TYPE_XML)
@@ -249,7 +249,7 @@ public class UserControllerYMLTest extends AbstractIntegrationTest {
         Assertions.assertFalse(persistedPerson.isEnabled());
 
         Assertions.assertEquals(userDTO.getId(), persistedPerson.getId());
-        
+
         Assertions.assertEquals("name changed", persistedPerson.getName());
         Assertions.assertEquals("joao@gmail.com", persistedPerson.getEmail());
         Assertions.assertEquals("65498798", persistedPerson.getRg());
@@ -292,7 +292,7 @@ public class UserControllerYMLTest extends AbstractIntegrationTest {
                                                 ContentType.TEXT)))
                 .contentType(TestConfig.CONTENT_TYPE_YML)
                 .accept(TestConfig.CONTENT_TYPE_YML)
-                .queryParams("page", 0,"size", 15, "direction", "asc")
+                .queryParams("page", 0, "size", 15, "direction", "asc")
                 .when()
                 .get()
                 .then()
@@ -312,7 +312,7 @@ public class UserControllerYMLTest extends AbstractIntegrationTest {
         Assertions.assertNotNull(foundPersonOne.getCpf());
         Assertions.assertNotNull(foundPersonOne.getBirthDay());
 
-        Assertions.assertEquals(2 , foundPersonOne.getId());
+        Assertions.assertEquals(2, foundPersonOne.getId());
         Assertions.assertEquals("pedro545664564@gmail.com", foundPersonOne.getEmail());
         Assertions.assertEquals("Pedro", foundPersonOne.getName());
         Assertions.assertEquals("09113155865", foundPersonOne.getCpf());
@@ -323,7 +323,7 @@ public class UserControllerYMLTest extends AbstractIntegrationTest {
 
     @Test
     @Order(7)
-    public void testFindClientByName() throws JsonMappingException, JsonProcessingException {
+    public void testFindUserByName() throws JsonMappingException, JsonProcessingException {
 
         var wrapperUserDTO = given().spec(specification)
                 .config(
@@ -336,7 +336,7 @@ public class UserControllerYMLTest extends AbstractIntegrationTest {
                 .contentType(TestConfig.CONTENT_TYPE_YML)
                 .accept(TestConfig.CONTENT_TYPE_YML)
                 .pathParam("name", "pe")
-                .queryParams("page", 0,"size", 15, "direction", "asc")
+                .queryParams("page", 0, "size", 15, "direction", "asc")
                 .when()
                 .get("findUserByName/{name}")
                 .then()
@@ -356,7 +356,7 @@ public class UserControllerYMLTest extends AbstractIntegrationTest {
         Assertions.assertNotNull(foundPersonOne.getCpf());
         Assertions.assertNotNull(foundPersonOne.getBirthDay());
 
-        Assertions.assertEquals(14 , foundPersonOne.getId());
+        Assertions.assertEquals(14, foundPersonOne.getId());
         Assertions.assertEquals("algamerjoao1@hotmail.com", foundPersonOne.getEmail());
         Assertions.assertEquals("Joao Pedro", foundPersonOne.getName());
         Assertions.assertEquals("48684998820", foundPersonOne.getCpf());
@@ -367,11 +367,53 @@ public class UserControllerYMLTest extends AbstractIntegrationTest {
 
     @Test
     @Order(8)
+    public void testFindUserByEmail() throws JsonMappingException, JsonProcessingException {
+        mockPerson();
+
+        var persistedPerson = given().spec(specification)
+                .config(
+                        RestAssuredConfig
+                                .config()
+                                .encoderConfig(EncoderConfig.encoderConfig()
+                                        .encodeContentTypeAs(
+                                                TestConfig.CONTENT_TYPE_YML,
+                                                ContentType.TEXT)))
+                .contentType(TestConfig.CONTENT_TYPE_YML)
+                .accept(TestConfig.CONTENT_TYPE_YML)
+                .pathParam("email", "algamerjoao1@hotmail.com")
+                .when()
+                .get("findUserByEmail/{email}")
+                .then()
+                .statusCode(200)
+                .extract()
+                .body()
+                .as(UserDTO.class, mapper);
+
+        userDTO = persistedPerson;
+
+        Assertions.assertNotNull(userDTO.getId());
+        Assertions.assertNotNull(userDTO.getName());
+        Assertions.assertNotNull(userDTO.getCellphone());
+        Assertions.assertNotNull(userDTO.getRg());
+        Assertions.assertNotNull(userDTO.getCpf());
+        Assertions.assertNotNull(userDTO.getBirthDay());
+
+        Assertions.assertEquals(14, userDTO.getId());
+        Assertions.assertEquals("algamerjoao1@hotmail.com", userDTO.getEmail());
+        Assertions.assertEquals("Joao Pedro", userDTO.getName());
+        Assertions.assertEquals("48684998820", userDTO.getCpf());
+        Assertions.assertEquals("5656566", userDTO.getRg());
+        Assertions.assertEquals("12996598968", userDTO.getCellphone());
+    }
+
+
+    @Test
+    @Order(9)
     public void testHATEOAS() throws JsonMappingException, JsonProcessingException {
 
         var content = given().spec(specification)
                 .contentType(TestConfig.CONTENT_TYPE_YML)
-                .queryParams("page", 0,"size", 15)
+                .queryParams("page", 0, "size", 15)
                 .when()
                 .get()
                 .then()

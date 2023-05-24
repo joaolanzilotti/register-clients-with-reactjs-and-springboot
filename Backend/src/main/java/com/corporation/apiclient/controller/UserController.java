@@ -75,7 +75,7 @@ public class UserController {
                     @ApiResponse(description = "Unauthorized", responseCode = "401", content = {@Content}),
                     @ApiResponse(description = "Not Found", responseCode = "404", content = {@Content}),
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = {@Content})})
-    public ResponseEntity<PagedModel<EntityModel<UserDTO>>> findClientByName(
+    public ResponseEntity<PagedModel<EntityModel<UserDTO>>> findUserByName(
             @PathVariable String name,
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "15") Integer size,
@@ -102,11 +102,32 @@ public class UserController {
         UserDTO userDTO = modelMapper.map(userServices.findUserById(id), UserDTO.class);
         userDTO.add(linkTo(methodOn(UserController.class).findUserById(id)).withSelfRel());
         if(userDTO.getAdress() == null) {
-            System.out.println("No Adress In Client: " + userDTO.getName());
+            System.out.println("No Adress In User: " + userDTO.getName());
             userDTO.setAdress(new Adress());
             return ResponseEntity.ok().body(userDTO);
         }
         userDTO.add(linkTo(methodOn(AdressController.class).findAdressById(userDTO.getAdress().getId())).withSelfRel());
+        return ResponseEntity.ok().body(userDTO);
+
+    }
+
+    @GetMapping(value = "/findUserByEmail/{email}", produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
+    @Operation(summary = "Finds a User by Email", description = "Finds a User by Email", tags = {"Users"},
+            responses = {
+                    @ApiResponse(description = "Success", responseCode = "200", content = {@Content(schema = @Schema(implementation = UserDTO.class))}),
+                    @ApiResponse(description = "No Content", responseCode = "204", content = {@Content}),
+                    @ApiResponse(description = "Bad Request", responseCode = "400", content = {@Content}),
+                    @ApiResponse(description = "Unauthorized", responseCode = "401", content = {@Content}),
+                    @ApiResponse(description = "Not Found", responseCode = "404", content = {@Content}),
+                    @ApiResponse(description = "Internal Server Error", responseCode = "500", content = {@Content})})
+    public ResponseEntity<UserDTO> findUserByEmail(@PathVariable String email) {
+        UserDTO userDTO = modelMapper.map(userServices.findByEmail(email), UserDTO.class);
+        userDTO.add(linkTo(methodOn(UserController.class).findUserByEmail(email)).withSelfRel());
+        if(userDTO.getAdress() == null) {
+            System.out.println("No Adress In User: " + userDTO.getName());
+            userDTO.setAdress(new Adress());
+            return ResponseEntity.ok().body(userDTO);
+        }
         userDTO.add(linkTo(methodOn(AdressController.class).findAdressById(userDTO.getAdress().getId())).withSelfRel());
         return ResponseEntity.ok().body(userDTO);
 
@@ -156,16 +177,19 @@ public class UserController {
                     @ApiResponse(description = "Unauthorized", responseCode = "401", content = {@Content}),
                     @ApiResponse(description = "Not Found", responseCode = "404", content = {@Content}),
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = {@Content})})
-    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @Valid @RequestBody UserDTO userDT) {
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @Valid @RequestBody UserDTO userDTO) {
         User userById = modelMapper.map(userServices.findUserById(id), User.class);
-        UserDTO userDTO = modelMapper.map(userById, UserDTO.class);
-
+        userDTO.setAccountNonLocked(userById.getAccountNonLocked());
+        userDTO.setAccountNonExpired(userById.isAccountNonExpired());
+        userDTO.setCredentialsNonExpired(userById.getAccountNonExpired());
+        userDTO.setPermissions(userById.getPermissions());
+        userDTO.setAdress(userById.getAdress());
+        userDTO.setEnabled(true);
         userDTO.setId(id);
-        userServices.updateUser(userDTO);
-        //UserDTO DTO = modelMapper.map(userServices.updateUser(userDTO), UserDTO.class);
-        userDTO.add(linkTo(methodOn(UserController.class).findUserById(id)).withSelfRel());
-        userDTO.add(linkTo(methodOn(AdressController.class).findAdressById(userById.getAdress().getId())).withSelfRel());
-        return ResponseEntity.ok().body(userDTO);
+        UserDTO DTO = modelMapper.map(userServices.updateUser(userDTO), UserDTO.class);
+        DTO.add(linkTo(methodOn(UserController.class).findUserById(id)).withSelfRel());
+        DTO.add(linkTo(methodOn(AdressController.class).findAdressById(id)).withSelfRel());
+        return ResponseEntity.ok().body(DTO);
     }
 
     //@CrossOrigin(origins = "http://localhost:8080")
