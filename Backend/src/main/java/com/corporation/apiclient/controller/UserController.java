@@ -131,7 +131,7 @@ public class UserController {
     //@CrossOrigin(origins = {"http://localhost:8080", "https://jp.com.br"})
     @PostMapping(produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML},
             consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
-    @Operation(summary = "Adds a New User", description = "Adds a New Client by passing in a JSON, XML or YML representation of the Client.", tags = {"Users"},
+    @Operation(summary = "Adds a New User", description = "Adds a New User by passing in a JSON, XML or YML representation of the Client.", tags = {"Users"},
             responses = {
                     @ApiResponse(description = "Success", responseCode = "200", content = {@Content(schema = @Schema(implementation = UserDTO.class))}),
                     @ApiResponse(description = "Bad Request", responseCode = "400", content = {@Content}),

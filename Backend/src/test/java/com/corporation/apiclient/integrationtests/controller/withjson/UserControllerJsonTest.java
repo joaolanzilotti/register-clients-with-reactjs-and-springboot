@@ -35,7 +35,7 @@ import java.util.List;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestMethodOrder(OrderAnnotation.class) // Aplicando Minha Ordem para executar os testes
-public class ClientControllerJsonTest extends AbstractIntegrationTest {
+public class UserControllerJsonTest extends AbstractIntegrationTest {
 
     private static RequestSpecification specification;
     private static ObjectMapper objectMapper;
@@ -358,6 +358,9 @@ public class ClientControllerJsonTest extends AbstractIntegrationTest {
         userDTO.setBirthDay(new Date(2023, 4, 27));
         userDTO.setCellphone("123654848");
         userDTO.setEnabled(true);
+        userDTO.setAccountNonLocked(true);
+        userDTO.setAccountNonExpired(true);
+        userDTO.setCredentialsNonExpired(true);
     }
 
 }

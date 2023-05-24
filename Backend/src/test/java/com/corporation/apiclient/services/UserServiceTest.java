@@ -25,7 +25,7 @@ import java.util.Optional;
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExtendWith(MockitoExtension.class)
-class ClientServiceTest {
+class UserServiceTest {
 
     @InjectMocks
     private UserServices userServices;
@@ -179,7 +179,7 @@ class ClientServiceTest {
 
     private void startClientAndAdress() {
         user = new User(1L, "teste@teste.com", "56006548", "09113144568", new Date(123, 4, 25), "12659874848", adress, true, "Joao", "123");
-        userDTO = new UserDTO(1L, "Joao", "teste@teste.com", "123", "56006548", "09113144568", new Date(123, 4, 25), "12659874848", adress, true);
+        userDTO =  new UserDTO(1L, "teste@teste.com", "56006548", "09113144568", new Date(123, 4, 25), "12659874848", adress, true, "Joao", "123", true, true, true, null);
         optionalUser = Optional.of(new User(1L, "teste@teste.com", "56006548", "09113144568", new Date(123, 4, 25), "12659874848", adress, true, "Joao", "123"));
         adress = new Adress(1L, "maranhao", "district", "50", "Ubatuba", "SP", null);
     }

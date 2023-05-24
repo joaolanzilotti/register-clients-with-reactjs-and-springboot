@@ -23,46 +23,37 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonPropertyOrder({"id", "name", "email", "cellphone", "rg", "cpf", "birthDay", "adress", "enabled"})
+@JsonPropertyOrder({"id", "name", "email", "cellphone", "rg", "cpf", "birthDay", "adress", "enabled", "accountNonExpired", "accountNonLocked", "credentialsNonExpired"})
 public class UserDTO extends RepresentationModel<UserDTO> implements Serializable {
 
     private Long id;
-    private String name;
+
     private String email;
-    private String password;
+
     private String rg;
+
     private String cpf;
+
     @Temporal(TemporalType.DATE)
     private Date birthDay;
-    private String cellphone;
-    private Adress adress;
-    private boolean enabled;
-    private Boolean accountNonExpired;
-    private Boolean accountNonLocked;
-    private Boolean credentialsNonExpired;
-    private List<Permission> permissions;
-    public List<String> getRoles() {
-        List<String> roles = new ArrayList<>();
-        for (Permission permission : permissions) {
-            roles.add(permission.getDescription());
-        }
-        return roles;
-    }
 
-    public UserDTO(Long id, String name, String email, String password, String rg, String cpf, Date birthDay, String cellphone, Adress adress, boolean enabled) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.rg = rg;
-        this.cpf = cpf;
-        this.birthDay = birthDay;
-        this.cellphone = cellphone;
-        this.adress = adress;
-        this.enabled = enabled;
-    }
-    
-    
+    private String cellphone;
+
+    private Adress adress;
+
+    private boolean enabled;
+
+    private String name;
+
+    private String password;
+
+    private boolean accountNonExpired;
+
+    private boolean accountNonLocked;
+
+    private boolean credentialsNonExpired;
+
+    private List<Permission> permissions;
 
 
 }
