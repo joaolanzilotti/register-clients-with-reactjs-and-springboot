@@ -49,5 +49,20 @@ public class UserDTO extends RepresentationModel<UserDTO> implements Serializabl
         return roles;
     }
 
+    public UserDTO(Long id, String name, String email, String password, String rg, String cpf, Date birthDay, String cellphone, Adress adress, boolean enabled) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.rg = rg;
+        this.cpf = cpf;
+        this.birthDay = birthDay;
+        this.cellphone = cellphone;
+        this.adress = adress;
+        this.enabled = enabled;
+    }
+    
+    
+
 
 }
