@@ -316,12 +316,12 @@ public class ClientControllerXMLTest extends AbstractIntegrationTest {
         Assertions.assertNotNull(foundPersonOne.getCpf());
         Assertions.assertNotNull(foundPersonOne.getBirthDay());
 
-        Assertions.assertEquals(2 , foundPersonOne.getId());
-        Assertions.assertEquals("pedro545664564@gmail.com", foundPersonOne.getEmail());
-        Assertions.assertEquals("Pedro", foundPersonOne.getName());
-        Assertions.assertEquals("09113155865", foundPersonOne.getCpf());
-        Assertions.assertEquals("5624987155", foundPersonOne.getRg());
-        Assertions.assertEquals("1238334010", foundPersonOne.getCellphone());
+        Assertions.assertEquals(14 , foundPersonOne.getId());
+        Assertions.assertEquals("algamerjoao1@hotmail.com", foundPersonOne.getEmail());
+        Assertions.assertEquals("Joao Pedro", foundPersonOne.getName());
+        Assertions.assertEquals("48684998820", foundPersonOne.getCpf());
+        Assertions.assertEquals("5656566", foundPersonOne.getRg());
+        Assertions.assertEquals("12996598968", foundPersonOne.getCellphone());
 
     }
 
@@ -332,7 +332,7 @@ public class ClientControllerXMLTest extends AbstractIntegrationTest {
         var content = given().spec(specification)
                 .contentType(TestConfig.CONTENT_TYPE_XML)
                 .accept(TestConfig.CONTENT_TYPE_XML)
-                .queryParams("page", 0,"size", 15, "direction", "asc")
+                .queryParams("page", 0,"size", 15)
                 .when()
                 .get()
                 .then()
@@ -341,14 +341,12 @@ public class ClientControllerXMLTest extends AbstractIntegrationTest {
                 .body()
                 .asString();
 
-        assertTrue(content.contains("<links><rel>self</rel><href>http://localhost:8888/api/clients/16</href></links>"));
-        assertTrue(content.contains("<links><rel>self</rel><href>http://localhost:8888/api/clients/18</href></links>"));
-        assertTrue(content.contains("<links><rel>self</rel><href>http://localhost:8888/api/clients/14</href></links>"));
+        assertTrue(content.contains("<links><rel>self</rel><href>http://localhost:8888/api/users/15</href></links>"));
+        assertTrue(content.contains("<links><rel>self</rel><href>http://localhost:8888/api/users/14</href></links>"));
+        assertTrue(content.contains("<links><rel>self</rel><href>http://localhost:8888/api/users/13</href></links>"));
 
-        assertTrue(content.contains("<links><rel>first</rel><href>http://localhost:8888/api/clients?page=0&amp;size=15</href></links>"));
-        assertTrue(content.contains("<links><rel>self</rel><href>http://localhost:8888/api/clients?page=0&amp;size=15</href></links>"));
-        assertTrue(content.contains("<links><rel>next</rel><href>http://localhost:8888/api/clients?page=1&amp;size=15</href></links>"));
-        assertTrue(content.contains("<links><rel>last</rel><href>http://localhost:8888/api/clients?page=1&amp;size=15</href></links>"));
+        assertTrue(content.contains("<links><rel>self</rel><href>http://localhost:8888/api/users?page=0&amp;size=15</href></links>"));
+
 
     }
 

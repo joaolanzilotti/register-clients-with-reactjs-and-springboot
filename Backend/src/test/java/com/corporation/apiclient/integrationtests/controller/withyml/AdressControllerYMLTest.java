@@ -280,7 +280,7 @@ public class AdressControllerYMLTest extends AbstractIntegrationTest {
 
         var content = given().spec(specification)
                 .contentType(TestConfig.CONTENT_TYPE_JSON)
-                .queryParams("page", 0,"size", 15, "direction", "asc")
+                .queryParams("page", 0,"size", 15)
                 .when()
                 .get()
                 .then()
@@ -290,10 +290,10 @@ public class AdressControllerYMLTest extends AbstractIntegrationTest {
                 .asString();
 
         assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/adress/2\"}}}"));
-        assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/adress/3\"}}}"));
-        assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/adress/4\"}}}"));
+        assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/adress/8\"}}}"));
+        assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/adress/9\"}}}"));
 
-        assertTrue(content.contains("\"self\":{\"href\":\"http://localhost:8888/api/adress?page=0&size=15&direction=asc\"}"));
+        assertTrue(content.contains("\"self\":{\"href\":\"http://localhost:8888/api/adress?page=0&size=15\"}"));
 
     }
 

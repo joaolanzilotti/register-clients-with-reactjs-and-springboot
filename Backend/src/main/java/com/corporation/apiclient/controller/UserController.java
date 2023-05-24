@@ -47,7 +47,7 @@ public class UserController {
 
     //@CrossOrigin(origins = "http://localhost:8080")
     @GetMapping(produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
-    @Operation(summary = "Finds All Users", description = "Finds All Users", tags = {"User"},
+    @Operation(summary = "Finds All Users", description = "Finds All Users", tags = {"Users"},
             responses = {
                     @ApiResponse(description = "Success", responseCode = "200", content = {@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = UserDTO.class)))}),
                     @ApiResponse(description = "Bad Request", responseCode = "400", content = {@Content}),
@@ -68,7 +68,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/findUserByName/{name}",produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
-    @Operation(summary = "Find User By Name", description = "Find User By Name", tags = {"User"},
+    @Operation(summary = "Find User By Name", description = "Find User By Name", tags = {"Users"},
             responses = {
                     @ApiResponse(description = "Success", responseCode = "200", content = {@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = UserDTO.class)))}),
                     @ApiResponse(description = "Bad Request", responseCode = "400", content = {@Content}),
@@ -90,7 +90,7 @@ public class UserController {
 
     //@CrossOrigin(origins = "http://localhost:8080")
     @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
-    @Operation(summary = "Finds a User", description = "Finds a User", tags = {"User"},
+    @Operation(summary = "Finds a User", description = "Finds a User", tags = {"Users"},
             responses = {
                     @ApiResponse(description = "Success", responseCode = "200", content = {@Content(schema = @Schema(implementation = UserDTO.class))}),
                     @ApiResponse(description = "No Content", responseCode = "204", content = {@Content}),
@@ -107,13 +107,14 @@ public class UserController {
             return ResponseEntity.ok().body(userDTO);
         }
         userDTO.add(linkTo(methodOn(AdressController.class).findAdressById(userDTO.getAdress().getId())).withSelfRel());
+        userDTO.add(linkTo(methodOn(AdressController.class).findAdressById(userDTO.getAdress().getId())).withSelfRel());
         return ResponseEntity.ok().body(userDTO);
 
     }
 
     //Usar @PatchMapping quando precisar atualizar valor de apenas um campo
     @PatchMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
-    @Operation(summary = "Disable a specific User by ID", description = "Disable a specific User by ID", tags = {"User"},
+    @Operation(summary = "Disable a specific User by ID", description = "Disable a specific User by ID", tags = {"Users"},
             responses = {
                     @ApiResponse(description = "Success", responseCode = "200", content = {@Content(schema = @Schema(implementation = UserDTO.class))}),
                     @ApiResponse(description = "No Content", responseCode = "204", content = {@Content}),
@@ -130,7 +131,7 @@ public class UserController {
     //@CrossOrigin(origins = {"http://localhost:8080", "https://jp.com.br"})
     @PostMapping(produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML},
             consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
-    @Operation(summary = "Adds a New Client", description = "Adds a New Client by passing in a JSON, XML or YML representation of the Client.", tags = {"Client"},
+    @Operation(summary = "Adds a New User", description = "Adds a New Client by passing in a JSON, XML or YML representation of the Client.", tags = {"Users"},
             responses = {
                     @ApiResponse(description = "Success", responseCode = "200", content = {@Content(schema = @Schema(implementation = UserDTO.class))}),
                     @ApiResponse(description = "Bad Request", responseCode = "400", content = {@Content}),
@@ -148,25 +149,28 @@ public class UserController {
     @PutMapping(value = "/{id}",
             produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML},
             consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
-    @Operation(summary = "Updates a User", description = "Updates a User by passing in a JSON, XML or YML representation of the User.", tags = {"User"},
+    @Operation(summary = "Updates a User", description = "Updates a User by passing in a JSON, XML or YML representation of the User.", tags = {"Users"},
             responses = {
                     @ApiResponse(description = "Updated", responseCode = "200", content = {@Content(schema = @Schema(implementation = UserDTO.class))}),
                     @ApiResponse(description = "Bad Request", responseCode = "400", content = {@Content}),
                     @ApiResponse(description = "Unauthorized", responseCode = "401", content = {@Content}),
                     @ApiResponse(description = "Not Found", responseCode = "404", content = {@Content}),
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = {@Content})})
-    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @Valid @RequestBody UserDTO userDTO) {
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @Valid @RequestBody UserDTO userDT) {
         User userById = modelMapper.map(userServices.findUserById(id), User.class);
-        userDTO.setAdress(userById.getAdress());
+        UserDTO userDTO = modelMapper.map(userById, UserDTO.class);
+
         userDTO.setId(id);
-        UserDTO DTO = modelMapper.map(userServices.updateUser(userDTO), UserDTO.class);
-        DTO.add(linkTo(methodOn(UserController.class).findUserById(id)).withSelfRel());
-        return ResponseEntity.ok().body(DTO);
+        userServices.updateUser(userDTO);
+        //UserDTO DTO = modelMapper.map(userServices.updateUser(userDTO), UserDTO.class);
+        userDTO.add(linkTo(methodOn(UserController.class).findUserById(id)).withSelfRel());
+        userDTO.add(linkTo(methodOn(AdressController.class).findAdressById(userById.getAdress().getId())).withSelfRel());
+        return ResponseEntity.ok().body(userDTO);
     }
 
     //@CrossOrigin(origins = "http://localhost:8080")
     @DeleteMapping(value = "/{id}")
-    @Operation(summary = "Deletes a User", description = "Deletes a User by passing in a JSON, XML or YML representation of the User.", tags = {"User"},
+    @Operation(summary = "Deletes a User", description = "Deletes a User by passing in a JSON, XML or YML representation of the User.", tags = {"Users"},
             responses = {
                     @ApiResponse(description = "No Content", responseCode = "204", content = {@Content}),
                     @ApiResponse(description = "Bad Request", responseCode = "400", content = {@Content}),

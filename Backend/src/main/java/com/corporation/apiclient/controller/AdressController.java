@@ -50,12 +50,11 @@ public class AdressController {
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = {@Content})})
     public ResponseEntity<PagedModel<EntityModel<AdressDTO>>> findAllAdress(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
-            @RequestParam(value = "size", defaultValue = "15") Integer size,
-            @RequestParam(value = "direction", defaultValue = "asc") String direction) {
+            @RequestParam(value = "size", defaultValue = "15") Integer size) {
         // esta ignorando as Letras Maiuscula ou Minuscula e um operador ternario se ele identificar DESC na Requisicao ele retorna Um Direction.DESC, se nao Direction.ASC
-        Sort.Direction sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;  // Ordenando por name
+
         //Usando o Page para fazer pesquisa por paginacao
-        Pageable pageable = PageRequest.of(page,size, Sort.by(sortDirection, "street"));
+        Pageable pageable = PageRequest.of(page,size);
 
         return ResponseEntity.ok(adressService.findAllAdress(pageable));
     }

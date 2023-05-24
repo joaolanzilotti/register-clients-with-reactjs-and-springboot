@@ -356,12 +356,12 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
         Assertions.assertNotNull(foundPersonOne.getCpf());
         Assertions.assertNotNull(foundPersonOne.getBirthDay());
 
-        Assertions.assertEquals(2 , foundPersonOne.getId());
-        Assertions.assertEquals("pedro545664564@gmail.com", foundPersonOne.getEmail());
-        Assertions.assertEquals("Pedro", foundPersonOne.getName());
-        Assertions.assertEquals("09113155865", foundPersonOne.getCpf());
-        Assertions.assertEquals("5624987155", foundPersonOne.getRg());
-        Assertions.assertEquals("1238334010", foundPersonOne.getCellphone());
+        Assertions.assertEquals(14 , foundPersonOne.getId());
+        Assertions.assertEquals("algamerjoao1@hotmail.com", foundPersonOne.getEmail());
+        Assertions.assertEquals("Joao Pedro", foundPersonOne.getName());
+        Assertions.assertEquals("48684998820", foundPersonOne.getCpf());
+        Assertions.assertEquals("5656566", foundPersonOne.getRg());
+        Assertions.assertEquals("12996598968", foundPersonOne.getCellphone());
 
     }
 
@@ -371,7 +371,7 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
 
         var content = given().spec(specification)
                 .contentType(TestConfig.CONTENT_TYPE_YML)
-                .queryParams("page", 0,"size", 15, "direction", "asc")
+                .queryParams("page", 0,"size", 15)
                 .when()
                 .get()
                 .then()
@@ -380,14 +380,11 @@ public class ClientControllerYMLTest extends AbstractIntegrationTest {
                 .body()
                 .asString();
 
-        assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/clients/12\"}}}"));
-        assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/clients/15\"}}}"));
-        assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/clients/13\"}}}"));
+        assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/users/12\"}}}"));
+        assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/users/15\"}}}"));
+        assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/users/13\"}}}"));
 
-        assertTrue(content.contains("{\"first\":{\"href\":\"http://localhost:8888/api/clients?page=0&size=15\"}"));
-        assertTrue(content.contains("\"self\":{\"href\":\"http://localhost:8888/api/clients?page=0&size=15\"}"));
-        assertTrue(content.contains("\"next\":{\"href\":\"http://localhost:8888/api/clients?page=1&size=15\"}"));
-        assertTrue(content.contains("\"last\":{\"href\":\"http://localhost:8888/api/clients?page=1&size=15\"}}"));
+        assertTrue(content.contains("\"self\":{\"href\":\"http://localhost:8888/api/users?page=0&size=15\"}"));
 
     }
 

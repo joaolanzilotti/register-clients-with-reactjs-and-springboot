@@ -15,7 +15,6 @@ import java.util.Date;
 @Setter
 public class AccountCredentialsDTO implements Serializable {
 
-    private String name;
     private String email;
     private String password;
 

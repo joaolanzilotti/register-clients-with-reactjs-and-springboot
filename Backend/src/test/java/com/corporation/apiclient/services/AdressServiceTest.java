@@ -38,6 +38,8 @@ class AdressServiceTest {
     private ModelMapper modelMapper;
 
     private Adress adress;
+    private User user;
+
     private AdressDTO adressDTO;
     private Optional<Adress> optionalAdress;
 
@@ -73,6 +75,7 @@ class AdressServiceTest {
     @Test
     void addAdressTest() {
 
+        Mockito.when(userServices.findUserById(1L)).thenReturn(user);
         Mockito.when(adressRepository.save(Mockito.any())).thenReturn(adress);
         Adress response = adressService.addAdress(adressDTO, 1L);
 
@@ -110,6 +113,7 @@ class AdressServiceTest {
     }
 
     private void startAdress() {
+        user = new User(1L, "teste@teste.com", "56006548", "09113144568", new Date(123, 4, 25), "12659874848", adress, true, "Joao", "123");
         adress = new Adress(1L, "Rua Tenorio", "Centro", "50", "Ubatuba", "SP", null);
         adressDTO = new AdressDTO(1L, "Rua Tenorio", "Centro", "50", "Ubatuba", "SP", null);
         optionalAdress = Optional.of(new Adress(1L, "Rua Tenorio", "Centro", "50", "Ubatuba", "SP", null));

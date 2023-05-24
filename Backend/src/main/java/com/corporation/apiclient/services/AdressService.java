@@ -61,8 +61,7 @@ public class AdressService implements Serializable {
         Link link = linkTo(
                 methodOn(AdressController.class)
                         .findAllAdress(pageable.getPageNumber(),
-                                pageable.getPageSize(),
-                                "asc")).withSelfRel();
+                                pageable.getPageSize())).withSelfRel();
 
         return assembler.toModel(adressDTOPage, link);
     }
