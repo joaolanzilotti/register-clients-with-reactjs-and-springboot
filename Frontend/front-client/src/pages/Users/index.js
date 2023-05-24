@@ -10,8 +10,9 @@ import './styles.css';
 import logoJP from '../../assets/logoJP.png';
 
 export default function Users() {
-    const username = localStorage.getItem('email');
+    const email = localStorage.getItem('email');
     const accessToken = localStorage.getItem('accessToken');
+    const username = localStorage.getItem('username');
 
     const navigate = useNavigate();
     const [showConfirmation, setShowConfirmation] = useState(false);
@@ -62,6 +63,20 @@ export default function Users() {
         setUsers([...users, ...response.data._embedded.userDTOList]);
         setPage(page + 1);
     }
+    async function dataUsername() {
+        try {
+            const response = await api.get(`/api/users/findUserByEmail/${email}`, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                }
+            });
+            localStorage.setItem("username", response.data.name);
+        } catch (error) {
+            // Lida com erros na chamada à API
+            console.error(error);
+        }
+    }
+
 
     function handleDeleteClick(id, name) {
         setSelectedUserId(id);
@@ -80,8 +95,13 @@ export default function Users() {
         setShowConfirmation(false);
     }
 
+    useEffect(() => {
+       dataUsername().then();
+    });
+
     // useEffect é para carregar a tela assim que carregar o HTML, os dados virão!
     useEffect(() => {
+
         fetchMoreUsers().then();
     }, []);
 
@@ -90,7 +110,7 @@ export default function Users() {
             <header>
                 <img src={logoJP} alt="JP" />
                 <span>
-          <strong>Welcome</strong>
+          Welcome, <strong>{username}</strong>
         </span>
                 <Link className="buttonUser" to="/user/new/0">
                     <div className="container-button">

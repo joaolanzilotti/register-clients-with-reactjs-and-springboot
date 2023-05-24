@@ -18,6 +18,7 @@ export default function Login() {
 
     //Chamando a API para enviar os Dados
     const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
     //Funcao navigate para Enviar a Rota
@@ -37,6 +38,7 @@ export default function Login() {
             //Armazenando o login no LocalStorage
             localStorage.setItem('email', email);
             localStorage.setItem('accessToken', response.data.token);
+
 
             navigate('/users');
         } catch (err) {

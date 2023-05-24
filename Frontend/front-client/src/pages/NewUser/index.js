@@ -21,7 +21,7 @@ export default function NewUser() {
     const [cellphone, setCellphone] = useState('');
     const [adress, setAdress] = useState('');
 
-    const username = localStorage.getItem('email');
+    const emailLogged = localStorage.getItem('email');
     const accessToken = localStorage.getItem('accessToken');
 
     const [showLoading, setShowLoading] = useState(false);
