@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { FiUserPlus, FiLogOut, FiEdit, FiTrash2, FiAlertTriangle, FiX } from 'react-icons/fi';
-import { toast } from 'react-toast';
+import React, {useState, useEffect} from 'react';
+import {Link, useNavigate} from 'react-router-dom';
+import {FiUserPlus, FiLogOut, FiEdit, FiTrash2, FiAlertTriangle, FiX, FiPlusCircle} from 'react-icons/fi';
+import {toast} from 'react-toast';
 
 import api from '../../services/api';
 
@@ -21,6 +21,8 @@ export default function Users() {
 
     const [users, setUsers] = useState([]);
     const [page, setPage] = useState(0);
+
+    const valorParagrafo = 'Adress not registred';
 
     async function logout() {
         localStorage.clear();
@@ -63,6 +65,7 @@ export default function Users() {
         setUsers([...users, ...response.data._embedded.userDTOList]);
         setPage(page + 1);
     }
+
     async function dataUsername() {
         try {
             const response = await api.get(`/api/users/findUserByEmail/${email}`, {
@@ -96,7 +99,7 @@ export default function Users() {
     }
 
     useEffect(() => {
-       dataUsername().then();
+        dataUsername().then();
     });
 
     // useEffect é para carregar a tela assim que carregar o HTML, os dados virão!
@@ -108,21 +111,21 @@ export default function Users() {
     return (
         <div className="user-container">
             <header>
-                <img src={logoJP} alt="JP" />
+                <img src={logoJP} alt="JP"/>
                 <span>
           Welcome, <strong>{username}</strong>
         </span>
                 <Link className="buttonUser" to="/user/new/0">
                     <div className="container-button">
                         <div className="iconUserPlus">
-                            <FiUserPlus size={24} color="white" />
+                            <FiUserPlus size={24} color="white"/>
                         </div>
                         <div className="textButton">Add new User</div>
                     </div>
                 </Link>
 
                 <button onClick={logout} className="buttonPower" type="button">
-                    <FiLogOut size={18} color="#251FC5" />
+                    <FiLogOut size={18} color="#251FC5"/>
                 </button>
             </header>
             <h1>Registered Users</h1>
@@ -145,22 +148,47 @@ export default function Users() {
                         <p>{user.cellphone}</p>
                         <strong>Adress:</strong>
                         {user.adress ? (
+
                             <p>
                                 {user.adress.street +
                                     ', ' +
                                     user.adress.district +
                                     ', ' +
                                     user.adress.number}
+                                <div className="buttons-Adress">
+
+                                    <button className="buttonEditAdress" type="button"><FiEdit size={20} color="#251FC5"/>
+                                    </button>
+                                    <button className="buttonTrashAdress" type="button"><FiTrash2 size={20}
+                                                                                                  color="#251FC5"/></button>
+                                </div>
                             </p>
+
+
                         ) : (
-                            <p>Endereço não disponível</p>
+                            <p>Adress not registred
+
+                                <div className="buttons-Adress">
+                                    <button className="buttonPlusAdress" type="button"><FiPlusCircle size={20} color="#251FC5"/></button>
+                                    <button className="buttonEditAdress" type="button"><FiEdit size={20} color="#251FC5"/>
+                                    </button>
+                                    <button className="buttonTrashAdress" type="button"><FiTrash2 size={20}
+                                                                                                  color="#251FC5"/></button>
+                                </div>
+
+                            </p>
+
+                            //<button className="buttonPlusAdress" type="button"><FiPlusCircle size={20} color="#251FC5"/></button>
+
                         )}
 
-                        <button type="button">
-                            <FiEdit onClick={() => editUser(user.id)} size={20} color="#251FC5" />
+
+                        <button className="buttonEditUser" type="button">
+                            <FiEdit onClick={() => editUser(user.id)} size={20} color="#251FC5"/>
                         </button>
-                        <button onClick={() => handleDeleteClick(user.id, user.name)} type="button">
-                            <FiTrash2 size={20} color="#251FC5" />
+                        <button className="buttonTrashUser" onClick={() => handleDeleteClick(user.id, user.name)}
+                                type="button">
+                            <FiTrash2 size={20} color="#251FC5"/>
                         </button>
                     </li>
                 ))}
@@ -171,10 +199,11 @@ export default function Users() {
 
             {showConfirmation && (
                 <div className="modal">
-                    <button className="buttonCloseModal" onClick={handleCancelDelete}><FiX size={20} color='gray' /></button>
+                    <button className="buttonCloseModal" onClick={handleCancelDelete}><FiX size={20} color='gray'/>
+                    </button>
                     <div className="modal-content">
                         <div className="iconContainer">
-                        <FiAlertTriangle className="iconAlertModal" size="45" color='orange' />
+                            <FiAlertTriangle className="iconAlertModal" size="45" color='orange'/>
                         </div>
                         <h2>Confirmation</h2>
                         <p>Are you sure you want to delete user?</p>

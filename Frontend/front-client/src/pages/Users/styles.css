@@ -84,13 +84,13 @@
 }
 
 .user-container ul li{
-    background: #ffffff;
+    background: linear-gradient(to right, #CBFFFF,#99FFFF, #99FFFF, #99FFFF,#CBFFFF);
     padding: 24px;
     border-radius: 32px;
     position: relative;
 }
 
-.user-container ul li button{
+.user-container ul li .buttonEditUser{
     position: absolute;
     right: 24px;
     top: 24px;
@@ -99,7 +99,16 @@
 
 }
 
-.user-container ul li button + button{
+.user-container ul li .buttonTrashUser{
+    position: absolute;
+    right: 24px;
+    top: 24px;
+    border: 0;
+    background: transparent;
+
+}
+
+.user-container ul li .buttonEditUser + .buttonTrashUser{
     top: 50px;
 }
 
@@ -233,6 +242,28 @@
 }
 .user-container .modal .buttonCancelDialog:hover{
     opacity: 0.8;
+}
+
+.user-container ul li .buttons-Adress{
+    margin-top: -25px;
+    margin-left: 420px;
+}
+
+.user-container ul li .buttons-Adress .buttonPlusAdress{
+    border: 0;
+    background: transparent;
+}
+
+.user-container ul li .buttons-Adress .buttonEditAdress{
+    border: 0;
+    background: transparent;
+    margin-left: 5px;
+}
+
+.user-container ul li .buttons-Adress .buttonTrashAdress{
+    border: 0;
+    background: transparent;
+    margin-left: 5px;
 }
 
 
