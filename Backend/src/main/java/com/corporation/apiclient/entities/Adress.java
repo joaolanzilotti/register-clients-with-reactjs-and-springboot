@@ -27,8 +27,7 @@ public class Adress implements Serializable {
     private String state;
 
     @JsonIgnore
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @OneToMany(mappedBy = "adress", cascade = CascadeType.ALL)
+    private List<User> users;
 
 }
