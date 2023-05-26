@@ -40,12 +40,9 @@ public class AdressService implements Serializable {
     @Autowired
     private UserRepository userRepository;
 
-    public Adress addAdress(AdressDTO adressDTO, Long id){
-        User user = userServices.findUserById(id);
+    public Adress addAdress(AdressDTO adressDTO){
         Adress adress = modelMapper.map(adressDTO, Adress.class);
         adressRepository.save(adress);
-        user.setAdress(adress);
-        userRepository.save(user);
         return adress;
     }
 

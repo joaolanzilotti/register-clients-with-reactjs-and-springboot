@@ -106,7 +106,7 @@ public class AdressController {
                     @ApiResponse(description = "Unauthorized", responseCode = "401", content = {@Content}),
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = {@Content})})
     public ResponseEntity<AdressDTO> addAdress(@PathVariable Long id, @Valid @RequestBody AdressDTO adressDTO) {
-        AdressDTO DTO = modelMapper.map(adressService.addAdress(adressDTO, id), AdressDTO.class);
+        AdressDTO DTO = modelMapper.map(adressService.addAdress(adressDTO), AdressDTO.class);
         DTO.add(linkTo(methodOn(AdressController.class).findAdressById(DTO.getId())).withSelfRel());
         DTO.add(linkTo(methodOn(UserController.class).findUserById(id)).withSelfRel());
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(DTO.getId()).toUri();
