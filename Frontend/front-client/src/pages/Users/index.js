@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import {FiUserPlus, FiLogOut, FiEdit, FiTrash2, FiAlertTriangle, FiX, FiPlusCircle} from 'react-icons/fi';
-import {toast} from 'react-toast';
+import {toast, ToastContainer} from 'react-toast';
 
 import api from '../../services/api';
 
@@ -16,17 +16,25 @@ export default function Users() {
 
     const navigate = useNavigate();
     const [showConfirmation, setShowConfirmation] = useState(false);
+    const [showConfirmationAdress, setShowConfirmationAdress] = useState(false);
     const [selectedUserId, setSelectedUserId] = useState(null);
     const [selectedUserName, setSelectedUserName] = useState(null);
+    const [selectedAdress, setSelectedAdress] = useState(null);
 
     const [users, setUsers] = useState([]);
     const [page, setPage] = useState(0);
 
-    const valorParagrafo = 'Adress not registred';
-
     async function logout() {
         localStorage.clear();
         navigate('/');
+    }
+
+    async function editAdress(idUser, idadress) {
+        try {
+            navigate(`/user/newadress/${idUser}/${idadress}`);
+        } catch (error) {
+            toast.error('Edit Failed! Try Again.');
+        }
     }
 
     async function editUser(id) {
@@ -44,8 +52,23 @@ export default function Users() {
                     Authorization: `Bearer ${accessToken}`,
                 },
             });
-            setUsers(users.filter((client) => client.id !== id));
             toast.success('User Deleted Successfully!');
+            setUsers(users.filter((user) => user.id !== id));
+        } catch (err) {
+            toast.error('Delete Failed!');
+        }
+    }
+
+    async function deleteAdress(id) {
+        try {
+            await api.delete(`/api/adress/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            });
+            toast.success('Adress Deleted Successfully!');
+            setUsers(users.filter((user) => user.adress.id !== id));
+
         } catch (err) {
             toast.error('Delete Failed!');
         }
@@ -84,18 +107,35 @@ export default function Users() {
     function handleDeleteClick(id, name) {
         setSelectedUserId(id);
         setSelectedUserName(name)
+        setSelectedAdress(name);
         setShowConfirmation(true);
     }
 
+    function handleDeleteClickAdress(id, name) {
+        setSelectedUserId(id);
+        setSelectedAdress(name);
+        setShowConfirmationAdress(true);
+    }
+
     function handleConfirmDelete() {
-        deleteUser(selectedUserId);
+        deleteUser(selectedUserId).then();
         setShowConfirmation(false);
+    }
+    function handleConfirmDeleteAdress() {
+        deleteAdress(selectedUserId).then();
+        setShowConfirmationAdress(false);
     }
 
     function handleCancelDelete() {
         setSelectedUserId(null);
         setSelectedUserName(null);
         setShowConfirmation(false);
+    }
+
+    function handleCancelDeleteAdress() {
+        setSelectedUserId(null);
+        setSelectedAdress(null);
+        setShowConfirmationAdress(false);
     }
 
     useEffect(() => {
@@ -110,6 +150,7 @@ export default function Users() {
 
     return (
         <div className="user-container">
+            <ToastContainer position="top-center" delay="3000"/>
             <header>
                 <img src={logoJP} alt="JP"/>
                 <span>
@@ -157,10 +198,12 @@ export default function Users() {
                                     user.adress.number}
                                 <div className="buttons-Adress">
 
-                                    <button className="buttonEditAdress" type="button"><FiEdit size={20} color="#251FC5"/>
+                                    <button className="buttonEditAdress" type="button">
+                                        <FiEdit onClick={() => editAdress(user.id, user.adress.id)} size={20} color="#251FC5"/>
                                     </button>
-                                    <button className="buttonTrashAdress" type="button"><FiTrash2 size={20}
-                                                                                                  color="#251FC5"/></button>
+
+                                    <button className="buttonTrashAdress" type="button">
+                                        <FiTrash2 onClick={() => handleDeleteClickAdress(user.adress.id, user.adress.street)} size={20} color="#251FC5"/></button>
                                 </div>
                             </p>
 
@@ -169,11 +212,11 @@ export default function Users() {
                             <p>Adress not registred
 
                                 <div className="buttons-Adress">
-                                    <button className="buttonPlusAdress" type="button"><FiPlusCircle size={20} color="#251FC5"/></button>
-                                    <button className="buttonEditAdress" type="button"><FiEdit size={20} color="#251FC5"/>
-                                    </button>
-                                    <button className="buttonTrashAdress" type="button"><FiTrash2 size={20}
-                                                                                                  color="#251FC5"/></button>
+                                    <Link className="buttonUser" to={`/user/newadress/${user.id}/0`}>
+                                    <button className="buttonPlusAdress" type="button">
+                                        <FiPlusCircle size={20} color="#251FC5"/></button>
+                                    </Link>
+
                                 </div>
 
                             </p>
@@ -206,10 +249,27 @@ export default function Users() {
                             <FiAlertTriangle className="iconAlertModal" size="45" color='orange'/>
                         </div>
                         <h2>Confirmation</h2>
-                        <p>Are you sure you want to delete user?</p>
+                        <p>Are you sure you want to delete?</p>
                         <h5>{selectedUserName}</h5>
                         <button className="buttonConfirmDialog" onClick={handleConfirmDelete}>Delete</button>
                         <button className="buttonCancelDialog" onClick={handleCancelDelete}>Cancel</button>
+                    </div>
+                </div>
+            )}
+
+            {showConfirmationAdress && (
+                <div className="modal">
+                    <button className="buttonCloseModal" onClick={handleCancelDeleteAdress}><FiX size={20} color='gray'/>
+                    </button>
+                    <div className="modal-content">
+                        <div className="iconContainer">
+                            <FiAlertTriangle className="iconAlertModal" size="45" color='orange'/>
+                        </div>
+                        <h2>Confirmation</h2>
+                        <p>Are you sure you want to delete adress?</p>
+                        <h5>{selectedAdress}</h5>
+                        <button className="buttonConfirmDialog" onClick={handleConfirmDeleteAdress}>Delete</button>
+                        <button className="buttonCancelDialog" onClick={handleCancelDeleteAdress}>Cancel</button>
                     </div>
                 </div>
             )}

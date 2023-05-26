@@ -112,13 +112,13 @@ export default function NewUser() {
         <div className="notification">
             <ToastContainer position="top-center" delay="3000"/>
 
-            <div className="new-user-container">
+            <div className="new-adress-container">
 
                 <div className="content">
                     <section className="form">
                         <img src={logoJP} alt="JP"/>
                         <h1>{userId === '0' ? 'Add New' : 'Update'} User</h1>
-                        <p>Enter the user information and click on {userId === "'0'" ? "'Add'" : 'Update'}</p>
+                        <p>Enter the user information and click on {userId === '0' ? 'Add' : 'Update'}</p>
                         <Link className="back-link" to="/users">
                             <div className="container-button">
                                 <div className="iconArrowLeft"><FiArrowLeft size={16} color="blue"/></div>
