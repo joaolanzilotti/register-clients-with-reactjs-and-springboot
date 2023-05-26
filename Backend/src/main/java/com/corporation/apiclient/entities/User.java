@@ -41,8 +41,7 @@ public class User implements UserDetails, Serializable {
     @NotBlank(message = "Cellphone is Null!")
     private String cellphone;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "adress_id")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Adress adress;
 
     private boolean enabled;

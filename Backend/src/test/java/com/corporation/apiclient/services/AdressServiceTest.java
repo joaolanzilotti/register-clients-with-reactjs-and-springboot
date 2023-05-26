@@ -77,7 +77,7 @@ class AdressServiceTest {
 
         Mockito.when(userServices.findUserById(1L)).thenReturn(user);
         Mockito.when(adressRepository.save(Mockito.any())).thenReturn(adress);
-        Adress response = adressService.addAdress(adressDTO, 1L);
+        Adress response = adressService.addAdress(adressDTO);
 
     }
 

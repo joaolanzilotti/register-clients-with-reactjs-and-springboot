@@ -3,6 +3,7 @@ package com.corporation.apiclient.services;
 import java.util.Optional;
 import java.util.logging.Logger;
 
+import com.corporation.apiclient.controller.AdressController;
 import com.corporation.apiclient.controller.UserController;
 import com.corporation.apiclient.dto.UserDTO;
 import com.corporation.apiclient.entities.User;
@@ -83,7 +84,8 @@ public class UserServices implements UserDetailsService {
         userDTOPage.map(
                 p -> p.add(
                         linkTo(methodOn(UserController.class)
-                                .findUserById(p.getId())).withSelfRel()));
+                                .findUserById(p.getId())).withSelfRel(), linkTo(methodOn(AdressController.class)
+                                .findAdressById(p.getId())).withSelfRel()));
 
         Link link = linkTo(
                 methodOn(UserController.class)
