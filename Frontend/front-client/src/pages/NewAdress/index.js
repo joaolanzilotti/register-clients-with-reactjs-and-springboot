@@ -74,7 +74,14 @@ export default function NewAdress() {
 
         try {
             if(adressId === '0') {
-                await api.post(`/api/adress/${userId}`, data, {
+                const response = await api.post('/api/adress', data, {
+                    //Adicionando na resposta o Header com o Token
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                });
+
+                await api.post(`/api/users/userWithAdress/${userId}/${response.data.id}`, null, {
                     //Adicionando na resposta o Header com o Token
                     headers: {
                         Authorization: `Bearer ${accessToken}`
