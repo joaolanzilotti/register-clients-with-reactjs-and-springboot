@@ -85,10 +85,9 @@ public class AdressControllerXMLTest extends AbstractIntegrationTest {
         var content = given().spec(specification)
                 .contentType(TestConfig.CONTENT_TYPE_XML)
                 .accept(TestConfig.CONTENT_TYPE_XML)
-                .pathParam("id", 6L)
                 .body(adressDTO)
                 .when()
-                .post("{id}")
+                .post()
                 .then()
                 .statusCode(201)
                 .extract()
@@ -126,9 +125,9 @@ public class AdressControllerXMLTest extends AbstractIntegrationTest {
                 .pathParam("id", 6L)
                 .body(adressDTO)
                 .when()
-                .post("{id}")
+                .put("{id}")
                 .then()
-                .statusCode(201)
+                .statusCode(200)
                 .extract()
                 .body()
                 .asString();
@@ -256,7 +255,7 @@ public class AdressControllerXMLTest extends AbstractIntegrationTest {
 
         assertTrue(content.contains("<links><rel>self</rel><href>http://localhost:8888/api/adress/2</href></links>"));
         assertTrue(content.contains("<links><rel>self</rel><href>http://localhost:8888/api/adress/3</href></links>"));
-        assertTrue(content.contains("<links><rel>self</rel><href>http://localhost:8888/api/adress/4</href></links>"));
+        assertTrue(content.contains("<links><rel>self</rel><href>http://localhost:8888/api/adress/8</href></links>"));
 
         assertTrue(content.contains("<links><rel>self</rel><href>http://localhost:8888/api/adress?page=0&amp;size=15</href></links>"));
 

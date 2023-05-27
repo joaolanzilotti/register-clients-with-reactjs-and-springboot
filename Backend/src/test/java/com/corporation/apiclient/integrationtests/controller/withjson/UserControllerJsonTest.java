@@ -57,7 +57,7 @@ public class UserControllerJsonTest extends AbstractIntegrationTest {
     @Order(0)
     public void authorization() throws JsonMappingException, JsonProcessingException {
 
-        AccountCredentialsDTO user = new AccountCredentialsDTO("admin@admin.com","admin123");
+        AccountCredentialsDTO user = new AccountCredentialsDTO("admin@admin.com", "admin123");
 
         var acessToken = given()
                 .basePath("/auth/signin")
@@ -258,7 +258,7 @@ public class UserControllerJsonTest extends AbstractIntegrationTest {
 
         var content = given().spec(specification)
                 .contentType(TestConfig.CONTENT_TYPE_JSON)
-                .queryParams("page", 0,"size", 15, "direction", "asc")
+                .queryParams("page", 0, "size", 15, "direction", "asc")
                 .when()
                 .get()
                 .then()
@@ -279,7 +279,7 @@ public class UserControllerJsonTest extends AbstractIntegrationTest {
         Assertions.assertNotNull(foundPersonOne.getCpf());
         Assertions.assertNotNull(foundPersonOne.getBirthDay());
 
-        Assertions.assertEquals(2 , foundPersonOne.getId());
+        Assertions.assertEquals(2, foundPersonOne.getId());
         Assertions.assertEquals("pedro545664564@gmail.com", foundPersonOne.getEmail());
         Assertions.assertEquals("Pedro", foundPersonOne.getName());
         Assertions.assertEquals("09113155865", foundPersonOne.getCpf());
@@ -296,7 +296,7 @@ public class UserControllerJsonTest extends AbstractIntegrationTest {
                 .contentType(TestConfig.CONTENT_TYPE_JSON)
                 .accept(TestConfig.CONTENT_TYPE_JSON)
                 .pathParam("name", "pe")
-                .queryParams("page", 0,"size", 15, "direction", "asc")
+                .queryParams("page", 0, "size", 15, "direction", "asc")
                 .when()
                 .get("findUserByName/{name}")
                 .then()
@@ -317,7 +317,7 @@ public class UserControllerJsonTest extends AbstractIntegrationTest {
         Assertions.assertNotNull(foundPersonOne.getCpf());
         Assertions.assertNotNull(foundPersonOne.getBirthDay());
 
-        Assertions.assertEquals(14 , foundPersonOne.getId());
+        Assertions.assertEquals(14, foundPersonOne.getId());
         Assertions.assertEquals("algamerjoao1@hotmail.com", foundPersonOne.getEmail());
         Assertions.assertEquals("Joao Pedro", foundPersonOne.getName());
         Assertions.assertEquals("48684998820", foundPersonOne.getCpf());
@@ -325,6 +325,7 @@ public class UserControllerJsonTest extends AbstractIntegrationTest {
         Assertions.assertEquals("12996598968", foundPersonOne.getCellphone());
 
     }
+
     @Test
     @Order(8)
     public void testFindUserByEmail() throws JsonMappingException, JsonProcessingException {
@@ -351,7 +352,7 @@ public class UserControllerJsonTest extends AbstractIntegrationTest {
         Assertions.assertNotNull(createdUserDTO.getCpf());
         Assertions.assertNotNull(createdUserDTO.getBirthDay());
 
-        Assertions.assertEquals(14 , createdUserDTO.getId());
+        Assertions.assertEquals(14, createdUserDTO.getId());
         Assertions.assertEquals("algamerjoao1@hotmail.com", createdUserDTO.getEmail());
         Assertions.assertEquals("Joao Pedro", createdUserDTO.getName());
         Assertions.assertEquals("48684998820", createdUserDTO.getCpf());
@@ -366,7 +367,7 @@ public class UserControllerJsonTest extends AbstractIntegrationTest {
 
         var content = given().spec(specification)
                 .contentType(TestConfig.CONTENT_TYPE_YML)
-                .queryParams("page", 0,"size", 15)
+                .queryParams("page", 0, "size", 15)
                 .when()
                 .get()
                 .then()
@@ -381,6 +382,45 @@ public class UserControllerJsonTest extends AbstractIntegrationTest {
 
         assertTrue(content.contains("\"self\":{\"href\":\"http://localhost:8888/api/users?page=0&size=15\"}"));
 
+    }
+
+    @Test
+    @Order(10)
+    public void testInsertAdressInUser() throws JsonMappingException, JsonProcessingException {
+        mockPerson();
+
+        var content = given().spec(specification)
+                .contentType(TestConfig.CONTENT_TYPE_JSON)
+                .header(TestConfig.HEADER_PARAM_ORIGIN, TestConfig.ORIGIN_JP)
+                .pathParam("idUser", 12L)
+                .pathParam("idAdress", 19L)
+                .when()
+                .post("userWithAdress/{idUser}/{idAdress}")
+                .then()
+                .statusCode(200)
+                .extract()
+                .body()
+                .asString();
+
+        UserDTO createdUserDTO = objectMapper.readValue(content, UserDTO.class);
+        userDTO = createdUserDTO;
+
+        Assertions.assertNotNull(createdUserDTO);
+        Assertions.assertNotNull(createdUserDTO.getId());
+        Assertions.assertNotNull(createdUserDTO.getName());
+        Assertions.assertNotNull(createdUserDTO.getEmail());
+        Assertions.assertNotNull(createdUserDTO.getRg());
+        Assertions.assertNotNull(createdUserDTO.getCpf());
+        Assertions.assertNotNull(createdUserDTO.getBirthDay());
+        Assertions.assertNotNull(createdUserDTO.getCellphone());
+        Assertions.assertTrue(createdUserDTO.isEnabled());
+
+
+        Assertions.assertEquals("Pedro", createdUserDTO.getName());
+        Assertions.assertEquals("pedro56894@gmail.com", createdUserDTO.getEmail());
+        Assertions.assertEquals("54965855", createdUserDTO.getRg());
+        Assertions.assertEquals("74602380077", createdUserDTO.getCpf());
+        Assertions.assertEquals("1238334010", createdUserDTO.getCellphone());
     }
 
     private void mockPerson() {

@@ -206,4 +206,17 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping(value = "/userWithAdress/{idUser}/{idAdress}")
+    @Operation(summary = "Insert Adress in User", description = "Insert Adress in User by passing in a JSON, XML or YML representation of the User.", tags = {"Users"},
+            responses = {
+                    @ApiResponse(description = "No Content", responseCode = "204", content = {@Content}),
+                    @ApiResponse(description = "Bad Request", responseCode = "400", content = {@Content}),
+                    @ApiResponse(description = "Unauthorized", responseCode = "401", content = {@Content}),
+                    @ApiResponse(description = "Not Found", responseCode = "404", content = {@Content}),
+                    @ApiResponse(description = "Internal Server Error", responseCode = "500", content = {@Content})})
+    public ResponseEntity<User> insertAdressInUser(@PathVariable Long idUser, @PathVariable Long idAdress) {
+        User user = userServices.insertAdressinUser(idUser, idAdress);
+        return ResponseEntity.ok().body(user);
+    }
+
 }

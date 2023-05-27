@@ -5,9 +5,11 @@ import java.util.logging.Logger;
 
 import com.corporation.apiclient.controller.UserController;
 import com.corporation.apiclient.dto.UserDTO;
+import com.corporation.apiclient.entities.Adress;
 import com.corporation.apiclient.entities.User;
 import com.corporation.apiclient.exceptions.DataIntegratyViolationException;
 import com.corporation.apiclient.exceptions.ObjectNotFoundException;
+import com.corporation.apiclient.repositories.AdressRepository;
 import com.corporation.apiclient.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
@@ -37,9 +39,11 @@ public class UserServices implements UserDetailsService {
 
     private Logger logger = Logger.getLogger(UserServices.class.getName());
 
-
     @Autowired
     UserRepository repository;
+
+    @Autowired
+    private AdressRepository adressRepository;
 
     public UserServices(UserRepository repository) {
         this.repository = repository;
@@ -58,7 +62,7 @@ public class UserServices implements UserDetailsService {
     }
 
     public PagedModel<EntityModel<UserDTO>> findUserByName(String name, Pageable pageable) {
-        Page<User> usersPage = repository.findUserByNamePage(name,pageable);
+        Page<User> usersPage = repository.findUserByNamePage(name, pageable);
 
         Page<UserDTO> userDTOPage = usersPage.map(p -> modelMapper.map(p, UserDTO.class));
         userDTOPage.map(
@@ -68,7 +72,7 @@ public class UserServices implements UserDetailsService {
 
         Link link = linkTo(
                 methodOn(UserController.class)
-                        .findUserByName(name,pageable.getPageNumber(),
+                        .findUserByName(name, pageable.getPageNumber(),
                                 pageable.getPageSize(),
                                 "asc")).withSelfRel();
 
@@ -137,6 +141,17 @@ public class UserServices implements UserDetailsService {
 
         findUserById(id);
         repository.deleteById(id);
+    }
+
+    public User insertAdressinUser(Long idUser, Long idAdress) {
+        Optional<User> userOP = repository.findById(idUser);
+        Optional<Adress> adressOP = adressRepository.findById(idAdress);
+        User user = userOP.get();
+        Adress adress = adressOP.get();
+        user.setAdress(adress);
+        return repository.save(user);
+
+
     }
 
     private void alreadyExistsByEmail(UserDTO userDTO) {
