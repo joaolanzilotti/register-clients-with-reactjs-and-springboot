@@ -1,13 +1,15 @@
 .login{
     padding: 0.5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
 .login-container{
-    padding: 11%;
-    width: 45%;
+    width: 800px;
     background: #F0F0F5;
-    height: 650px;
-    margin: 0 auto;
+    height: 700px;
     border-radius: 32px;
     display: flex;
     align-items: center;
@@ -15,7 +17,6 @@
 }
 
 .login-container section.form{
-    width: 100%;
     max-width: 350px;
 }
 
@@ -26,12 +27,6 @@
     display: block;
 }
 
-.login-container .loginLock{
-    width: 40%;
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-}
 
 .login-container section.form form h1{
     text-align: center;
