@@ -121,6 +121,7 @@ export default function Users() {
         deleteUser(selectedUserId).then();
         setShowConfirmation(false);
     }
+
     function handleConfirmDeleteAdress() {
         deleteAdress(selectedUserId).then();
         setShowConfirmationAdress(false);
@@ -151,25 +152,22 @@ export default function Users() {
     return (
         <div className="user-container">
             <ToastContainer position="top-center" delay="3000"/>
-            <header>
-                <img src={logoJP} alt="JP"/>
-                <span>
-          Welcome, <strong>{username}</strong>
-        </span>
-                <Link className="buttonUser" to="/user/new/0">
-                    <div className="container-button">
-                        <div className="iconUserPlus">
-                            <FiUserPlus size={24} color="white"/>
-                        </div>
-                        <div className="textButton">Add new User</div>
-                    </div>
-                </Link>
 
-                <button onClick={logout} className="buttonPower" type="button">
-                    <FiLogOut size={18} color="#251FC5"/>
-                </button>
-            </header>
-            <h1>Registered Users</h1>
+            <div className="titleTable">
+                <div className="Title">
+                    <p>Registered Users</p>
+                </div>
+                <div className="buttonUser">
+                    <Link className="LinkNewUser" to="/user/new/0">
+                        Add new User
+                    </Link>
+                </div>
+                <div className="pagination">
+                    <Link className="LinkNewUser" to="/user/new/0">
+                        Pagination
+                    </Link>
+                </div>
+            </div>
             <ul>
                 {users.map((user) => (
                     <li key={user.id}>
@@ -199,11 +197,14 @@ export default function Users() {
                                 <div className="buttons-Adress">
 
                                     <button className="buttonEditAdress" type="button">
-                                        <FiEdit onClick={() => editAdress(user.id, user.adress.id)} size={20} color="#251FC5"/>
+                                        <FiEdit onClick={() => editAdress(user.id, user.adress.id)} size={20}
+                                                color="#11009E"/>
                                     </button>
 
                                     <button className="buttonTrashAdress" type="button">
-                                        <FiTrash2 onClick={() => handleDeleteClickAdress(user.adress.id, user.adress.street)} size={20} color="#251FC5"/></button>
+                                        <FiTrash2
+                                            onClick={() => handleDeleteClickAdress(user.adress.id, user.adress.street)}
+                                            size={20} color="#CD1818"/></button>
                                 </div>
                             </p>
 
@@ -213,8 +214,8 @@ export default function Users() {
 
                                 <div className="buttons-Adress">
                                     <Link className="buttonUser" to={`/user/newadress/${user.id}/0`}>
-                                    <button className="buttonPlusAdress" type="button">
-                                        <FiPlusCircle size={20} color="#251FC5"/></button>
+                                        <button className="buttonPlusAdress" type="button">
+                                            <FiPlusCircle size={20} color="black"/></button>
                                     </Link>
 
                                 </div>
@@ -227,11 +228,11 @@ export default function Users() {
 
 
                         <button className="buttonEditUser" type="button">
-                            <FiEdit onClick={() => editUser(user.id)} size={20} color="#251FC5"/>
+                            <FiEdit onClick={() => editUser(user.id)} size={20} color="#11009E"/>
                         </button>
                         <button className="buttonTrashUser" onClick={() => handleDeleteClick(user.id, user.name)}
                                 type="button">
-                            <FiTrash2 size={20} color="#251FC5"/>
+                            <FiTrash2 size={20} color="#CD1818"/>
                         </button>
                     </li>
                 ))}
@@ -259,7 +260,8 @@ export default function Users() {
 
             {showConfirmationAdress && (
                 <div className="modal">
-                    <button className="buttonCloseModal" onClick={handleCancelDeleteAdress}><FiX size={20} color='gray'/>
+                    <button className="buttonCloseModal" onClick={handleCancelDeleteAdress}><FiX size={20}
+                                                                                                 color='gray'/>
                     </button>
                     <div className="modal-content">
                         <div className="iconContainer">

@@ -3,7 +3,6 @@
     max-width: 1120px;
     height: 100vh;
     margin: 0 auto;
-
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -14,7 +13,7 @@
     height: 580px;
     padding: 80px;
     background: #F0F0F5;
-    box-shadow: 0 0 100px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 1);
     border-radius: 8px;
 
     display: flex;

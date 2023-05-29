@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import './styles.css';
+import '../NewUser/styles.css';
 import loadingGif from '../../assets/loadingTwoWhite.gif';
 import logoJP from '../../assets/newUser.png';
 import {Link, useNavigate, useParams} from "react-router-dom";
@@ -109,11 +109,9 @@ export default function NewUser() {
     }
 
     return (
-        <div className="notification">
-            <ToastContainer position="top-center" delay="3000"/>
 
-            <div className="new-adress-container">
-
+            <div className="new-user-container">
+                <ToastContainer position="top-center" delay="3000"/>
                 <div className="content">
                     <section className="form">
                         <img src={logoJP} alt="JP"/>
@@ -148,7 +146,6 @@ export default function NewUser() {
                     </form>
                 </div>
             </div>
-        </div>
     )
 }
 

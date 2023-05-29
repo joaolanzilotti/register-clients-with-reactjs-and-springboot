@@ -1,0 +1,108 @@
+.navbar {
+    display: flex;
+    gap: 500px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    background-color:  #00001a;
+    padding: 10px;
+    font-size: 15px;
+}
+
+.navbar span{
+    margin-left: 10px;
+}
+
+.navbar .logo{
+    display: inline-flex;
+    align-items: center;
+
+}
+
+.navbar .logo img {
+    width: 40px;
+    height: 40px;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: white;
+}
+
+.navbar a:hover {
+    color: rgb(0,191,255);
+    background: transparent;
+    transition: 0.5s;
+}
+
+.navbar .menu {
+    justify-items: center;
+    justify-content: center;
+}
+
+.navbar .menu .list {
+    margin-left: -170px;
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+}
+
+.navbar .menu .list .liLogout {
+    display: none;
+}
+
+#toggler,
+.navbar label {
+    display: none;
+}
+
+@media screen and (max-width: 600px) {
+
+    .navbar{
+        gap: 0px;
+        margin-left: -50px;
+    }
+
+    .navbar .menu {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        opacity: 0;
+    }
+
+    .navbar .menu.open {
+        max-height: 500px;
+        opacity: 1;
+    }
+
+    .navbar .menu .list{
+        background-color: rgba(255,255,255, 0.1);
+        border-radius: 12px;
+        width: 200px;
+        display: grid;
+        padding: 20px;
+    }
+
+    .navbar .menu .list .liLogout {
+        display: flex;
+        justify-content: center;
+    }
+    .navbar .logout{
+        display: none;
+    }
+
+    .navbar label {
+        display: flex;
+        justify-items: center;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+    #toggler:checked ~ .menu {
+        max-height: 100%;
+    }
+}
