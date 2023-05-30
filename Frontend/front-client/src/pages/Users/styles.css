@@ -7,8 +7,7 @@
 }
 
 .user-container .titleTable{
-    display: flex;
-    justify-content: space-around;
+    display: inline-flex;
     align-content: center;
     align-items: center;
     margin-bottom: 10px;
@@ -17,7 +16,6 @@
 
 
 .user-container .titleTable p{
-    margin-left: -120px;
     font-size: 25px;
 
 }
@@ -26,11 +24,25 @@
     display: flex;
     align-content: center;
     align-items: center;
-    justify-content: end;
+    justify-content: center;
+    margin-left: 700px;
+    height: 40px;
+    width: 100px;
+    background-color: #251FC5;
+    border-radius: 18px;
     transition: filter 0.2s;
 }
 
 .user-container .titleTable .buttonUser .LinkNewUser{
+    text-align: center;
+    color: white;
+    text-decoration: none;
+}
+
+.user-container .titleTable .pagination .linkPagination{
+    margin-left: 50px;
+    text-align: center;
+    color: black;
     text-decoration: none;
 }
 

@@ -57,10 +57,10 @@
     display: none;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 1250px) {
 
     .navbar{
-        gap: 0px;
+        gap: 0;
         margin-left: -50px;
     }
 
@@ -82,7 +82,8 @@
     .navbar .menu .list{
         background-color: rgba(255,255,255, 0.1);
         border-radius: 12px;
-        width: 200px;
+        margin-left: 50px;
+        width: 250px;
         display: grid;
         padding: 20px;
     }

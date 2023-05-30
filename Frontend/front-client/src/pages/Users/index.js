@@ -163,8 +163,8 @@ export default function Users() {
                     </Link>
                 </div>
                 <div className="pagination">
-                    <Link className="LinkNewUser" to="/user/new/0">
-                        Pagination
+                    <Link className="linkPagination" to="/user/new/0">
+                        1, 2 ,3
                     </Link>
                 </div>
             </div>
