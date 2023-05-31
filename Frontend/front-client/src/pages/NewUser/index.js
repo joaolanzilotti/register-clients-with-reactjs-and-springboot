@@ -82,21 +82,26 @@ export default function NewUser() {
 
         try {
             if(userId === '0') {
-                await api.post('/api/users', data, {
+                const response = await api.post('/api/users', data, {
                     //Adicionando na resposta o Header com o Token
                     headers: {
                         Authorization: `Bearer ${accessToken}`
                     }
                 });
                 toast.success('User added with Sucess!');
+                navigate(`/user/newadress/${response.data.id}/0`)
             }else{
                 data.id = id
-                await api.put(`/api/users/${id}`, data, {
+                const response = await api.put(`/api/users/${id}`, data, {
                     //Adicionando na resposta o Header com o Token
                     headers: {
                         Authorization: `Bearer ${accessToken}`
                     }
                 });
+                if(response.data.adress === null){
+                    navigate(`/user/newadress/${response.data.id}/0`)
+                }
+                navigate(`/user/newadress/${response.data.id}/${response.data.adress.id}`)
                 toast.success('User Updated with Success!');
             }
 
@@ -116,7 +121,7 @@ export default function NewUser() {
                     <section className="form">
                         <img src={logoJP} alt="JP"/>
                         <h1>{userId === '0' ? 'Add New' : 'Update'} User</h1>
-                        <p>Enter the user information and click on {userId === '0' ? 'Add' : 'Update'}</p>
+                        <p>Enter the user information and click on {userId === '0' ? 'Next' : 'Next'}</p>
                         <Link className="back-link" to="/users">
                             <div className="container-button">
                                 <div className="iconArrowLeft"><FiArrowLeft size={16} color="blue"/></div>
@@ -139,7 +144,7 @@ export default function NewUser() {
                             {showLoading ? (
                                 <img className="loadingGif" src={loadingGif} alt="Spinner"/>
                             ) : (
-                                userId === '0' ? 'Add' : 'Update'
+                                userId === '0' ? 'Next' : 'Next'
                             )}
                         </button>
 

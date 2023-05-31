@@ -21,28 +21,23 @@
 }
 
 .user-container .titleTable .buttonUser{
+    cursor: pointer;
     display: flex;
     align-content: center;
     align-items: center;
     justify-content: center;
-    margin-left: 700px;
-    height: 40px;
-    width: 100px;
+    margin-left: 780px;
+    height: 50px;
+    width: 150px;
     background-color: #251FC5;
     border-radius: 18px;
     transition: filter 0.2s;
 }
 
 .user-container .titleTable .buttonUser .LinkNewUser{
+    margin-left: 10px;
     text-align: center;
     color: white;
-    text-decoration: none;
-}
-
-.user-container .titleTable .pagination .linkPagination{
-    margin-left: 50px;
-    text-align: center;
-    color: black;
     text-decoration: none;
 }
 
@@ -223,26 +218,52 @@
     opacity: 0.8;
 }
 
-.user-container ul li .buttons-Adress{
-    margin-top: -25px;
-    margin-left: 420px;
-}
+@media screen and (max-width: 1250px) {
+    .user-container ul{
+        display: flex;
+        flex-direction: column;
+        grid-template-columns: repeat(2,1fr);
+        grid-gap: 24px;
+        list-style: none;
+    }
 
-.user-container ul li .buttons-Adress .buttonPlusAdress{
-    border: 0;
-    background: transparent;
-}
+    .user-container .titleTable{
+        display: inline-flex;
+        align-content: center;
+        align-items: center;
+        margin-bottom: 10px;
+        width: auto;
+        height: auto;
+    }
 
-.user-container ul li .buttons-Adress .buttonEditAdress{
-    border: 0;
-    background: transparent;
-    margin-left: 5px;
-}
 
-.user-container ul li .buttons-Adress .buttonTrashAdress{
-    border: 0;
-    background: transparent;
-    margin-left: 5px;
+
+    .user-container .titleTable p{
+        font-size: 25px;
+
+    }
+
+
+    .user-container .titleTable .buttonUser{
+        display: flex;
+        align-content: center;
+        align-items: center;
+        justify-content: center;
+        margin-left: 125px;
+        height: 40px;
+        width: 100px;
+        background-color: #251FC5;
+        border-radius: 18px;
+        transition: filter 0.2s;
+    }
+
+    .user-container .titleTable .buttonUser .LinkNewUser{
+        text-align: center;
+        color: white;
+        text-decoration: none;
+    }
+
+
 }
 
 

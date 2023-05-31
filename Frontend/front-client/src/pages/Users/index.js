@@ -24,11 +24,6 @@ export default function Users() {
     const [users, setUsers] = useState([]);
     const [page, setPage] = useState(0);
 
-    async function logout() {
-        localStorage.clear();
-        navigate('/');
-    }
-
     async function editAdress(idUser, idadress) {
         try {
             navigate(`/user/newadress/${idUser}/${idadress}`);
@@ -150,22 +145,22 @@ export default function Users() {
     }, []);
 
     return (
+
         <div className="user-container">
+
             <ToastContainer position="top-center" delay="3000"/>
+
 
             <div className="titleTable">
                 <div className="Title">
                     <p>Registered Users</p>
                 </div>
                 <div className="buttonUser">
+                    <FiUserPlus className="iconUserPlus" size={20} color="white"/>
                     <Link className="LinkNewUser" to="/user/new/0">
                         Add new User
                     </Link>
-                </div>
-                <div className="pagination">
-                    <Link className="linkPagination" to="/user/new/0">
-                        1, 2 ,3
-                    </Link>
+
                 </div>
             </div>
             <ul>
@@ -194,35 +189,9 @@ export default function Users() {
                                     user.adress.district +
                                     ', ' +
                                     user.adress.number}
-                                <div className="buttons-Adress">
-
-                                    <button className="buttonEditAdress" type="button">
-                                        <FiEdit onClick={() => editAdress(user.id, user.adress.id)} size={20}
-                                                color="#11009E"/>
-                                    </button>
-
-                                    <button className="buttonTrashAdress" type="button">
-                                        <FiTrash2
-                                            onClick={() => handleDeleteClickAdress(user.adress.id, user.adress.street)}
-                                            size={20} color="#CD1818"/></button>
-                                </div>
                             </p>
-
-
                         ) : (
-                            <p>Adress not registred
-
-                                <div className="buttons-Adress">
-                                    <Link className="buttonUser" to={`/user/newadress/${user.id}/0`}>
-                                        <button className="buttonPlusAdress" type="button">
-                                            <FiPlusCircle size={20} color="black"/></button>
-                                    </Link>
-
-                                </div>
-
-                            </p>
-
-                            //<button className="buttonPlusAdress" type="button"><FiPlusCircle size={20} color="#251FC5"/></button>
+                            <p>Adress not registred</p>
 
                         )}
 
@@ -276,5 +245,6 @@ export default function Users() {
                 </div>
             )}
         </div>
-    );
+
+);
 }

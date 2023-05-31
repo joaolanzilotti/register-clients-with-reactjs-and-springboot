@@ -9,6 +9,16 @@
     font-size: 15px;
 }
 
+.navbar .logout{
+    border: 0;
+    background: transparent;
+    margin-left: 5px;
+}
+
+.navbar .logout .iconLogout{
+    color: white;
+}
+
 .navbar span{
     margin-left: 10px;
 }
@@ -92,6 +102,16 @@
         display: flex;
         justify-content: center;
     }
+
+    .navbar .menu .list .liLogout .buttonLogout{
+        border: 0;
+        background: transparent;
+        margin-left: 5px;
+    }
+    .navbar .menu .list .liLogout .buttonLogout .liIconLogout{
+        color: white;
+    }
+
     .navbar .logout{
         display: none;
     }

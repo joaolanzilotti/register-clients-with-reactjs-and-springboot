@@ -9,8 +9,15 @@ import {ToastContainer, toast} from "react-toast";
 import api from '../../services/api';
 
 export default function NavBar() {
+
     const [isMenuOpen, setMenuOpen] = useState(false);
     const username = localStorage.getItem('username');
+    const navigate = useNavigate();
+
+    async function logout() {
+        localStorage.clear();
+        navigate('/');
+    }
 
     const handleToggleMenu = () => {
         setMenuOpen(!isMenuOpen);
@@ -34,10 +41,10 @@ export default function NavBar() {
                     <ul className="list">
                         <li><a href="#">Home</a></li>
                         <li><a href="#">Users</a></li>
-                        <li className="liLogout"><a href="#"><FiLogOut size={20}/></a></li>
+                        <li className="liLogout"><button className="buttonLogout" type="button"><FiLogOut className="liIconLogout" onClick={() => logout()} size={20}/></button></li>
                     </ul>
                 </div>
-                <a href="#" className="logout"><FiLogOut size={24}/></a>
+                <button type="button" className="logout"><FiLogOut className="iconLogout" onClick={() => logout()} size={24}/></button>
             </nav>
         </header>
     );
