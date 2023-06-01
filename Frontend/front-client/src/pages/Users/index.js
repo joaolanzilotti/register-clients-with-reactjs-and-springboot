@@ -1,13 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
-import {FiUserPlus, FiLogOut, FiEdit, FiTrash2, FiAlertTriangle, FiX, FiPlusCircle} from 'react-icons/fi';
+import {FiUserPlus, FiEdit, FiTrash2, FiAlertTriangle, FiX} from 'react-icons/fi';
 import {toast, ToastContainer} from 'react-toast';
 
 import api from '../../services/api';
 
 import './styles.css';
 
-import logoJP from '../../assets/logoJP.png';
 
 export default function Users() {
     const email = localStorage.getItem('email');
@@ -155,14 +154,14 @@ export default function Users() {
                 <div className="Title">
                     <p>Registered Users</p>
                 </div>
-                <div className="buttonUser">
-                    <FiUserPlus className="iconUserPlus" size={20} color="white"/>
-                    <Link className="LinkNewUser" to="/user/new/0">
-                        Add new User
-                    </Link>
-
-                </div>
+                <Link className="LinkNewUser" to="/user/new/0">
+                    <div className="buttonUser">
+                        <FiUserPlus className="iconUserPlus" size={20} color="white"/>
+                        <h3>Add new User</h3>
+                    </div>
+                </Link>
             </div>
+
             <ul>
                 {users.map((user) => (
                     <li key={user.id}>
@@ -171,15 +170,15 @@ export default function Users() {
                         <strong>E-mail:</strong>
                         <p>{user.email}</p>
                         <strong>RG:</strong>
-                        <p>{user.rg}</p>
+                        <p>{user.rg.replace(/^(\d{2})(\d{3})(\d{3})(\d{1})$/, '$1.$2.$3-$4')}</p>
                         <strong>CPF:</strong>
-                        <p>{user.cpf}</p>
+                        <p>{user.cpf.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3-$4')}</p>
                         <strong>Birthday:</strong>
                         <p>
                             {Intl.DateTimeFormat('pt-BR').format(new Date(user.birthDay))}
                         </p>
                         <strong>Cellphone:</strong>
-                        <p>{user.cellphone}</p>
+                        <p>{user.cellphone.replace(/^(\d{2})(\d{3})(\d{2})(\d{2})(\d{2})$/, '($1) $2$3-$4$5')}</p>
                         <strong>Adress:</strong>
                         {user.adress ? (
 
@@ -210,41 +209,45 @@ export default function Users() {
                 Load More
             </button>
 
-            {showConfirmation && (
-                <div className="modal">
-                    <button className="buttonCloseModal" onClick={handleCancelDelete}><FiX size={20} color='gray'/>
-                    </button>
-                    <div className="modal-content">
-                        <div className="iconContainer">
-                            <FiAlertTriangle className="iconAlertModal" size="45" color='orange'/>
+            {
+                showConfirmation && (
+                    <div className="modal">
+                        <button className="buttonCloseModal" onClick={handleCancelDelete}><FiX size={20} color='gray'/>
+                        </button>
+                        <div className="modal-content">
+                            <div className="iconContainer">
+                                <FiAlertTriangle className="iconAlertModal" size="45" color='orange'/>
+                            </div>
+                            <h2>Confirmation</h2>
+                            <p>Are you sure you want to delete?</p>
+                            <h5>{selectedUserName}</h5>
+                            <button className="buttonConfirmDialog" onClick={handleConfirmDelete}>Delete</button>
+                            <button className="buttonCancelDialog" onClick={handleCancelDelete}>Cancel</button>
                         </div>
-                        <h2>Confirmation</h2>
-                        <p>Are you sure you want to delete?</p>
-                        <h5>{selectedUserName}</h5>
-                        <button className="buttonConfirmDialog" onClick={handleConfirmDelete}>Delete</button>
-                        <button className="buttonCancelDialog" onClick={handleCancelDelete}>Cancel</button>
                     </div>
-                </div>
-            )}
+                )
+            }
 
-            {showConfirmationAdress && (
-                <div className="modal">
-                    <button className="buttonCloseModal" onClick={handleCancelDeleteAdress}><FiX size={20}
-                                                                                                 color='gray'/>
-                    </button>
-                    <div className="modal-content">
-                        <div className="iconContainer">
-                            <FiAlertTriangle className="iconAlertModal" size="45" color='orange'/>
+            {
+                showConfirmationAdress && (
+                    <div className="modal">
+                        <button className="buttonCloseModal" onClick={handleCancelDeleteAdress}><FiX size={20}
+                                                                                                     color='gray'/>
+                        </button>
+                        <div className="modal-content">
+                            <div className="iconContainer">
+                                <FiAlertTriangle className="iconAlertModal" size="45" color='orange'/>
+                            </div>
+                            <h2>Confirmation</h2>
+                            <p>Are you sure you want to delete adress?</p>
+                            <h5>{selectedAdress}</h5>
+                            <button className="buttonConfirmDialog" onClick={handleConfirmDeleteAdress}>Delete</button>
+                            <button className="buttonCancelDialog" onClick={handleCancelDeleteAdress}>Cancel</button>
                         </div>
-                        <h2>Confirmation</h2>
-                        <p>Are you sure you want to delete adress?</p>
-                        <h5>{selectedAdress}</h5>
-                        <button className="buttonConfirmDialog" onClick={handleConfirmDeleteAdress}>Delete</button>
-                        <button className="buttonCancelDialog" onClick={handleCancelDeleteAdress}>Cancel</button>
                     </div>
-                </div>
-            )}
+                )
+            }
         </div>
 
-);
+    );
 }

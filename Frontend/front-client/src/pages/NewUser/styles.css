@@ -1,6 +1,6 @@
 .new-user-container {
-    width: 70%;
-    height: 100vh;
+    width: 75%;
+    height: 103vh;
     margin: 0 auto;
     display: flex;
     align-items: center;
@@ -9,12 +9,11 @@
 
 .new-user-container .content {
     width: 90%;
-    height: 580px;
+    height: 612px;
     padding: 80px;
     background: #F0F0F5;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 1);
+    box-shadow: 0 0 5px rgba(7, 7, 7, 0.40);
     border-radius: 8px;
-
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -51,12 +50,20 @@
 }
 
 .new-user-container .content form {
-    width: 100%;
+    width: 50%;
     max-width: 450px;
 }
 
+.new-user-container .content form label {
+    font-weight: bold;
+    color: #333333;
+    font-size: 13px;
+}
+
 .new-user-container .content form input {
-    margin-top: 8px;
+    margin-top: 4px;
+    margin-bottom: 8px;
+    height: 45px;
 }
 
 .new-user-container .content .back-link{

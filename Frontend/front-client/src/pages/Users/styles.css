@@ -27,15 +27,19 @@
     align-items: center;
     justify-content: center;
     margin-left: 780px;
-    height: 50px;
+    height: 30px;
     width: 150px;
-    background-color: #251FC5;
+    background-color: #007CC2;
     border-radius: 18px;
     transition: filter 0.2s;
 }
 
-.user-container .titleTable .buttonUser .LinkNewUser{
-    margin-left: 10px;
+.user-container .titleTable .buttonUser .iconUserPlus{
+    margin-right: 6px;
+}
+
+.user-container .titleTable .LinkNewUser{
+    width: 0;
     text-align: center;
     color: white;
     text-decoration: none;
@@ -58,7 +62,7 @@
 
 .user-container ul li{
     background: #F0F0F5;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 1);
+    box-shadow: 0 0 5px rgba(7, 7, 7, 0.40);
     padding: 24px;
     border-radius: 32px;
     position: relative;
@@ -93,7 +97,7 @@
 .user-container ul li strong{
     display: block;
     margin-bottom: 8px;
-    color: #41414D;
+    color: black;
 }
 
 .user-container ul li p + strong{
@@ -228,7 +232,7 @@
     }
 
     .user-container .titleTable{
-        display: inline-flex;
+        display: flex;
         align-content: center;
         align-items: center;
         margin-bottom: 10px;
@@ -239,25 +243,23 @@
 
 
     .user-container .titleTable p{
-        font-size: 25px;
-
+        font-size: 22px;
+        margin-right: 10px;
     }
 
 
     .user-container .titleTable .buttonUser{
         display: flex;
-        align-content: center;
-        align-items: center;
-        justify-content: center;
-        margin-left: 125px;
-        height: 40px;
-        width: 100px;
-        background-color: #251FC5;
+        margin-left: auto;
+        height: 30px;
+        width: 150px;
+        background-color: #007CC2;
         border-radius: 18px;
         transition: filter 0.2s;
     }
 
     .user-container .titleTable .buttonUser .LinkNewUser{
+
         text-align: center;
         color: white;
         text-decoration: none;

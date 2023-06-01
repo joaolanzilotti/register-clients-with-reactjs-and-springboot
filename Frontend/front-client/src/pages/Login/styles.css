@@ -3,7 +3,7 @@
     margin-top: 10px;
 }
 
-input[type="password"]{
+.password[type="password"]{
     display: inline-block;
     width: 350px;
     height: 60px;
@@ -15,7 +15,7 @@ input[type="password"]{
     transition: all 0.1s ease-out;
 }
 
-input[type="password"] + label{
+.password[type="password"] + label{
     position: absolute;
     top: 0;
     left: 0;
@@ -32,20 +32,20 @@ input[type="password"] + label{
     transition-delay: 0.2s;
 }
 
-input[type="password"]:focus + label{
+.password[type="password"]:focus + label{
     transform: translateY(-120%) translateX(0%);
     border-radius: 3px;
     transition: all 0.1s ease-out;
 }
 
-input[type="password"]:focus{
+.password[type="password"]:focus{
     padding: 10px;
     transition: all 0.3s ease-out;
     transition-delay: 0.2s;
 }
 
 
-input[type="text"]{
+.email[type="text"]{
     display: inline-block;
     width: 350px;
     height: 60px;
@@ -58,7 +58,7 @@ input[type="text"]{
     transition: all 0.1s ease-out;
 }
 
-input[type="text"] + label{
+.email[type="text"] + label{
     position: absolute;
 
     top: 0;
@@ -76,13 +76,13 @@ input[type="text"] + label{
     transition-delay: 0.2s;
 }
 
-input[type="text"]:focus + label{
+.email[type="text"]:focus + label{
     transform: translateY(-120%) translateX(0%);
     border-radius: 3px;
     transition: all 0.1s ease-out;
 }
 
-input[type="text"]:focus{
+.email[type="text"]:focus{
     padding: 10px;
     transition: all 0.3s ease-out;
     transition-delay: 0.2s;

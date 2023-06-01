@@ -5,6 +5,7 @@ import logoJP from '../../assets/newUser.png';
 import {Link, useNavigate, useParams} from "react-router-dom";
 import {FiArrowLeft, FiUserPlus} from "react-icons/fi";
 import {ToastContainer, toast} from "react-toast";
+import InputMask from 'react-input-mask';
 
 import api from '../../services/api';
 
@@ -130,16 +131,23 @@ export default function NewUser() {
                         </Link>
                     </section>
                     <form onSubmit={SaveOrUpdateUser}>
+                        <label>Name</label>
                         <input id="name" placeholder="Name" value={name} onChange={e => setName(e.target.value)}/>
+                        <label>Email</label>
                         <input type="email" placeholder="E-mail" value={email}
                                onChange={e => setEmail(e.target.value)}/>
+                        <label>Password</label>
                         <input type="password" placeholder="Password" value={password}
                                onChange={e => setPassword(e.target.value)}/>
-                        <input placeholder="RG" value={rg} onChange={e => setRG(e.target.value)}/>
-                        <input placeholder="CPF" value={cpf} onChange={e => setCpf(e.target.value)}/>
+                        <label>RG</label>
+                        <InputMask placeholder="RG" mask="99.999.999-9" value={rg} onChange={e => setRG(e.target.value.replace(/\D/g, ''))}/>
+                        <label>CPF</label>
+                        <InputMask placeholder="CPF" mask="999.999.999-99" value={cpf} onChange={e => setCpf(e.target.value.replace(/\D/g, ''))}/>
+                        <label>Birthday</label>
                         <input type="date" value={birthDay} onChange={e => setBirthDay(e.target.value)}/>
-                        <input placeholder="Cellphone" value={cellphone}
-                               onChange={e => setCellphone(e.target.value)}/>
+                        <label>Cellphone</label>
+                        <InputMask placeholder="Cellphone" mask="(99) 99999-9999"  value={cellphone}
+                               onChange={e => setCellphone(e.target.value.replace(/\D/g, ''))}/>
                         <button className="button" type="submit">
                             {showLoading ? (
                                 <img className="loadingGif" src={loadingGif} alt="Spinner"/>

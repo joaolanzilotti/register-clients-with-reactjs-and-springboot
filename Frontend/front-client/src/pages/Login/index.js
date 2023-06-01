@@ -60,12 +60,12 @@ export default function Login() {
                     <form onSubmit={login}>
                         <h1>Access your Account</h1>
                         <div className="text-input">
-                        <input type="text" id="input1" placeholder="Email" value={email}
+                        <input type="text" className="email" id="input1" placeholder="Email" value={email}
                                onChange={e => setEmail(e.target.value)}/>
                         <label htmlFor="input1">E-mail</label>
                         </div>
                         <div className="text-input">
-                        <input type="password" placeholder="Password" value={password}
+                        <input type="password" className="password" placeholder="Password" value={password}
                                onChange={e => setPassword(e.target.value)}/>
                         <label htmlFor="input1">Password</label>
                             </div>

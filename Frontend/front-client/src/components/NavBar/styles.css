@@ -4,7 +4,7 @@
     align-items: center;
     flex-wrap: wrap;
     justify-content: space-around;
-    background-color:  #00001a;
+    border-bottom: 1px solid lightgray;
     padding: 10px;
     font-size: 15px;
 }
@@ -16,7 +16,11 @@
 }
 
 .navbar .logout .iconLogout{
-    color: white;
+    color: black;
+    transition: 0.3s;
+}
+.navbar .logout .iconLogout:hover{
+    color: #007CC2;
 }
 
 .navbar span{
@@ -36,12 +40,12 @@
 
 .navbar a {
     text-decoration: none;
-    color: white;
+    color: black;
+    background: transparent;
 }
 
 .navbar a:hover {
-    color: rgb(0,191,255);
-    background: transparent;
+    color: #007CC2;
     transition: 0.5s;
 }
 
@@ -52,6 +56,7 @@
 
 .navbar .menu .list {
     margin-left: -170px;
+    margin-right: -400px;
     list-style: none;
     display: flex;
     justify-content: center;
@@ -90,26 +95,34 @@
     }
 
     .navbar .menu .list{
-        background-color: rgba(255,255,255, 0.1);
+        background-color: rgba(7, 7, 7, 0.08);
         border-radius: 12px;
         margin-left: 50px;
         width: 250px;
         display: grid;
         padding: 20px;
+        margin-right: 0;
+        justify-content: center;
+        justify-items: center;
+        align-items: center;
+        align-content: center;
     }
 
     .navbar .menu .list .liLogout {
         display: flex;
         justify-content: center;
+
+
     }
 
     .navbar .menu .list .liLogout .buttonLogout{
         border: 0;
         background: transparent;
+
         margin-left: 5px;
     }
     .navbar .menu .list .liLogout .buttonLogout .liIconLogout{
-        color: white;
+        color: black;
     }
 
     .navbar .logout{

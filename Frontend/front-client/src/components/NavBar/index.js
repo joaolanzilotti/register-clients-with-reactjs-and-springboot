@@ -26,7 +26,7 @@ export default function NavBar() {
     return (
         <header>
             <nav className="navbar">
-                <a href="#" className="logo">
+                <a href="/users" className="logo">
                     <img src={logoJP} alt="logoJP"/>
                     <span>
           Welcome, <strong>{username}</strong>
@@ -35,12 +35,12 @@ export default function NavBar() {
 
                 <input type="checkbox" id="toggler" checked={isMenuOpen} onChange={handleToggleMenu}/>
                 <label htmlFor="toggler">
-                    {isMenuOpen ? <FiX size={26} color="white"/> : <FiList size={26} color="white"/>}
+                    {isMenuOpen ? <FiX size={26} color="black"/> : <FiList size={26} color="black"/>}
                 </label>
                 <div className={`menu ${isMenuOpen ? 'open' : ''}`}>
                     <ul className="list">
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">Users</a></li>
+                        <li><a href="/users">Home</a></li>
+                        <li><a href="/users">Users</a></li>
                         <li className="liLogout"><button className="buttonLogout" type="button"><FiLogOut className="liIconLogout" onClick={() => logout()} size={20}/></button></li>
                     </ul>
                 </div>

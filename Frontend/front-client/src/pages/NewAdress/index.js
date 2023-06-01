@@ -127,12 +127,17 @@ export default function NewAdress() {
                         </Link>
                     </section>
                     <form onSubmit={SaveOrUpdateAdress}>
+                        <label>Street</label>
                         <input id="street" placeholder="Street" value={street} onChange={e => setStreet(e.target.value)}/>
+                        <label>District</label>
                         <input type="text" placeholder="District" value={district}
                                onChange={e => setDistrict(e.target.value)}/>
+                        <label>Number</label>
                         <input type="text" placeholder="Number" value={number}
                                onChange={e => setNumber(e.target.value)}/>
+                        <label>City</label>
                         <input placeholder="City" value={city} onChange={e => setCity(e.target.value)}/>
+                        <label>State</label>
                         <input placeholder="State" value={state} onChange={e => setState(e.target.value)}/>
                         <button className="button" type="submit">
                             {showLoading ? (
