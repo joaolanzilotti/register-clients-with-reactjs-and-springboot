@@ -8,7 +8,7 @@ import {ToastContainer, toast} from "react-toast";
 
 import api from '../../services/api';
 
-export default function NewAdress() {
+export default function NewAddress() {
 
     const [id, setId] = useState(null);
     const [street, setStreet] = useState('');
@@ -43,7 +43,7 @@ export default function NewAdress() {
             setState(response.data.state)
 
         } catch (erro) {
-            toast.error('Error recovering adress!, Try again!')
+            toast.error('Error recovering address!, Try again!')
             navigate('/users');
         }
     }
@@ -87,7 +87,7 @@ export default function NewAdress() {
                         Authorization: `Bearer ${accessToken}`
                     }
                 });
-                toast.success('Adress added with Sucess!');
+                toast.success('Address added with Sucess!');
 
             }else{
                 data.id = id
@@ -97,11 +97,11 @@ export default function NewAdress() {
                         Authorization: `Bearer ${accessToken}`
                     }
                 });
-                toast.success('Adress Updated with Success!');
+                toast.success('Address Updated with Success!');
             }
 
         } catch (err) {
-            toast.error('Error while Record Adress! Try Again!');
+            toast.error('Error while Record Address! Try Again!');
         } finally {
             setShowLoading(false);
         }
@@ -117,8 +117,8 @@ export default function NewAdress() {
                 <div className="content">
                     <section className="form">
                         <img src={homeadress} alt="JP"/>
-                        <h1>{adressId === '0' ? 'Add New' : 'Update'} Adress</h1>
-                        <p>Enter the adress information and click on {adressId === '0' ? 'Add' : 'Update'}</p>
+                        <h1>{adressId === '0' ? 'Add New' : 'Update'} Address</h1>
+                        <p>Enter the address information and click on {adressId === '0' ? 'Add' : 'Update'}</p>
                         <Link className="back-link" to="/users">
                             <div className="container-button">
                                 <div className="iconArrowLeft"><FiArrowLeft size={16} color="blue"/></div>
@@ -153,4 +153,3 @@ export default function NewAdress() {
         </div>
     )
 }
-
