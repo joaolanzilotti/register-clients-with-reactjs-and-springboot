@@ -10,6 +10,7 @@
 body{
     font: 400 14px Roboto, sans-serif;
     -webkit-font-smoothing: antialiased;
+    background: #F0F0F5;
 }
 
 input, button, textarea{
