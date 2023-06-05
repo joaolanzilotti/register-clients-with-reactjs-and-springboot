@@ -16,6 +16,7 @@ export default function NewAddress() {
     const [number, setNumber] = useState('');
     const [city, setCity] = useState('');
     const [state, setState] = useState('');
+    const [ufs, setUfs] = useState([]);
 
     const accessToken = localStorage.getItem('accessToken');
 
@@ -26,6 +27,7 @@ export default function NewAddress() {
 
     //Funcao navigate para Enviar a Rota
     const navigate = useNavigate();
+
 
     //async function é uma funcao que aguarda o carregamento da pagina.
     async function loadAdress() {
@@ -47,6 +49,22 @@ export default function NewAddress() {
             navigate('/users');
         }
     }
+
+    async function fetchUfs() {
+        const response = await api.get('https://servicodados.ibge.gov.br/api/v1/localidades/estados', {
+            params: {
+                orderBy: 'nome',
+            },
+        })
+
+        setUfs([...ufs, ...response.data]);
+    }
+
+    useEffect(() => {
+        fetchUfs().then();
+
+    }, [])
+
 
     useEffect(() => {
         if (adressId === '0') return;
@@ -73,7 +91,7 @@ export default function NewAddress() {
         }
 
         try {
-            if(adressId === '0') {
+            if (adressId === '0') {
                 const response = await api.post('/api/adress', data, {
                     //Adicionando na resposta o Header com o Token
                     headers: {
@@ -89,7 +107,7 @@ export default function NewAddress() {
                 });
                 toast.success('Address added with Sucess!');
 
-            }else{
+            } else {
                 data.id = id
                 await api.put(`/api/adress/${id}`, data, {
                     //Adicionando na resposta o Header com o Token
@@ -128,7 +146,8 @@ export default function NewAddress() {
                     </section>
                     <form onSubmit={SaveOrUpdateAdress}>
                         <label>Street</label>
-                        <input id="street" placeholder="Street" value={street} onChange={e => setStreet(e.target.value)}/>
+                        <input id="street" placeholder="Street" value={street}
+                               onChange={e => setStreet(e.target.value)}/>
                         <label>District</label>
                         <input type="text" placeholder="District" value={district}
                                onChange={e => setDistrict(e.target.value)}/>
@@ -138,7 +157,12 @@ export default function NewAddress() {
                         <label>City</label>
                         <input placeholder="City" value={city} onChange={e => setCity(e.target.value)}/>
                         <label>State</label>
-                        <input placeholder="State" value={state} onChange={e => setState(e.target.value)}/>
+                        <select className="select">
+                            {ufs.map((uf) => (
+                            <option value={uf.sigla}>{uf.nome}</option>
+                                ))}
+                        </select>
+                        {/*<input placeholder="State" value={state} onChange={e => setState(e.target.value)}/>*/}
                         <button className="button" type="submit">
                             {showLoading ? (
                                 <img className="loadingGif" src={loadingGif} alt="Spinner"/>

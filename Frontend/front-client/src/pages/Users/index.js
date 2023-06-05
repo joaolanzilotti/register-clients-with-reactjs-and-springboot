@@ -241,8 +241,10 @@ export default function Users() {
                             <h2>Confirmation</h2>
                             <p>Are you sure you want to delete adress?</p>
                             <h5>{selectedAdress}</h5>
-                            <button className="buttonConfirmDialog" onClick={handleConfirmDeleteAdress}>Delete</button>
-                            <button className="buttonCancelDialog" onClick={handleCancelDeleteAdress}>Cancel</button>
+                            <div className="buttonsModal">
+                                <button className="buttonConfirmDialog" onClick={handleConfirmDeleteAdress}>Delete</button>
+                                <button className="buttonCancelDialog" onClick={handleCancelDeleteAdress}>Cancel</button>
+                            </div>
                         </div>
                     </div>
                 )

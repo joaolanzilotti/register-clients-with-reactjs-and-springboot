@@ -48,3 +48,19 @@
 .contant_box_404{
     margin-top: -50px;
 }
+
+@media screen and (max-width: 1250px) {
+    .page_404 img{
+        width: 50%;
+    }
+
+    .four_zero_four_bg{
+        background-image: url(https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif);
+        height: 285px;
+        background-position: center;
+        width: auto;
+    }
+
+
+    
+}

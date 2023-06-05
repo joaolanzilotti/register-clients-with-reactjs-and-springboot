@@ -135,8 +135,8 @@
 
 .user-container .modal {
     position: fixed;
-    top: 200px;
-    right: 500px;
+    top: 50%;
+    left: 50%;
     background-color: #fff;
     border-radius: 4px;
     box-shadow: 0 0 4px 0;
@@ -144,6 +144,7 @@
     z-index: 9999;
     opacity: 0; /* Inicia com opacidade 0 */
     animation: fadeIn 0.5s ease-in-out forwards; /* Aplica a animação */
+    transform: translate(-50%, -50%);
 }
 
 @keyframes fadeIn {
@@ -225,6 +226,7 @@
 
 @media screen and (max-width: 1250px) {
     .user-container ul{
+        font-size: 18px;
         display: flex;
         flex-direction: column;
         grid-template-columns: repeat(2,1fr);
@@ -232,9 +234,11 @@
         list-style: none;
     }
 
+
     .user-container .titleTable{
         display: flex;
-        align-content: center;
+        flex-direction: column;
+        align-content: start;
         align-items: center;
         margin-bottom: 10px;
         width: auto;
@@ -244,19 +248,21 @@
 
 
     .user-container .titleTable p{
-        font-size: 22px;
+        font-size: 28px;
         margin-right: 10px;
+        margin-bottom: 5px;
     }
 
 
     .user-container .titleTable .buttonUser{
         display: flex;
-        margin-left: auto;
         height: 30px;
-        width: 150px;
+        width: 180px;
+        margin-left: -90px;
         background-color: #007CC2;
         border-radius: 18px;
         transition: filter 0.2s;
+        font-size: 17px;
     }
 
     .user-container .titleTable .buttonUser .LinkNewUser{
@@ -266,6 +272,13 @@
         text-decoration: none;
     }
 
+    .user-container .modal .buttonConfirmDialog{
+        margin-bottom: 10px;
+    }
+
+    .user-container .modal .buttonCancelDialog{
+        margin-left: 36px;
+    }
 
 }
 
