@@ -9,8 +9,8 @@
 
 body{
     font: 400 14px Roboto, sans-serif;
-    background-color: azure;
     -webkit-font-smoothing: antialiased;
+    background: #F0F0F5;
 }
 
 input, button, textarea{
@@ -47,6 +47,8 @@ form input{
     line-height: 60px;
     transition: filter 0.2s;
 }
+
+
 .button .loadingGif{
     margin-top: 9px;
    width: 45px;

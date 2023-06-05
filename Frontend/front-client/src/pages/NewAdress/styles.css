@@ -1,6 +1,5 @@
-
-.new-user-container {
-    width: 75%;
+.new-adress-container {
+    width: 70%;
     height: auto;
     margin: 50px auto;
     display: flex;
@@ -8,9 +7,9 @@
     justify-content: space-between;
 }
 
-.new-user-container .content {
+.new-adress-container .content {
     width: 100%;
-    height: 750px;
+    height: auto;
     padding: 80px;
     background: white;
     box-shadow: 0 0 5px rgba(7, 7, 7, 0.40);
@@ -21,59 +20,69 @@
 
 }
 
-.new-user-container .content section {
+.new-adress-container .content section {
     width: 100%;
     max-width: 380px;
 }
 
-.new-user-container section.form {
+.new-adress-container section.form {
     width: 100%;
     max-width: 350px;
     margin-right: 30px;
 }
 
-.new-user-container section.form img {
-    width: 80%;
+.new-adress-container section.form img {
+    width: 75%;
     margin-left: auto;
     margin-right: auto;
     display: block;
 }
 
-.new-user-container .content section h1 {
+.new-adress-container .content section h1 {
     margin: 64px 0 32px;
     font-size: 32px;
 }
 
-.new-user-container .content section p {
+.new-adress-container .content section p {
     font-size: 18px;
     color: #737380;
     line-height: 32px;
 }
 
-.new-user-container .content form {
-    width: auto;
+.new-adress-container .content form {
+    width: 100%;
     max-width: 600px;
 }
 
-.new-user-container .content form label {
+.new-adress-container .content form label {
     font-weight: bold;
     color: #333333;
     font-size: 13px;
 }
 
-.new-user-container .content form input {
-    margin-top: 10px;
-    margin-bottom: 10px;
+.new-adress-container .content form input {
+    margin-top: 15px;
+    margin-bottom: 15px;
     height: 50px;
 }
 
-.new-user-container .content .back-link {
+.new-adress-container .content form select{
+    width: 100%;
+    height: 60px;
+    color: black;
+    border: 1px solid #DCDCE6;
+    border-radius: 8px;
+    padding: 0 24px;
+    margin-top: 16px;
+}
+
+.new-adress-container .content .back-link {
     background: transparent;
     border-radius: 8px;
     color: #251FC5;
     font-weight: 700;
     margin-top: 0;
-    display: inline-block;
+    display: flex;
     text-align: center;
     text-decoration: none;
     font-size: 12px;
@@ -81,38 +90,38 @@
     transition: filter 0.2s;
 }
 
-.new-user-container .content .back-link .container-button {
+.new-adress-container .content .back-link .container-button {
     display: inline-flex;
 }
 
-.new-user-container .content .back-link .iconArrowLeft {
+.new-adress-container .content .back-link .iconArrowLeft {
     margin-top: 3px;
     margin-right: 10px;
 }
 
 @media screen and (max-width: 1250px) {
 
-    .new-user-container {
+    .new-adress-container {
         width: 100%;
         height: auto;
         margin: 20px auto;
         display: flex;
     }
 
-    .new-user-container .content {
+    .new-adress-container .content {
         height: auto;
         flex-direction: column;
     }
 
-    .new-user-container .content section {
+    .new-adress-container .content section {
         width: 100%;
     }
 
-    .new-user-container section.form {
+    .new-adress-container section.form {
         width: 100%;
     }
 
-    .new-user-container section.form img {
+    .new-adress-container section.form img {
         width: 100%;
         height: auto;
         margin-left: auto;
@@ -120,7 +129,7 @@
         display: flex;
     }
 
-    .new-user-container .content .back-link {
+    .new-adress-container .content .back-link {
         font-weight: bold;
         display: inline-block;
         text-align: center;
@@ -128,30 +137,32 @@
         transition: filter 0.2s;
     }
 
-    .new-user-container .content form {
+    .new-adress-container .content form {
         max-width: 600px;
     }
 
-    .new-user-container .content .form h1{
+    .new-adress-container .content .form h1 {
         text-align: center;
     }
 
-    .new-user-container .content .form p{
+    .new-adress-container .content .form p {
         text-align: center;
     }
 
-    .new-user-container .content form label {
+    .new-adress-container .content form label {
         font-weight: bold;
         color: #333333;
         font-size: 18px;
     }
 
-    .new-user-container .content form input {
+    .new-adress-container .content form input {
         font-size: 18px;
         margin-top: 16px;
         margin-bottom: 16px;
-
     }
+
+
+
 
 }
 

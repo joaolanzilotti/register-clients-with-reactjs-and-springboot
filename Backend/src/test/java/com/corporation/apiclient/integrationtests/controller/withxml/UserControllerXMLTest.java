@@ -385,6 +385,45 @@ public class UserControllerXMLTest extends AbstractIntegrationTest {
 
     }
 
+    @Test
+    @Order(10)
+    public void testInsertAdressInUser() throws JsonMappingException, JsonProcessingException {
+        mockPerson();
+
+        var content = given().spec(specification)
+                .contentType(TestConfig.CONTENT_TYPE_XML)
+                .accept(TestConfig.CONTENT_TYPE_XML)
+                .pathParam("idUser", 12L)
+                .pathParam("idAdress", 19L)
+                .when()
+                .post("userWithAdress/{idUser}/{idAdress}")
+                .then()
+                .statusCode(200)
+                .extract()
+                .body()
+                .asString();
+
+        UserDTO createdUserDTO = objectMapper.readValue(content, UserDTO.class);
+        userDTO = createdUserDTO;
+
+        Assertions.assertNotNull(createdUserDTO);
+        Assertions.assertNotNull(createdUserDTO.getId());
+        Assertions.assertNotNull(createdUserDTO.getName());
+        Assertions.assertNotNull(createdUserDTO.getEmail());
+        Assertions.assertNotNull(createdUserDTO.getRg());
+        Assertions.assertNotNull(createdUserDTO.getCpf());
+        Assertions.assertNotNull(createdUserDTO.getBirthDay());
+        Assertions.assertNotNull(createdUserDTO.getCellphone());
+        Assertions.assertTrue(createdUserDTO.isEnabled());
+
+
+        Assertions.assertEquals("Pedro", createdUserDTO.getName());
+        Assertions.assertEquals("pedro56894@gmail.com", createdUserDTO.getEmail());
+        Assertions.assertEquals("54965855", createdUserDTO.getRg());
+        Assertions.assertEquals("74602380077", createdUserDTO.getCpf());
+        Assertions.assertEquals("1238334010", createdUserDTO.getCellphone());
+    }
+
     private void mockPerson() {
         userDTO.setName("Joao");
         userDTO.setEmail("joao@gmail.com");

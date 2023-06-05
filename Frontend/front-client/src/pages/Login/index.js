@@ -53,15 +53,22 @@ export default function Login() {
             <ToastContainer position="top-center" delay="3000"/>
             <div className="login-container">
 
+
                 <section className="form">
 
                     <img className="logo" src={logoImage} alt="User Logo"/>
                     <form onSubmit={login}>
                         <h1>Access your Account</h1>
-                        <input type="text" placeholder="Email" value={email}
+                        <div className="text-input">
+                        <input type="text" className="email" id="input1" placeholder="Email" value={email}
                                onChange={e => setEmail(e.target.value)}/>
-                        <input type="password" placeholder="Password" value={password}
+                        <label htmlFor="input1">E-mail</label>
+                        </div>
+                        <div className="text-input">
+                        <input type="password" className="password" placeholder="Password" value={password}
                                onChange={e => setPassword(e.target.value)}/>
+                        <label htmlFor="input1">Password</label>
+                            </div>
                         <button className="button" type="submit">
                             {showLoading ? (
                                 <img className="loadingGif" src={loadingGif} alt="Spinner"/>

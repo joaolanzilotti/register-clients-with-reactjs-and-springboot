@@ -85,10 +85,9 @@ public class AdressControllerJsonTest extends AbstractIntegrationTest {
         var content = given().spec(specification)
                 .contentType(TestConfig.CONTENT_TYPE_JSON)
                 .header(TestConfig.HEADER_PARAM_ORIGIN, TestConfig.ORIGIN_JP)
-                .pathParam("id", 5L)
                 .body(adressDTO)
                 .when()
-                .post("{id}")
+                .post()
                 .then()
                 .statusCode(201)
                 .extract()
@@ -125,9 +124,9 @@ public class AdressControllerJsonTest extends AbstractIntegrationTest {
                 .pathParam("id", 5L)
                 .body(adressDTO)
                 .when()
-                .post("{id}")
+                .put("{id}")
                 .then()
-                .statusCode(201)
+                .statusCode(200)
                 .extract()
                 .body()
                 .asString();
@@ -253,7 +252,7 @@ public class AdressControllerJsonTest extends AbstractIntegrationTest {
 
         assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/adress/2\"}}}"));
         assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/adress/3\"}}}"));
-        assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/adress/4\"}}}"));
+        assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/adress/8\"}}}"));
 
         assertTrue(content.contains("\"self\":{\"href\":\"http://localhost:8888/api/adress?page=0&size=15\"}"));
 

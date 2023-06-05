@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { FiUserPlus, FiLogOut, FiEdit, FiTrash2, FiAlertTriangle, FiX } from 'react-icons/fi';
-import { toast } from 'react-toast';
+import React, {useState, useEffect} from 'react';
+import {Link, useNavigate} from 'react-router-dom';
+import {FiUserPlus, FiEdit, FiTrash2, FiAlertTriangle, FiX} from 'react-icons/fi';
+import {toast, ToastContainer} from 'react-toast';
 
 import api from '../../services/api';
 
 import './styles.css';
 
-import logoJP from '../../assets/logoJP.png';
 
 export default function Users() {
     const email = localStorage.getItem('email');
@@ -16,15 +15,20 @@ export default function Users() {
 
     const navigate = useNavigate();
     const [showConfirmation, setShowConfirmation] = useState(false);
+    const [showConfirmationAdress, setShowConfirmationAdress] = useState(false);
     const [selectedUserId, setSelectedUserId] = useState(null);
     const [selectedUserName, setSelectedUserName] = useState(null);
+    const [selectedAdress, setSelectedAdress] = useState(null);
 
     const [users, setUsers] = useState([]);
     const [page, setPage] = useState(0);
 
-    async function logout() {
-        localStorage.clear();
-        navigate('/');
+    async function editAdress(idUser, idadress) {
+        try {
+            navigate(`/user/newadress/${idUser}/${idadress}`);
+        } catch (error) {
+            toast.error('Edit Failed! Try Again.');
+        }
     }
 
     async function editUser(id) {
@@ -42,8 +46,23 @@ export default function Users() {
                     Authorization: `Bearer ${accessToken}`,
                 },
             });
-            setUsers(users.filter((client) => client.id !== id));
             toast.success('User Deleted Successfully!');
+            setUsers(users.filter((user) => user.id !== id));
+        } catch (err) {
+            toast.error('Delete Failed!');
+        }
+    }
+
+    async function deleteAdress(id) {
+        try {
+            await api.delete(`/api/adress/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            });
+            toast.success('Adress Deleted Successfully!');
+            setUsers(users.filter((user) => user.adress.id !== id));
+
         } catch (err) {
             toast.error('Delete Failed!');
         }
@@ -63,6 +82,7 @@ export default function Users() {
         setUsers([...users, ...response.data._embedded.userDTOList]);
         setPage(page + 1);
     }
+
     async function dataUsername() {
         try {
             const response = await api.get(`/api/users/findUserByEmail/${email}`, {
@@ -81,12 +101,24 @@ export default function Users() {
     function handleDeleteClick(id, name) {
         setSelectedUserId(id);
         setSelectedUserName(name)
+        setSelectedAdress(name);
         setShowConfirmation(true);
     }
 
+    function handleDeleteClickAdress(id, name) {
+        setSelectedUserId(id);
+        setSelectedAdress(name);
+        setShowConfirmationAdress(true);
+    }
+
     function handleConfirmDelete() {
-        deleteUser(selectedUserId);
+        deleteUser(selectedUserId).then();
         setShowConfirmation(false);
+    }
+
+    function handleConfirmDeleteAdress() {
+        deleteAdress(selectedUserId).then();
+        setShowConfirmationAdress(false);
     }
 
     function handleCancelDelete() {
@@ -95,8 +127,14 @@ export default function Users() {
         setShowConfirmation(false);
     }
 
+    function handleCancelDeleteAdress() {
+        setSelectedUserId(null);
+        setSelectedAdress(null);
+        setShowConfirmationAdress(false);
+    }
+
     useEffect(() => {
-       dataUsername().then();
+        dataUsername().then();
     });
 
     // useEffect é para carregar a tela assim que carregar o HTML, os dados virão!
@@ -106,26 +144,24 @@ export default function Users() {
     }, []);
 
     return (
+
         <div className="user-container">
-            <header>
-                <img src={logoJP} alt="JP" />
-                <span>
-          Welcome, <strong>{username}</strong>
-        </span>
-                <Link className="buttonUser" to="/user/new/0">
-                    <div className="container-button">
-                        <div className="iconUserPlus">
-                            <FiUserPlus size={24} color="white" />
-                        </div>
-                        <div className="textButton">Add new User</div>
+
+            <ToastContainer position="top-center" delay="3000"/>
+
+
+            <div className="titleTable">
+                <div className="Title">
+                    <p>Registered Users</p>
+                </div>
+                <Link className="LinkNewUser" to="/user/new/0">
+                    <div className="buttonUser">
+                        <FiUserPlus className="iconUserPlus" size={20} color="white"/>
+                        <h3>Add new User</h3>
                     </div>
                 </Link>
+            </div>
 
-                <button onClick={logout} className="buttonPower" type="button">
-                    <FiLogOut size={18} color="#251FC5" />
-                </button>
-            </header>
-            <h1>Registered Users</h1>
             <ul>
                 {users.map((user) => (
                     <li key={user.id}>
@@ -134,17 +170,18 @@ export default function Users() {
                         <strong>E-mail:</strong>
                         <p>{user.email}</p>
                         <strong>RG:</strong>
-                        <p>{user.rg}</p>
+                        <p>{user.rg.replace(/^(\d{2})(\d{3})(\d{3})(\d{1})$/, '$1.$2.$3-$4')}</p>
                         <strong>CPF:</strong>
-                        <p>{user.cpf}</p>
+                        <p>{user.cpf.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3-$4')}</p>
                         <strong>Birthday:</strong>
                         <p>
                             {Intl.DateTimeFormat('pt-BR').format(new Date(user.birthDay))}
                         </p>
                         <strong>Cellphone:</strong>
-                        <p>{user.cellphone}</p>
+                        <p>{user.cellphone.replace(/^(\d{2})(\d{3})(\d{2})(\d{2})(\d{2})$/, '($1) $2$3-$4$5')}</p>
                         <strong>Adress:</strong>
                         {user.adress ? (
+
                             <p>
                                 {user.adress.street +
                                     ', ' +
@@ -153,14 +190,17 @@ export default function Users() {
                                     user.adress.number}
                             </p>
                         ) : (
-                            <p>Endereço não disponível</p>
+                            <p>Adress not registred</p>
+
                         )}
 
-                        <button type="button">
-                            <FiEdit onClick={() => editUser(user.id)} size={20} color="#251FC5" />
+
+                        <button className="buttonEditUser" type="button">
+                            <FiEdit onClick={() => editUser(user.id)} size={20} color="#11009E"/>
                         </button>
-                        <button onClick={() => handleDeleteClick(user.id, user.name)} type="button">
-                            <FiTrash2 size={20} color="#251FC5" />
+                        <button className="buttonTrashUser" onClick={() => handleDeleteClick(user.id, user.name)}
+                                type="button">
+                            <FiTrash2 size={20} color="#CD1818"/>
                         </button>
                     </li>
                 ))}
@@ -169,21 +209,47 @@ export default function Users() {
                 Load More
             </button>
 
-            {showConfirmation && (
-                <div className="modal">
-                    <button className="buttonCloseModal" onClick={handleCancelDelete}><FiX size={20} color='gray' /></button>
-                    <div className="modal-content">
-                        <div className="iconContainer">
-                        <FiAlertTriangle className="iconAlertModal" size="45" color='orange' />
+            {
+                showConfirmation && (
+                    <div className="modal">
+                        <button className="buttonCloseModal" onClick={handleCancelDelete}><FiX size={20} color='gray'/>
+                        </button>
+                        <div className="modal-content">
+                            <div className="iconContainer">
+                                <FiAlertTriangle className="iconAlertModal" size="45" color='orange'/>
+                            </div>
+                            <h2>Confirmation</h2>
+                            <p>Are you sure you want to delete?</p>
+                            <h5>{selectedUserName}</h5>
+                            <button className="buttonConfirmDialog" onClick={handleConfirmDelete}>Delete</button>
+                            <button className="buttonCancelDialog" onClick={handleCancelDelete}>Cancel</button>
                         </div>
-                        <h2>Confirmation</h2>
-                        <p>Are you sure you want to delete user?</p>
-                        <h5>{selectedUserName}</h5>
-                        <button className="buttonConfirmDialog" onClick={handleConfirmDelete}>Delete</button>
-                        <button className="buttonCancelDialog" onClick={handleCancelDelete}>Cancel</button>
                     </div>
-                </div>
-            )}
+                )
+            }
+
+            {
+                showConfirmationAdress && (
+                    <div className="modal">
+                        <button className="buttonCloseModal" onClick={handleCancelDeleteAdress}><FiX size={20}
+                                                                                                     color='gray'/>
+                        </button>
+                        <div className="modal-content">
+                            <div className="iconContainer">
+                                <FiAlertTriangle className="iconAlertModal" size="45" color='orange'/>
+                            </div>
+                            <h2>Confirmation</h2>
+                            <p>Are you sure you want to delete adress?</p>
+                            <h5>{selectedAdress}</h5>
+                            <div className="buttonsModal">
+                                <button className="buttonConfirmDialog" onClick={handleConfirmDeleteAdress}>Delete</button>
+                                <button className="buttonCancelDialog" onClick={handleCancelDeleteAdress}>Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                )
+            }
         </div>
+
     );
 }

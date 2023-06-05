@@ -96,7 +96,7 @@ public class AdressController {
     }
 
     //@CrossOrigin(origins = "http://localhost:8080")
-    @PostMapping(value = "/{id}",
+    @PostMapping(
             produces = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML},
             consumes = {MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML})
     @Operation(summary = "Adds a New Adress", description = "Adds a New Adress by passing in a JSON, XML or YML representation of the Adress.", tags = {"Adress"},
@@ -105,10 +105,9 @@ public class AdressController {
                     @ApiResponse(description = "Bad Request", responseCode = "400", content = {@Content}),
                     @ApiResponse(description = "Unauthorized", responseCode = "401", content = {@Content}),
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = {@Content})})
-    public ResponseEntity<AdressDTO> addAdress(@PathVariable Long id, @Valid @RequestBody AdressDTO adressDTO) {
-        AdressDTO DTO = modelMapper.map(adressService.addAdress(adressDTO, id), AdressDTO.class);
+    public ResponseEntity<AdressDTO> addAdress(@Valid @RequestBody AdressDTO adressDTO) {
+        AdressDTO DTO = modelMapper.map(adressService.addAdress(adressDTO), AdressDTO.class);
         DTO.add(linkTo(methodOn(AdressController.class).findAdressById(DTO.getId())).withSelfRel());
-        DTO.add(linkTo(methodOn(UserController.class).findUserById(id)).withSelfRel());
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(DTO.getId()).toUri();
         return ResponseEntity.created(uri).body(DTO);
     }

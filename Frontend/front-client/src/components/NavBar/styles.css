@@ -1,0 +1,143 @@
+.navbar {
+    display: flex;
+    gap: 500px;
+    background: white;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    border-bottom: 1px solid lightgray;
+    padding: 10px;
+    font-size: 15px;
+}
+
+.navbar .logout{
+    border: 0;
+    background: transparent;
+    margin-left: 5px;
+}
+
+.navbar .logout .iconLogout{
+    color: black;
+    transition: 0.3s;
+}
+.navbar .logout .iconLogout:hover{
+    color: #007CC2;
+}
+
+.navbar span{
+    margin-left: 10px;
+}
+
+.navbar .logo{
+    display: inline-flex;
+    align-items: center;
+
+}
+
+.navbar .logo img {
+    width: 40px;
+    height: 40px;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: black;
+    background: transparent;
+}
+
+.navbar a:hover {
+    color: #007CC2;
+    transition: 0.5s;
+}
+
+.navbar .menu {
+    justify-items: center;
+    justify-content: center;
+}
+
+.navbar .menu .list {
+    margin-left: -170px;
+    margin-right: -400px;
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+}
+
+.navbar .menu .list .liLogout {
+    display: none;
+}
+
+#toggler,
+.navbar label {
+    display: none;
+}
+
+@media screen and (max-width: 1250px) {
+
+    .navbar{
+        gap: 0;
+        margin-left: -50px;
+    }
+
+    .navbar .menu {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        opacity: 0;
+    }
+
+    .navbar .menu.open {
+        max-height: 500px;
+        opacity: 1;
+    }
+
+    .navbar .menu .list{
+        background-color: rgba(7, 7, 7, 0.08);
+        border-radius: 12px;
+        margin-left: 50px;
+        width: 250px;
+        display: grid;
+        padding: 20px;
+        margin-right: 0;
+        justify-content: center;
+        justify-items: center;
+        align-items: center;
+        align-content: center;
+    }
+
+    .navbar .menu .list .liLogout {
+        display: flex;
+        justify-content: center;
+
+
+    }
+
+    .navbar .menu .list .liLogout .buttonLogout{
+        border: 0;
+        background: transparent;
+
+        margin-left: 5px;
+    }
+    .navbar .menu .list .liLogout .buttonLogout .liIconLogout{
+        color: black;
+    }
+
+    .navbar .logout{
+        display: none;
+    }
+
+    .navbar label {
+        display: flex;
+        justify-items: center;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+    #toggler:checked ~ .menu {
+        max-height: 100%;
+    }
+}
