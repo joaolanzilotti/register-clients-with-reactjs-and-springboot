@@ -172,9 +172,9 @@ export default function NewAddress() {
                         <label>Street*</label>
                         <input id="street" placeholder="Street" value={street} onChange={(e) => setStreet(e.target.value)} />
                         <label>District*</label>
-                        <InputMask type="text" mask="99999" placeholder="District" value={district} onChange={(e) => setDistrict(e.target.value)} />
+                        <input type="text" placeholder="District" value={district} onChange={(e) => setDistrict(e.target.value)} />
                         <label>Number*</label>
-                        <input type="text" placeholder="Number" value={number} onChange={(e) => setNumber(e.target.value)} />
+                        <input type="number" placeholder="Number" value={number} onChange={(e) => setNumber(e.target.value)} />
                         <label>City*</label>
                         <input placeholder="City" value={city} onChange={(e) => setCity(e.target.value)} />
                         <label>State*</label>
