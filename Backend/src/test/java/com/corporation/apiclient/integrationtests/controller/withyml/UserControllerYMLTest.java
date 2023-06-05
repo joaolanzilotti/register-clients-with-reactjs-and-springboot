@@ -134,7 +134,7 @@ public class UserControllerYMLTest extends AbstractIntegrationTest {
         userDTO.setName("name changed");
         userDTO.setRg("65498798");
         userDTO.setCpf("32451021004");
-        userDTO.setAdress(new Adress(1L, "maranhao", "district", "50", "Ubatuba", "SP", null));
+        userDTO.setAdress(new Adress(1L,"11695108", "maranhao", "district", "50", "Ubatuba", "SP", null));
         var persistedPerson = given().spec(specification)
                 .config(
                         RestAssuredConfig

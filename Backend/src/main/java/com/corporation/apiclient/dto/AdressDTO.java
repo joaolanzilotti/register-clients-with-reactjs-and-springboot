@@ -17,6 +17,7 @@ import java.util.List;
 public class AdressDTO extends RepresentationModel<AdressDTO> implements Serializable {
 
     private Long id;
+    private String cep;
     private String street;
     private String district;
     private String number;

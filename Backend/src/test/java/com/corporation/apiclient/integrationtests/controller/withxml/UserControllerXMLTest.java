@@ -123,7 +123,7 @@ public class UserControllerXMLTest extends AbstractIntegrationTest {
     @Order(2)
     public void testUpdate() throws JsonMappingException, JsonProcessingException {
         userDTO.setName("Name Changed");
-        userDTO.setAdress(new Adress(1L, "maranhao", "district", "50", "Ubatuba", "SP", null));
+        userDTO.setAdress(new Adress(1L,"11695108", "maranhao", "district", "50", "Ubatuba", "SP", null));
 
         var content = given().spec(specification)
                 .contentType(TestConfig.CONTENT_TYPE_XML)

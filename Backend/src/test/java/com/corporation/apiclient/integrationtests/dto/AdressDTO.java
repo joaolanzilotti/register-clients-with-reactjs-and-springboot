@@ -17,6 +17,7 @@ import java.io.Serializable;
 public class AdressDTO implements Serializable {
 
     private Long id;
+    private String cep;
     private String street;
     private String district;
     private String number;

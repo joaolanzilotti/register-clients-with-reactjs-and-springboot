@@ -37,6 +37,8 @@ public class UserDTO extends RepresentationModel<UserDTO> implements Serializabl
     @Temporal(TemporalType.DATE)
     private Date birthDay;
 
+    private String sexo;
+
     private String cellphone;
 
     private Adress adress;

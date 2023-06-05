@@ -114,9 +114,9 @@ class AdressServiceTest {
 
     private void startAdress() {
         user = new User(1L, "teste@teste.com", "56006548", "09113144568", new Date(123, 4, 25), "12659874848", adress, true, "Joao", "123");
-        adress = new Adress(1L, "Rua Tenorio", "Centro", "50", "Ubatuba", "SP", null);
-        adressDTO = new AdressDTO(1L, "Rua Tenorio", "Centro", "50", "Ubatuba", "SP", null);
-        optionalAdress = Optional.of(new Adress(1L, "Rua Tenorio", "Centro", "50", "Ubatuba", "SP", null));
+        adress = new Adress(1L,"11695108" , "Rua Tenorio", "Centro", "50", "Ubatuba", "SP", null);
+        adressDTO = new AdressDTO(1L,"11695108", "Rua Tenorio", "Centro", "50", "Ubatuba", "SP", null);
+        optionalAdress = Optional.of(new Adress(1L,"11695108", "Rua Tenorio", "Centro", "50", "Ubatuba", "SP", null));
 
     }
 }

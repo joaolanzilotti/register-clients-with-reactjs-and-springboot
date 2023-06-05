@@ -302,6 +302,7 @@ public class AdressControllerYMLTest extends AbstractIntegrationTest {
         adressDTO.setState("SP");
         adressDTO.setStreet("Rua das Flores");
         adressDTO.setNumber("50");
+        adressDTO.setCep("11695108");
 
     }
 

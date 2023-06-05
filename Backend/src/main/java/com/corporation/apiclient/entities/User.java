@@ -25,7 +25,6 @@ public class User implements UserDetails, Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Email
     private String email;
 
@@ -37,6 +36,8 @@ public class User implements UserDetails, Serializable {
     @Temporal(TemporalType.DATE)
     @Column(name = "birth_day")
     private Date birthDay;
+
+    private String sexo;
 
     @NotBlank(message = "Cellphone is Null!")
     private String cellphone;

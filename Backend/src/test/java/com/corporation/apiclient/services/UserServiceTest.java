@@ -179,8 +179,8 @@ class UserServiceTest {
 
     private void startClientAndAdress() {
         user = new User(1L, "teste@teste.com", "56006548", "09113144568", new Date(123, 4, 25), "12659874848", adress, true, "Joao", "123");
-        userDTO =  new UserDTO(1L, "teste@teste.com", "56006548", "09113144568", new Date(123, 4, 25), "12659874848", adress, true, "Joao", "123", true, true, true, null);
+        userDTO =  new UserDTO(1L, "teste@teste.com", "56006548", "09113144568", new Date(123, 4, 25), "Masculino", "12659874848", adress, true, "Joao", "123", true, true, true, null);
         optionalUser = Optional.of(new User(1L, "teste@teste.com", "56006548", "09113144568", new Date(123, 4, 25), "12659874848", adress, true, "Joao", "123"));
-        adress = new Adress(1L, "maranhao", "district", "50", "Ubatuba", "SP", null);
+        adress = new Adress(1L,"11695108", "maranhao", "district", "50", "Ubatuba", "SP", null);
     }
 }

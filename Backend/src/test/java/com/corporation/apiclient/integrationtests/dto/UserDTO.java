@@ -33,6 +33,8 @@ public class UserDTO implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date birthDay;
 
+    private String sexo;
+
     private String cellphone;
 
     private Adress adress;
