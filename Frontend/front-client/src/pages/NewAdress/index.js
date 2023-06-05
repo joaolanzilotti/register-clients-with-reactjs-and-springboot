@@ -157,10 +157,10 @@ export default function NewAddress() {
                         <label>City</label>
                         <input placeholder="City" value={city} onChange={e => setCity(e.target.value)}/>
                         <label>State</label>
-                        <select className="select">
+                        <select onChange={e => setState(() => e.target.value)} value={state} className="select">
                             {ufs.map((uf) => (
-                            <option value={uf.sigla}>{uf.nome}</option>
-                                ))}
+                                <option key={uf.sigla} value={uf.sigla}>{uf.nome}</option>
+                            ))}
                         </select>
                         {/*<input placeholder="State" value={state} onChange={e => setState(e.target.value)}/>*/}
                         <button className="button" type="submit">
